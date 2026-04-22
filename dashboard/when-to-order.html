@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>When to Order — Dashboard | Pau</title>
+  <meta name="description" content="Steam bun shop stock dashboard. Six months of sales, 18 products, three suppliers — and a daily reorder trigger the owner can run in minutes." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --navy: #1A1F3A;
+      --navy-dark: #111526;
+      --gold: #C9A84C;
+      --gold-hover: #D4B660;
+      --cream: #FAF6EE;
+      --cream-alt: #F2EDE0;
+      --text: #3A3530;
+      --muted: #7A7268;
+      --border: #E0D9CF;
+      --white: #FFFFFF;
+      --critical: #C1392B;
+      --atrisk: #E67E22;
+      --watch: #F1C40F;
+      --stable: #27AE60;
+      --strong: #27AE60;
+      --neutral: #7F8C8D;
+      --weak: #C1392B;
+      --radius: 10px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; color: var(--text); background: var(--cream); line-height: 1.6; }
+    a { text-decoration: none; color: inherit; }
+
+    .back-nav { background: var(--navy-dark); padding: 0.9rem 2rem; }
+    .back-nav a { color: rgba(255,255,255,0.75); font-size: 0.9rem; font-weight: 500; }
+    .back-nav a:hover { color: var(--gold); }
+
+    .dash-header {
+      background: var(--navy); color: var(--white);
+      padding: 3rem 2rem 2.5rem; text-align: center;
+    }
+    .dash-header .container { max-width: 960px; margin: 0 auto; }
+    .dash-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.7rem, 4vw, 2.4rem);
+      font-weight: 900; line-height: 1.2; margin-bottom: 0.75rem;
+    }
+    .dash-header p {
+      font-size: 1rem; color: rgba(255,255,255,0.72);
+      max-width: 620px; margin: 0 auto 1.5rem;
+    }
+    .dash-ctas { display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap; }
+    .dash-btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.7rem 1.25rem; border-radius: var(--radius);
+      font-weight: 600; font-size: 0.9rem;
+      border: 1px solid rgba(201,168,76,0.5);
+      background: rgba(201,168,76,0.08); color: var(--white);
+      transition: all 0.2s;
+    }
+    .dash-btn:hover { background: var(--gold); color: var(--navy); border-color: var(--gold); }
+
+    .tabs-wrap { background: var(--cream-alt); border-bottom: 1px solid var(--border); }
+    .tabs {
+      display: flex; max-width: 960px; margin: 0 auto;
+      overflow-x: auto;
+    }
+    .tab {
+      padding: 1rem 1.5rem; font-weight: 600; font-size: 0.95rem;
+      color: var(--muted); cursor: pointer; white-space: nowrap;
+      border-bottom: 3px solid transparent; transition: all 0.15s;
+    }
+    .tab:hover { color: var(--navy); }
+    .tab.active { color: var(--navy); border-bottom-color: var(--gold); }
+
+    .story { display: none; max-width: 1200px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+    .story.active { display: block; }
+    .story-intro {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem; color: var(--navy);
+      margin-bottom: 1.75rem; text-align: center;
+      font-weight: 700;
+    }
+
+    .chart-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+    .chart-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-top: 4px solid var(--gold);
+      padding: 1.5rem; border-radius: var(--radius);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+    .chart-card.full { grid-column: 1 / -1; }
+    .chart-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem; font-weight: 700;
+      color: var(--navy); margin-bottom: 0.25rem;
+    }
+    .chart-sub {
+      font-size: 0.85rem; color: var(--muted);
+      margin-bottom: 1rem; line-height: 1.5;
+    }
+    .chart-box { position: relative; height: 300px; }
+    .chart-box.tall { height: 420px; }
+    .chart-box.xtall { height: 520px; }
+
+    /* Urgent table */
+    .urgent-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    .urgent-table th {
+      text-align: left; padding: 0.65rem 0.5rem;
+      color: var(--muted); font-weight: 600;
+      border-bottom: 2px solid var(--border);
+      font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em;
+    }
+    .urgent-table td {
+      padding: 0.65rem 0.5rem; border-bottom: 1px solid var(--border);
+    }
+    .urgent-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+    .urgent-table tr:last-child td { border-bottom: none; }
+    .sev-badge {
+      display: inline-block; padding: 0.2rem 0.65rem;
+      border-radius: 12px; font-size: 0.75rem; font-weight: 700;
+      color: var(--white);
+    }
+    .sev-imminent { background: var(--critical); }
+    .sev-watch { background: var(--atrisk); }
+    .sev-safe { background: var(--stable); }
+
+    /* Heat grid */
+    .heat-grid { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    .heat-grid th {
+      padding: 0.5rem 0.3rem; font-weight: 600;
+      color: var(--muted); font-size: 0.72rem;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      background: var(--cream-alt); border-bottom: 2px solid var(--border);
+    }
+    .heat-grid th.name-col { text-align: left; padding-left: 0.75rem; width: 200px; }
+    .heat-grid td {
+      padding: 0.5rem 0.3rem; text-align: center;
+      font-variant-numeric: tabular-nums; font-weight: 500;
+    }
+    .heat-grid td.name { text-align: left; padding-left: 0.75rem; font-weight: 600; color: var(--navy); }
+    .heat-grid .h-hi { background: #7B3F00; color: white; }
+    .heat-grid .h-mid { background: #C9A84C; color: var(--navy); }
+    .heat-grid .h-lo { background: #F2EDE0; color: var(--navy); }
+
+    .heat-legend { margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+    .heat-legend-row {
+      display: flex; flex-wrap: wrap; gap: 1.25rem;
+      justify-content: center; align-items: center;
+      font-size: 0.82rem; color: var(--text);
+    }
+    .heat-legend .lg-item { display: inline-flex; align-items: center; gap: 0.45rem; }
+    .heat-legend .lg-swatch {
+      display: inline-block; width: 16px; height: 16px;
+      border-radius: 3px; border: 1px solid var(--border);
+    }
+    .heat-legend .lg-swatch.h-hi { background: #7B3F00; border-color: #7B3F00; }
+    .heat-legend .lg-swatch.h-mid { background: #C9A84C; border-color: #C9A84C; }
+    .heat-legend .lg-swatch.h-lo { background: #F2EDE0; }
+    .heat-yardstick {
+      font-size: 0.78rem; color: var(--muted);
+      text-align: center; margin-top: 0.75rem;
+      max-width: 720px; margin-left: auto; margin-right: auto;
+      line-height: 1.55;
+    }
+
+    /* Trigger table (highlighted artifact) */
+    .trigger-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    .trigger-table th {
+      text-align: right; padding: 0.7rem 0.6rem;
+      color: var(--muted); font-weight: 600;
+      font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em;
+      border-bottom: 2px solid var(--navy);
+    }
+    .trigger-table th.name-col { text-align: left; }
+    .trigger-table td {
+      padding: 0.65rem 0.6rem; text-align: right;
+      font-variant-numeric: tabular-nums;
+      border-bottom: 1px solid var(--border);
+    }
+    .trigger-table td.name { text-align: left; font-weight: 600; color: var(--navy); }
+    .trigger-table td.trigger-val {
+      font-weight: 800; font-size: 1.1rem; color: var(--navy);
+      background: rgba(201,168,76,0.12);
+    }
+    .formula-box {
+      background: var(--navy); color: var(--white);
+      padding: 1.25rem 1.5rem; border-radius: var(--radius);
+      margin-bottom: 1.25rem; text-align: center;
+    }
+    .formula-box .formula {
+      font-family: 'Playfair Display', serif; font-size: 1.2rem;
+      color: var(--gold); font-weight: 700;
+    }
+    .formula-box .caveat {
+      font-size: 0.85rem; color: rgba(255,255,255,0.72);
+      margin-top: 0.5rem;
+    }
+
+    footer {
+      background-color: var(--navy-dark); color: var(--white);
+      padding: 3.5rem 2rem 1.5rem;
+    }
+    .footer-grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr;
+      gap: 3rem; max-width: 1200px; margin: 0 auto;
+      padding-bottom: 2.5rem; border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .footer-brand .brand-name {
+      font-family: 'Playfair Display', serif; font-size: 1.4rem;
+      font-weight: 700; color: var(--white); margin-bottom: 0.5rem;
+    }
+    .footer-brand .brand-name span { color: var(--gold); }
+    .footer-brand .tagline {
+      color: var(--gold); font-style: italic;
+      font-size: 0.88rem; margin-bottom: 0.75rem;
+    }
+    .footer-brand p {
+      font-size: 0.875rem; color: rgba(255,255,255,0.55); line-height: 1.65;
+    }
+    .footer-col h5 {
+      font-size: 0.78rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 2px; color: var(--gold); margin-bottom: 1.1rem;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 0.6rem; }
+    .footer-col ul li a {
+      font-size: 0.875rem; color: rgba(255,255,255,0.6); transition: color 0.2s;
+    }
+    .footer-col ul li a:hover { color: var(--white); }
+    .footer-bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      max-width: 1200px; margin: 0 auto; padding-top: 1.5rem;
+      font-size: 0.8rem; color: rgba(255,255,255,0.4); flex-wrap: wrap;
+    }
+    .footer-bottom a { color: var(--gold); }
+
+    @media (max-width: 820px) {
+      .chart-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .footer-bottom { flex-direction: column; text-align: center; gap: 0.5rem; }
+      .heat-grid { font-size: 0.7rem; }
+      .heat-grid th.name-col { width: 140px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="back-nav">
+  <a href="/index.html">← Back to Pau</a>
+</nav>
+
+<header class="dash-header">
+  <div class="container">
+    <h1>When to Order — Dashboard</h1>
+    <p>Six months of sales, 18 products, three suppliers. Click through to see the shop's rhythm, today's stockout risk, and the daily reorder trigger.</p>
+    <div class="dash-ctas">
+      <a href="/case-study/when-to-order.html" class="dash-btn">📖 Back to Case Study</a>
+      <a href="/flagships.html" class="dash-btn">🏠 All Flagships</a>
+      <a href="/ai-agent/when-to-order.html" class="dash-btn">🚀 AI Agent</a>
+    </div>
+  </div>
+</header>
+
+<div class="tabs-wrap">
+  <nav class="tabs" role="tablist">
+    <div class="tab active" data-tab="overview">Overview</div>
+    <div class="tab" data-tab="rhythm">Rhythm</div>
+    <div class="tab" data-tab="urgent">Urgent</div>
+    <div class="tab" data-tab="rule">The Rule</div>
+  </nav>
+</div>
+
+<!-- ========== STORY 1: OVERVIEW ========== -->
+<section class="story active" id="story-overview">
+  <p class="story-intro">The shop's six-month book at a glance</p>
+  <div class="chart-grid">
+    <div class="chart-card">
+      <div class="chart-title">Monthly units sold</div>
+      <div class="chart-sub">Six months of steady cadence — no month more than 7% off median</div>
+      <div class="chart-box"><canvas id="c1"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Supplier share of volume</div>
+      <div class="chart-sub">How the 18 products split across the three suppliers</div>
+      <div class="chart-box"><canvas id="c3"></canvas></div>
+    </div>
+    <div class="chart-card full">
+      <div class="chart-title">Product ranking by units sold</div>
+      <div class="chart-sub">Siew Mai leads on volume — six-to-one over Tau Sa Piah</div>
+      <div class="chart-box tall"><canvas id="c2"></canvas></div>
+    </div>
+    <div class="chart-card full">
+      <div class="chart-title">Product ranking by margin</div>
+      <div class="chart-sub">BBQ Pork Bun leads on takings despite Siew Mai's volume win</div>
+      <div class="chart-box tall"><canvas id="c4"></canvas></div>
+    </div>
+    <div class="chart-card full">
+      <div class="chart-title">Daily trading pace</div>
+      <div class="chart-sub">182 days of sales. Smoothed 7-day line shows the underlying rhythm.</div>
+      <div class="chart-box"><canvas id="c5"></canvas></div>
+    </div>
+    <div class="chart-card full">
+      <div class="chart-title">Full product summary</div>
+      <div class="chart-sub">All 18 products with units, revenue, margin, supplier</div>
+      <div id="overview-table-wrap"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== STORY 2: RHYTHM ========== -->
+<section class="story" id="story-rhythm">
+  <p class="story-intro">Every Saturday beats every weekday, universally</p>
+  <div class="chart-grid">
+    <div class="chart-card">
+      <div class="chart-title">Units sold by day of week</div>
+      <div class="chart-sub">Monday–Friday within a 2% band; Saturday jumps 32%</div>
+      <div class="chart-box"><canvas id="c6"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Revenue by day of week</div>
+      <div class="chart-sub">Saturday peak carries through to takings, not just volume</div>
+      <div class="chart-box"><canvas id="c8"></canvas></div>
+    </div>
+    <div class="chart-card full">
+      <div class="chart-title">Saturday uplift per product</div>
+      <div class="chart-sub">Every product peaks on Saturday — even the quietest</div>
+      <div class="chart-box tall"><canvas id="c7"></canvas></div>
+    </div>
+    <div class="chart-card full">
+      <div class="chart-title">Product × day heat grid</div>
+      <div class="chart-sub">Rows ranked by total volume. Dark = busier, pale = quieter.</div>
+      <div id="heat-grid-wrap"></div>
+    </div>
+    <div class="chart-card full">
+      <div class="chart-title">Weekend vs weekday units per product</div>
+      <div class="chart-sub">Saturday + Sunday share of each product's weekly volume</div>
+      <div class="chart-box tall"><canvas id="c9"></canvas></div>
+    </div>
+    <div class="chart-card full">
+      <div class="chart-title">Rolling 7-day trend</div>
+      <div class="chart-sub">26 weeks of smoothed demand — the weekly wave holds all through the period</div>
+      <div class="chart-box"><canvas id="c10"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== STORY 3: URGENT ========== -->
+<section class="story" id="story-urgent">
+  <p class="story-intro">Twelve products within a delivery of empty</p>
+  <div class="chart-grid">
+    <div class="chart-card full">
+      <div class="chart-title">Days of stock — ranked by urgency</div>
+      <div class="chart-sub">Red: stockout imminent · Orange: watch · (no product is safe today)</div>
+      <div class="chart-box tall"><canvas id="c11"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Velocity vs current stock</div>
+      <div class="chart-sub">Each point = one product. Red sits below its delivery buffer.</div>
+      <div class="chart-box"><canvas id="c12"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Supplier urgency count</div>
+      <div class="chart-sub">How many imminent / watch products each supplier carries</div>
+      <div class="chart-box"><canvas id="c14"></canvas></div>
+    </div>
+    <div class="chart-card full">
+      <div class="chart-title">Old flag vs real risk</div>
+      <div class="chart-sub">Six products flagged "healthy" are in fact within two days of empty</div>
+      <div class="chart-box"><canvas id="c13"></canvas></div>
+    </div>
+    <div class="chart-card full">
+      <div class="chart-title">Urgent list — today's order priorities</div>
+      <div class="chart-sub">Ranked by days of stock remaining</div>
+      <div id="urgent-table-wrap"></div>
+    </div>
+    <div class="chart-card full">
+      <div class="chart-title">How far each product is short of its trigger</div>
+      <div class="chart-sub">Full bar = reorder trigger. Filled = stock today. Grey tail = units short of the trigger.</div>
+      <div class="chart-box tall"><canvas id="c15"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== STORY 4: THE RULE ========== -->
+<section class="story" id="story-rule">
+  <p class="story-intro">Steady demand, thin buffers, one daily rule</p>
+  <div class="chart-grid">
+    <div class="chart-card full">
+      <div class="chart-title">Last-30-day change vs 6-month baseline</div>
+      <div class="chart-sub">Zero products breach ±10%. Demand is remarkably stable.</div>
+      <div class="chart-box tall"><canvas id="c16"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Baseline vs recent velocity</div>
+      <div class="chart-sub">Points near the diagonal = no change. Everything clusters on the line.</div>
+      <div class="chart-box"><canvas id="c17"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Monthly consistency per product</div>
+      <div class="chart-sub">Coefficient of variation — all below 8%, unusually tight</div>
+      <div class="chart-box"><canvas id="c18"></canvas></div>
+    </div>
+    <div class="chart-card full">
+      <div class="formula-box">
+        <div class="formula">Trigger = (Daily sales × Lead time) + (Daily sales × 0.3)</div>
+        <div class="caveat">Recompute monthly using the last 30 days of sales. Numbers below are today's snapshot.</div>
+      </div>
+      <div class="chart-title">The reorder trigger table</div>
+      <div class="chart-sub">One number per product. When stock drops to this number, call the supplier.</div>
+      <div id="trigger-table-wrap"></div>
+    </div>
+    <div class="chart-card full">
+      <div class="chart-title">Old reorder point vs new trigger</div>
+      <div class="chart-sub">How far each product's threshold had to rise to match real sales pace</div>
+      <div class="chart-box tall"><canvas id="c19"></canvas></div>
+    </div>
+    <div class="chart-card full">
+      <div class="chart-title">Cumulative daily units — 182 days</div>
+      <div class="chart-sub">Near-linear accumulation confirms steady demand; the rule will hold</div>
+      <div class="chart-box"><canvas id="c20"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="brand-name">Pau <span>Analytics</span></div>
+      <p class="tagline">"Analytics that answers. AI that acts."</p>
+      <p>Two wings, one house. Data analytics and AI systems for Malaysian SMEs.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Work</h5>
+      <ul>
+        <li><a href="/flagships.html">Flagship Pairs</a></li>
+        <li><a href="/case-study/when-to-order.html">Back to Case Study</a></li>
+        <li><a href="/ai-agent/when-to-order.html">AI Agent</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Pau</span>
+    <span><a href="/privacy-policy.html">Privacy Policy</a></span>
+  </div>
+</footer>
+
+<script>
+// ====== Embedded data ======
+const productsCSV = `product_id,product_name,supplier_name,lead_time_days,total_units,total_revenue,total_margin,transactions,baseline_daily,recent_daily,pct_change,trend,current_stock,stock_status,reorder_point,reorder_quantity,days_of_stock,buffer_vs_leadtime,risk,trigger_base,trigger_cushion,trigger,cv,sat_uplift_pct
+P013,Siew Mai,Heng Huat Frozen Supply,2,13713,24683.4,15084.3,533,75.0,77.3,3.1,steady,104,healthy,50,200,1.35,-0.65,imminent,154.5,23.2,178,7.7,25.3
+P001,BBQ Pork Bun,Ah Kow Filling Supply,1,12545,31362.5,18817.5,539,68.1,72.9,7.0,steady,143,healthy,50,200,1.96,0.96,watch,72.9,21.9,95,7.3,16.8
+P003,Custard Bun,Ah Kow Filling Supply,1,10616,26540.0,16985.6,551,57.6,62.1,7.8,steady,114,healthy,50,200,1.84,0.84,watch,62.1,18.6,81,7.4,21.0
+P017,Egg Tart,Fresh Flour Trading,2,10586,26465.0,15879.0,546,58.0,59.0,1.7,steady,54,healthy,30,120,0.92,-1.08,imminent,118.0,17.7,136,4.4,31.1
+P014,Har Gow,Heng Huat Frozen Supply,2,9848,19696.0,10832.8,544,53.7,56.1,4.4,steady,109,healthy,40,150,1.94,-0.06,imminent,112.1,16.8,129,3.8,29.6
+P005,Kaya Bun,Ah Kow Filling Supply,1,9476,18952.0,11371.2,552,51.7,53.9,4.2,steady,30,low,40,150,0.56,-0.44,imminent,53.9,16.2,70,5.5,36.8
+P016,Spring Roll,Heng Huat Frozen Supply,2,8615,12922.5,8615.0,543,46.8,50.1,7.1,steady,13,critical,40,150,0.26,-1.74,imminent,100.2,15.0,115,6.1,29.3
+P002,Red Bean Bun,Ah Kow Filling Supply,1,8562,17124.0,10274.4,559,46.4,50.5,8.9,steady,65,healthy,40,150,1.29,0.29,watch,50.5,15.2,66,6.0,18.2
+P008,Salted Egg Bun,Ah Kow Filling Supply,1,7972,23916.0,13552.4,549,43.7,44.3,1.4,steady,15,low,30,100,0.34,-0.66,imminent,44.3,13.3,58,5.3,33.8
+P011,Plain Mantou,Fresh Flour Trading,2,7593,11389.5,7593.0,553,41.2,44.2,7.1,steady,116,healthy,40,150,2.63,0.63,watch,88.3,13.2,102,5.9,28.3
+P006,Chicken Bun,Ah Kow Filling Supply,1,6623,18544.4,10596.8,548,36.6,35.5,-2.9,steady,31,healthy,30,120,0.87,-0.13,imminent,35.5,10.6,46,6.2,31.3
+P004,Lotus Paste Bun,Ah Kow Filling Supply,1,5766,14415.0,8072.4,530,31.2,34.2,9.8,steady,47,healthy,30,120,1.37,0.37,watch,34.2,10.3,44,6.9,24.2
+P012,Fried Mantou,Fresh Flour Trading,2,4786,9572.0,6221.8,542,26.2,26.7,2.0,steady,44,healthy,30,100,1.65,-0.35,imminent,53.5,8.0,62,4.4,21.7
+P015,Lo Mai Gai,Heng Huat Frozen Supply,2,4165,14577.5,8330.0,537,22.8,23.5,3.1,steady,8,critical,20,80,0.34,-1.66,imminent,46.9,7.0,54,3.5,27.0
+P007,Vegetable Bun,Ah Kow Filling Supply,1,3789,7578.0,4925.7,555,20.6,21.8,5.5,steady,14,low,20,80,0.64,-0.36,imminent,21.8,6.5,28,5.5,40.8
+P009,Pandan Bun,Ah Kow Filling Supply,1,3476,6952.0,4171.2,573,18.9,20.1,6.3,steady,50,healthy,20,80,2.49,1.49,watch,20.1,6.0,26,5.5,39.5
+P010,Coffee Bun,Ah Kow Filling Supply,1,2788,5576.0,3345.6,548,15.2,16.1,6.2,steady,12,low,20,80,0.75,-0.25,imminent,16.1,4.8,21,5.1,26.9
+P018,Tau Sa Piah,Fresh Flour Trading,2,2264,4075.2,2716.8,550,12.3,13.0,5.1,steady,20,healthy,20,80,1.54,-0.46,imminent,25.9,3.9,30,3.1,41.7`;
+
+const monthlyCSV = `month,units,revenue,margin
+2025-10,22544,49874.9,30066.8
+2025-11,21923,48314.7,29126.4
+2025-12,22496,49748.2,29965.2
+2026-01,23172,51267.9,30891.7
+2026-02,20212,44757.7,26960.6
+2026-03,22836,50377.6,30374.8`;
+
+const weekdayCSV = `day_of_week,units,revenue
+Monday,17836,39501.9
+Tuesday,17830,39377.4
+Wednesday,17794,39353.3
+Thursday,17585,38753.0
+Friday,17694,39212.7
+Saturday,23217,51266.3
+Sunday,21227,46876.4`;
+
+const productWeekdayCSV = `product_name,day_of_week,units
+Siew Mai,Monday,1835
+Siew Mai,Tuesday,1789
+Siew Mai,Wednesday,1885
+Siew Mai,Thursday,1903
+Siew Mai,Friday,1748
+Siew Mai,Saturday,2335
+Siew Mai,Sunday,2218
+BBQ Pork Bun,Monday,1618
+BBQ Pork Bun,Tuesday,1712
+BBQ Pork Bun,Wednesday,1732
+BBQ Pork Bun,Thursday,1661
+BBQ Pork Bun,Friday,1793
+BBQ Pork Bun,Saturday,2096
+BBQ Pork Bun,Sunday,1933
+Custard Bun,Monday,1424
+Custard Bun,Tuesday,1331
+Custard Bun,Wednesday,1455
+Custard Bun,Thursday,1401
+Custard Bun,Friday,1441
+Custard Bun,Saturday,1876
+Custard Bun,Sunday,1688
+Egg Tart,Monday,1489
+Egg Tart,Tuesday,1410
+Egg Tart,Wednesday,1366
+Egg Tart,Thursday,1364
+Egg Tart,Friday,1410
+Egg Tart,Saturday,1852
+Egg Tart,Sunday,1695
+Har Gow,Monday,1304
+Har Gow,Tuesday,1444
+Har Gow,Wednesday,1310
+Har Gow,Thursday,1188
+Har Gow,Friday,1212
+Har Gow,Saturday,1799
+Har Gow,Sunday,1591
+Kaya Bun,Monday,1234
+Kaya Bun,Tuesday,1304
+Kaya Bun,Wednesday,1320
+Kaya Bun,Thursday,1215
+Kaya Bun,Friday,1335
+Kaya Bun,Saturday,1635
+Kaya Bun,Sunday,1433
+Spring Roll,Monday,1130
+Spring Roll,Tuesday,1104
+Spring Roll,Wednesday,1140
+Spring Roll,Thursday,1226
+Spring Roll,Friday,1175
+Spring Roll,Saturday,1441
+Spring Roll,Sunday,1399
+Red Bean Bun,Monday,1139
+Red Bean Bun,Tuesday,1131
+Red Bean Bun,Wednesday,1135
+Red Bean Bun,Thursday,1141
+Red Bean Bun,Friday,1126
+Red Bean Bun,Saturday,1497
+Red Bean Bun,Sunday,1393
+Salted Egg Bun,Monday,1093
+Salted Egg Bun,Tuesday,989
+Salted Egg Bun,Wednesday,1074
+Salted Egg Bun,Thursday,1030
+Salted Egg Bun,Friday,1106
+Salted Egg Bun,Saturday,1428
+Salted Egg Bun,Sunday,1252
+Plain Mantou,Monday,1018
+Plain Mantou,Tuesday,1018
+Plain Mantou,Wednesday,979
+Plain Mantou,Thursday,984
+Plain Mantou,Friday,968
+Plain Mantou,Saturday,1419
+Plain Mantou,Sunday,1207
+Chicken Bun,Monday,915
+Chicken Bun,Tuesday,924
+Chicken Bun,Wednesday,867
+Chicken Bun,Thursday,897
+Chicken Bun,Friday,861
+Chicken Bun,Saturday,1127
+Chicken Bun,Sunday,1032
+Lotus Paste Bun,Monday,806
+Lotus Paste Bun,Tuesday,808
+Lotus Paste Bun,Wednesday,741
+Lotus Paste Bun,Thursday,778
+Lotus Paste Bun,Friday,699
+Lotus Paste Bun,Saturday,1005
+Lotus Paste Bun,Sunday,929
+Fried Mantou,Monday,651
+Fried Mantou,Tuesday,676
+Fried Mantou,Wednesday,611
+Fried Mantou,Thursday,627
+Fried Mantou,Friday,636
+Fried Mantou,Saturday,813
+Fried Mantou,Sunday,772
+Lo Mai Gai,Monday,556
+Lo Mai Gai,Tuesday,561
+Lo Mai Gai,Wednesday,564
+Lo Mai Gai,Thursday,520
+Lo Mai Gai,Friday,559
+Lo Mai Gai,Saturday,712
+Lo Mai Gai,Sunday,693
+Vegetable Bun,Monday,500
+Vegetable Bun,Tuesday,500
+Vegetable Bun,Wednesday,475
+Vegetable Bun,Thursday,516
+Vegetable Bun,Friday,504
+Vegetable Bun,Saturday,666
+Vegetable Bun,Sunday,628
+Pandan Bun,Monday,460
+Pandan Bun,Tuesday,434
+Pandan Bun,Wednesday,471
+Pandan Bun,Thursday,465
+Pandan Bun,Friday,465
+Pandan Bun,Saturday,611
+Pandan Bun,Sunday,570
+Coffee Bun,Monday,381
+Coffee Bun,Tuesday,375
+Coffee Bun,Wednesday,375
+Coffee Bun,Thursday,364
+Coffee Bun,Friday,361
+Coffee Bun,Saturday,491
+Coffee Bun,Sunday,441
+Tau Sa Piah,Monday,283
+Tau Sa Piah,Tuesday,320
+Tau Sa Piah,Wednesday,294
+Tau Sa Piah,Thursday,305
+Tau Sa Piah,Friday,295
+Tau Sa Piah,Saturday,414
+Tau Sa Piah,Sunday,353`;
+
+// daily.csv too long to paste fully; embedded here as single template literal
+const dailyCSV = `sale_date,units,rolling_7d
+2025-10-01,672,672.0
+2025-10-02,680,676.0
+2025-10-03,658,670.0
+2025-10-04,869,719.8
+2025-10-05,825,740.8
+2025-10-06,710,735.7
+2025-10-07,720,733.4
+2025-10-08,671,733.3
+2025-10-09,691,734.9
+2025-10-10,665,735.9
+2025-10-11,928,744.3
+2025-10-12,817,743.1
+2025-10-13,691,740.4
+2025-10-14,722,740.7
+2025-10-15,650,737.7
+2025-10-16,674,735.3
+2025-10-17,713,742.1
+2025-10-18,861,732.6
+2025-10-19,821,733.1
+2025-10-20,661,728.9
+2025-10-21,623,714.7
+2025-10-22,675,718.3
+2025-10-23,686,720.0
+2025-10-24,694,717.3
+2025-10-25,898,722.6
+2025-10-26,802,719.9
+2025-10-27,703,725.9
+2025-10-28,707,737.9
+2025-10-29,676,738.0
+2025-10-30,679,737.0
+2025-10-31,702,738.1
+2025-11-01,873,734.6
+2025-11-02,835,739.3
+2025-11-03,673,735.0
+2025-11-04,570,715.4
+2025-11-05,634,709.4
+2025-11-06,685,710.3
+2025-11-07,654,703.4
+2025-11-08,895,706.6
+2025-11-09,800,701.6
+2025-11-10,706,706.3
+2025-11-11,695,724.1
+2025-11-12,683,731.1
+2025-11-13,695,732.6
+2025-11-14,703,739.6
+2025-11-15,793,725.0
+2025-11-16,795,724.3
+2025-11-17,651,716.4
+2025-11-18,731,721.6
+2025-11-19,736,729.1
+2025-11-20,663,724.6
+2025-11-21,705,724.9
+2025-11-22,964,749.3
+2025-11-23,841,755.9
+2025-11-24,645,755.0
+2025-11-25,620,739.1
+2025-11-26,645,726.1
+2025-11-27,688,729.7
+2025-11-28,619,717.4
+2025-11-29,889,706.7
+2025-11-30,837,706.1
+2025-12-01,745,720.4
+2025-12-02,727,735.7
+2025-12-03,701,743.7
+2025-12-04,712,747.1
+2025-12-05,648,751.3
+2025-12-06,787,736.7
+2025-12-07,789,729.9
+2025-12-08,667,718.7
+2025-12-09,677,711.6
+2025-12-10,685,709.3
+2025-12-11,666,702.7
+2025-12-12,674,706.4
+2025-12-13,892,721.4
+2025-12-14,831,727.4
+2025-12-15,667,727.4
+2025-12-16,715,732.9
+2025-12-17,690,733.6
+2025-12-18,654,731.9
+2025-12-19,674,731.9
+2025-12-20,872,729.0
+2025-12-21,839,730.1
+2025-12-22,722,738.0
+2025-12-23,732,740.4
+2025-12-24,702,742.1
+2025-12-25,644,740.7
+2025-12-26,628,734.1
+2025-12-27,911,739.7
+2025-12-28,793,733.1
+2025-12-29,683,727.6
+2025-12-30,656,716.7
+2025-12-31,713,718.3
+2026-01-01,681,723.6
+2026-01-02,662,728.4
+2026-01-03,905,727.6
+2026-01-04,858,736.9
+2026-01-05,724,742.7
+2026-01-06,702,749.3
+2026-01-07,676,744.0
+2026-01-08,737,752.0
+2026-01-09,673,753.6
+2026-01-10,883,750.4
+2026-01-11,863,751.1
+2026-01-12,718,750.3
+2026-01-13,687,748.1
+2026-01-14,672,747.6
+2026-01-15,657,736.1
+2026-01-16,709,741.3
+2026-01-17,909,745.0
+2026-01-18,819,738.7
+2026-01-19,707,737.1
+2026-01-20,695,738.3
+2026-01-21,746,748.9
+2026-01-22,693,754.0
+2026-01-23,751,760.0
+2026-01-24,898,758.4
+2026-01-25,828,759.7
+2026-01-26,627,748.3
+2026-01-27,668,744.4
+2026-01-28,708,739.0
+2026-01-29,718,742.6
+2026-01-30,702,735.6
+2026-01-31,896,735.3
+2026-02-01,860,739.9
+2026-02-02,678,747.1
+2026-02-03,720,754.6
+2026-02-04,666,748.6
+2026-02-05,659,740.1
+2026-02-06,702,740.1
+2026-02-07,807,727.4
+2026-02-08,838,724.3
+2026-02-09,649,720.1
+2026-02-10,702,717.6
+2026-02-11,691,721.1
+2026-02-12,652,720.1
+2026-02-13,633,710.3
+2026-02-14,891,722.3
+2026-02-15,824,720.3
+2026-02-16,683,725.1
+2026-02-17,694,724.0
+2026-02-18,675,721.7
+2026-02-19,689,727.0
+2026-02-20,713,738.4
+2026-02-21,882,737.1
+2026-02-22,762,728.3
+2026-02-23,647,723.1
+2026-02-24,638,715.1
+2026-02-25,695,718.0
+2026-02-26,584,703.0
+2026-02-27,680,698.3
+2026-02-28,898,700.6
+2026-03-01,789,704.4
+2026-03-02,648,704.6
+2026-03-03,649,706.1
+2026-03-04,734,711.7
+2026-03-05,645,720.4
+2026-03-06,724,726.7
+2026-03-07,984,739.0
+2026-03-08,805,741.3
+2026-03-09,687,746.9
+2026-03-10,669,749.7
+2026-03-11,678,741.7
+2026-03-12,666,744.7
+2026-03-13,702,741.6
+2026-03-14,957,737.7
+2026-03-15,776,733.6
+2026-03-16,725,739.0
+2026-03-17,707,744.4
+2026-03-18,673,743.7
+2026-03-19,664,743.4
+2026-03-20,641,734.7
+2026-03-21,922,729.7
+2026-03-22,824,736.6
+2026-03-23,675,729.4
+2026-03-24,732,733.0
+2026-03-25,647,729.3
+2026-03-26,723,737.7
+2026-03-27,665,741.1
+2026-03-28,953,745.6
+2026-03-29,756,735.9
+2026-03-30,744,745.7
+2026-03-31,672,737.1`;
+
+// ====== parseCSV helper ======
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  const headers = lines[0].split(',');
+  const numeric = new Set([
+    'lead_time_days','total_units','total_revenue','total_margin','transactions',
+    'baseline_daily','recent_daily','pct_change','current_stock','reorder_point',
+    'reorder_quantity','days_of_stock','buffer_vs_leadtime','trigger_base',
+    'trigger_cushion','trigger','cv','sat_uplift_pct',
+    'units','revenue','margin','rolling_7d',
+  ]);
+  return lines.slice(1).map(line => {
+    const cells = line.split(',');
+    const obj = {};
+    headers.forEach((h, i) => {
+      const raw = cells[i];
+      if (raw === '' || raw === undefined) obj[h] = null;
+      else if (numeric.has(h)) obj[h] = parseFloat(raw);
+      else obj[h] = raw;
+    });
+    return obj;
+  });
+}
+
+const products = parseCSV(productsCSV);
+const monthly = parseCSV(monthlyCSV);
+const weekday = parseCSV(weekdayCSV);
+const productWeekday = parseCSV(productWeekdayCSV);
+const daily = parseCSV(dailyCSV);
+
+// ====== Chart defaults ======
+Chart.defaults.font.family = "'Inter', sans-serif";
+Chart.defaults.color = '#3A3530';
+Chart.defaults.borderColor = '#E0D9CF';
+const baseOpts = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: { labels: { boxWidth: 12, font: { size: 11 } } },
+    tooltip: { backgroundColor: '#1A1F3A', titleColor: '#C9A84C', padding: 10 }
+  }
+};
+const RISK_COLORS = { imminent: '#C1392B', watch: '#E67E22', safe: '#27AE60' };
+const SUPPLIER_COLORS = {
+  'Ah Kow Filling Supply': '#C9A84C',
+  'Fresh Flour Trading':   '#1A1F3A',
+  'Heng Huat Frozen Supply':'#5D6278',
+};
+const TREND_COLORS = { rising: '#27AE60', steady: '#7F8C8D', declining: '#C1392B' };
+const WEEKDAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+
+// ====== Chart 1 — Monthly units ======
+new Chart(document.getElementById('c1'), {
+  type: 'bar',
+  data: {
+    labels: monthly.map(m => m.month),
+    datasets: [{ data: monthly.map(m => m.units), backgroundColor: '#C9A84C', borderWidth: 0 }]
+  },
+  options: { ...baseOpts, plugins: { ...baseOpts.plugins, legend: { display: false } },
+    scales: { y: { beginAtZero: true, title: { display: true, text: 'Units sold' } } } }
+});
+
+// ====== Chart 2 — Product ranking by units ======
+(function(){
+  const sorted = [...products].sort((a,b) => b.total_units - a.total_units);
+  new Chart(document.getElementById('c2'), {
+    type: 'bar',
+    data: {
+      labels: sorted.map(p => p.product_name),
+      datasets: [{
+        data: sorted.map(p => p.total_units),
+        backgroundColor: sorted.map(p => SUPPLIER_COLORS[p.supplier_name]),
+        borderWidth: 0
+      }]
+    },
+    options: { ...baseOpts, indexAxis: 'y',
+      plugins: { ...baseOpts.plugins, legend: { display: false },
+        tooltip: { ...baseOpts.plugins.tooltip,
+          callbacks: { label: ctx => `${sorted[ctx.dataIndex].total_units.toLocaleString()} units · ${sorted[ctx.dataIndex].supplier_name}` }}},
+      scales: { x: { beginAtZero: true, title: { display: true, text: 'Total units sold (6 months)' } } } }
+  });
+})();
+
+// ====== Chart 3 — Supplier share donut ======
+(function(){
+  const bySup = {};
+  products.forEach(p => { bySup[p.supplier_name] = (bySup[p.supplier_name]||0) + p.total_units; });
+  const labels = Object.keys(bySup);
+  new Chart(document.getElementById('c3'), {
+    type: 'doughnut',
+    data: {
+      labels,
+      datasets: [{ data: labels.map(s => bySup[s]),
+        backgroundColor: labels.map(s => SUPPLIER_COLORS[s]), borderWidth: 2, borderColor: '#FAF6EE' }]
+    },
+    options: { ...baseOpts, cutout: '60%',
+      plugins: { ...baseOpts.plugins,
+        tooltip: { ...baseOpts.plugins.tooltip,
+          callbacks: { label: ctx => `${ctx.label}: ${ctx.parsed.toLocaleString()} units` }}}}
+  });
+})();
+
+// ====== Chart 4 — Product ranking by margin ======
+(function(){
+  const sorted = [...products].sort((a,b) => b.total_margin - a.total_margin);
+  new Chart(document.getElementById('c4'), {
+    type: 'bar',
+    data: {
+      labels: sorted.map(p => p.product_name),
+      datasets: [{
+        data: sorted.map(p => p.total_margin),
+        backgroundColor: sorted.map(p => SUPPLIER_COLORS[p.supplier_name]),
+        borderWidth: 0
+      }]
+    },
+    options: { ...baseOpts, indexAxis: 'y',
+      plugins: { ...baseOpts.plugins, legend: { display: false },
+        tooltip: { ...baseOpts.plugins.tooltip,
+          callbacks: { label: ctx => `RM ${sorted[ctx.dataIndex].total_margin.toLocaleString()} · ${sorted[ctx.dataIndex].supplier_name}` }}},
+      scales: { x: { beginAtZero: true, title: { display: true, text: 'Total margin (RM, 6 months)' } } } }
+  });
+})();
+
+// ====== Chart 5 — Daily trading pace ======
+new Chart(document.getElementById('c5'), {
+  type: 'line',
+  data: {
+    labels: daily.map(d => d.sale_date),
+    datasets: [
+      { label: 'Daily units', data: daily.map(d => d.units),
+        borderColor: 'rgba(201,168,76,0.35)', backgroundColor: 'rgba(201,168,76,0.12)',
+        pointRadius: 0, borderWidth: 1, tension: 0.1 },
+      { label: '7-day rolling average', data: daily.map(d => d.rolling_7d),
+        borderColor: '#1A1F3A', backgroundColor: 'transparent',
+        pointRadius: 0, borderWidth: 2.5, tension: 0.3 }
+    ]
+  },
+  options: { ...baseOpts,
+    scales: {
+      x: { ticks: { autoSkip: true, maxTicksLimit: 8 } },
+      y: { beginAtZero: false, title: { display: true, text: 'Units sold' } }
+    } }
+});
+
+// ====== Chart 6 — Units by day of week ======
+new Chart(document.getElementById('c6'), {
+  type: 'bar',
+  data: {
+    labels: weekday.map(w => w.day_of_week),
+    datasets: [{ data: weekday.map(w => w.units),
+      backgroundColor: weekday.map(w => ['Saturday','Sunday'].includes(w.day_of_week) ? '#C9A84C' : '#5D6278'),
+      borderWidth: 0 }]
+  },
+  options: { ...baseOpts, plugins: { ...baseOpts.plugins, legend: { display: false } },
+    scales: { y: { beginAtZero: true, title: { display: true, text: 'Units sold (6 months)' } } } }
+});
+
+// ====== Chart 7 — Saturday uplift per product ======
+(function(){
+  const sorted = [...products].sort((a,b) => b.sat_uplift_pct - a.sat_uplift_pct);
+  new Chart(document.getElementById('c7'), {
+    type: 'bar',
+    data: {
+      labels: sorted.map(p => p.product_name),
+      datasets: [{ data: sorted.map(p => p.sat_uplift_pct),
+        backgroundColor: '#C9A84C', borderWidth: 0 }]
+    },
+    options: { ...baseOpts, indexAxis: 'y',
+      plugins: { ...baseOpts.plugins, legend: { display: false },
+        tooltip: { ...baseOpts.plugins.tooltip,
+          callbacks: { label: ctx => `+${ctx.parsed.x.toFixed(1)}% on Saturday vs other days` }}},
+      scales: { x: { beginAtZero: true, title: { display: true, text: 'Saturday uplift (% vs weekday average)' } } } }
+  });
+})();
+
+// ====== Chart 8 — Revenue by day of week ======
+new Chart(document.getElementById('c8'), {
+  type: 'bar',
+  data: {
+    labels: weekday.map(w => w.day_of_week),
+    datasets: [{ data: weekday.map(w => w.revenue),
+      backgroundColor: weekday.map(w => ['Saturday','Sunday'].includes(w.day_of_week) ? '#C9A84C' : '#5D6278'),
+      borderWidth: 0 }]
+  },
+  options: { ...baseOpts, plugins: { ...baseOpts.plugins, legend: { display: false },
+    tooltip: { ...baseOpts.plugins.tooltip,
+      callbacks: { label: ctx => `RM ${ctx.parsed.y.toLocaleString()}` }}},
+    scales: { y: { beginAtZero: true, title: { display: true, text: 'Revenue (RM)' } } } }
+});
+
+// ====== Chart 9 — Weekend vs weekday per product ======
+(function(){
+  const byProd = {};
+  productWeekday.forEach(r => {
+    if (!byProd[r.product_name]) byProd[r.product_name] = { weekday: 0, weekend: 0 };
+    if (['Saturday','Sunday'].includes(r.day_of_week)) byProd[r.product_name].weekend += r.units;
+    else byProd[r.product_name].weekday += r.units;
+  });
+  const labels = products.map(p => p.product_name); // in total-volume order
+  new Chart(document.getElementById('c9'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label: 'Weekday (Mon–Fri)', data: labels.map(p => byProd[p].weekday),
+          backgroundColor: '#5D6278', borderWidth: 0 },
+        { label: 'Weekend (Sat–Sun)', data: labels.map(p => byProd[p].weekend),
+          backgroundColor: '#C9A84C', borderWidth: 0 }
+      ]
+    },
+    options: { ...baseOpts, indexAxis: 'y',
+      scales: {
+        x: { stacked: true, beginAtZero: true, title: { display: true, text: 'Units sold (6 months)' } },
+        y: { stacked: true }
+      } }
+  });
+})();
+
+// ====== Chart 10 — Rolling 7-day trend ======
+new Chart(document.getElementById('c10'), {
+  type: 'line',
+  data: {
+    labels: daily.map(d => d.sale_date),
+    datasets: [{ label: '7-day rolling', data: daily.map(d => d.rolling_7d),
+      borderColor: '#1A1F3A', backgroundColor: 'rgba(26,31,58,0.08)',
+      pointRadius: 0, borderWidth: 2, fill: true, tension: 0.3 }]
+  },
+  options: { ...baseOpts,
+    plugins: { ...baseOpts.plugins, legend: { display: false } },
+    scales: {
+      x: { ticks: { autoSkip: true, maxTicksLimit: 8 } },
+      y: { beginAtZero: false, title: { display: true, text: 'Rolling 7-day average (units)' } }
+    } }
+});
+
+// ====== Chart 11 — Days of stock ranked ======
+(function(){
+  const sorted = [...products].sort((a,b) => a.days_of_stock - b.days_of_stock);
+  new Chart(document.getElementById('c11'), {
+    type: 'bar',
+    data: {
+      labels: sorted.map(p => p.product_name),
+      datasets: [{ data: sorted.map(p => p.days_of_stock),
+        backgroundColor: sorted.map(p => RISK_COLORS[p.risk]), borderWidth: 0 }]
+    },
+    options: { ...baseOpts, indexAxis: 'y',
+      plugins: { ...baseOpts.plugins, legend: { display: false },
+        tooltip: { ...baseOpts.plugins.tooltip,
+          callbacks: { label: ctx => {
+            const p = sorted[ctx.dataIndex];
+            return [`${p.days_of_stock} days of stock`, `Lead time: ${p.lead_time_days} day${p.lead_time_days>1?'s':''}`, `Risk: ${p.risk}`];
+          }}}},
+      scales: { x: { beginAtZero: true, title: { display: true, text: 'Days of stock at current daily sales' } } } }
+  });
+})();
+
+// ====== Chart 12 — Velocity vs stock scatter ======
+(function(){
+  const pts = products.map(p => ({ x: p.recent_daily, y: p.current_stock, name: p.product_name, risk: p.risk }));
+  const byRisk = { imminent: [], watch: [], safe: [] };
+  pts.forEach(p => byRisk[p.risk].push(p));
+  new Chart(document.getElementById('c12'), {
+    type: 'scatter',
+    data: {
+      datasets: ['imminent','watch','safe'].map(r => ({
+        label: r.charAt(0).toUpperCase()+r.slice(1),
+        data: byRisk[r], backgroundColor: RISK_COLORS[r], pointRadius: 7, borderWidth: 0
+      }))
+    },
+    options: { ...baseOpts,
+      plugins: { ...baseOpts.plugins,
+        tooltip: { ...baseOpts.plugins.tooltip,
+          callbacks: { label: ctx => `${ctx.raw.name}: ${ctx.raw.x.toFixed(1)}/day, ${ctx.raw.y} in stock` }}},
+      scales: {
+        x: { title: { display: true, text: 'Recent daily sales (units/day)' }, beginAtZero: true },
+        y: { title: { display: true, text: 'Current stock (units)' }, beginAtZero: true }
+      } }
+  });
+})();
+
+// ====== Chart 13 — Old flag vs new risk ======
+(function(){
+  const cross = {};
+  products.forEach(p => {
+    const key = p.stock_status;
+    if (!cross[key]) cross[key] = { imminent: 0, watch: 0, safe: 0 };
+    cross[key][p.risk] += 1;
+  });
+  const flags = ['critical','low','healthy'];
+  new Chart(document.getElementById('c13'), {
+    type: 'bar',
+    data: {
+      labels: flags.map(f => `Flagged "${f}"`),
+      datasets: [
+        { label: 'Actually imminent', data: flags.map(f => (cross[f]||{}).imminent||0), backgroundColor: '#C1392B' },
+        { label: 'Actually watch',    data: flags.map(f => (cross[f]||{}).watch||0),    backgroundColor: '#E67E22' },
+        { label: 'Actually safe',     data: flags.map(f => (cross[f]||{}).safe||0),     backgroundColor: '#27AE60' },
+      ]
+    },
+    options: { ...baseOpts,
+      scales: {
+        x: { stacked: true },
+        y: { stacked: true, beginAtZero: true, ticks: { stepSize: 1 },
+             title: { display: true, text: 'Number of products' } }
+      } }
+  });
+})();
+
+// ====== Chart 14 — Supplier urgency count ======
+(function(){
+  const suppliers = [...new Set(products.map(p => p.supplier_name))];
+  const bySup = {};
+  suppliers.forEach(s => bySup[s] = { imminent: 0, watch: 0, safe: 0 });
+  products.forEach(p => bySup[p.supplier_name][p.risk] += 1);
+  new Chart(document.getElementById('c14'), {
+    type: 'bar',
+    data: {
+      labels: suppliers,
+      datasets: [
+        { label: 'Imminent', data: suppliers.map(s => bySup[s].imminent), backgroundColor: '#C1392B' },
+        { label: 'Watch',    data: suppliers.map(s => bySup[s].watch),    backgroundColor: '#E67E22' },
+        { label: 'Safe',     data: suppliers.map(s => bySup[s].safe),     backgroundColor: '#27AE60' },
+      ]
+    },
+    options: { ...baseOpts, indexAxis: 'y',
+      scales: {
+        x: { stacked: true, beginAtZero: true, ticks: { stepSize: 1 },
+             title: { display: true, text: 'Number of products' } },
+        y: { stacked: true }
+      } }
+  });
+})();
+
+// ====== Chart 15 — Stock + shortfall stacked (total bar = trigger) ======
+(function(){
+  const sorted = [...products]
+    .map(p => ({ ...p, gap: Math.max(0, p.trigger - p.current_stock) }))
+    .sort((a,b) => b.gap - a.gap);
+  new Chart(document.getElementById('c15'), {
+    type: 'bar',
+    data: {
+      labels: sorted.map(p => p.product_name),
+      datasets: [
+        { label: 'Stock today',
+          data: sorted.map(p => Math.min(p.current_stock, p.trigger)),
+          backgroundColor: sorted.map(p => RISK_COLORS[p.risk]),
+          borderWidth: 0, stack: 'trigger' },
+        { label: 'Short of trigger',
+          data: sorted.map(p => p.gap),
+          backgroundColor: 'rgba(26,31,58,0.12)',
+          borderColor: 'rgba(26,31,58,0.35)', borderWidth: 1,
+          stack: 'trigger' },
+      ]
+    },
+    options: { ...baseOpts, indexAxis: 'y',
+      plugins: { ...baseOpts.plugins,
+        tooltip: { ...baseOpts.plugins.tooltip,
+          callbacks: {
+            label: ctx => {
+              const p = sorted[ctx.dataIndex];
+              if (ctx.dataset.label === 'Stock today')
+                return `Stock today: ${p.current_stock}`;
+              return `Short of trigger ${p.trigger}: need ${p.gap} more`;
+            }
+          } } },
+      scales: {
+        x: { stacked: true, beginAtZero: true, title: { display: true, text: 'Units (full bar = reorder trigger)' } },
+        y: { stacked: true }
+      } }
+  });
+})();
+
+// ====== Chart 16 — Last-30d % change ======
+(function(){
+  const sorted = [...products].sort((a,b) => b.pct_change - a.pct_change);
+  new Chart(document.getElementById('c16'), {
+    type: 'bar',
+    data: {
+      labels: sorted.map(p => p.product_name),
+      datasets: [{ data: sorted.map(p => p.pct_change),
+        backgroundColor: sorted.map(p => TREND_COLORS[p.trend] || '#7F8C8D'),
+        borderWidth: 0 }]
+    },
+    options: { ...baseOpts, indexAxis: 'y',
+      plugins: { ...baseOpts.plugins, legend: { display: false },
+        tooltip: { ...baseOpts.plugins.tooltip,
+          callbacks: { label: ctx => `${ctx.parsed.x >= 0 ? '+' : ''}${ctx.parsed.x.toFixed(1)}% — ${sorted[ctx.dataIndex].trend}` }}},
+      scales: {
+        x: { title: { display: true, text: '% change · last 30 days vs prior 152 days' },
+             min: -15, max: 15,
+             grid: { color: ctx => ctx.tick.value === 0 ? '#1A1F3A' : 'rgba(0,0,0,0.05)' } }
+      } }
+  });
+})();
+
+// ====== Chart 17 — Baseline vs recent scatter ======
+(function(){
+  const pts = products.map(p => ({ x: p.baseline_daily, y: p.recent_daily, name: p.product_name }));
+  const maxV = Math.max(...pts.map(p => Math.max(p.x, p.y))) * 1.05;
+  new Chart(document.getElementById('c17'), {
+    type: 'scatter',
+    data: {
+      datasets: [
+        { label: 'Product', data: pts, backgroundColor: '#C9A84C', pointRadius: 6, borderWidth: 0 },
+        { label: 'No change (y = x)', type: 'line', data: [{x:0,y:0},{x:maxV,y:maxV}],
+          borderColor: '#1A1F3A', borderDash: [5,5], borderWidth: 2, pointRadius: 0, showLine: true }
+      ]
+    },
+    options: { ...baseOpts,
+      plugins: { ...baseOpts.plugins,
+        tooltip: { ...baseOpts.plugins.tooltip, filter: ctx => ctx.dataset.type !== 'line',
+          callbacks: { label: ctx => `${ctx.raw.name}: baseline ${ctx.raw.x.toFixed(1)}/day → recent ${ctx.raw.y.toFixed(1)}/day` }}},
+      scales: {
+        x: { title: { display: true, text: 'Baseline daily sales (first 152 days)' }, beginAtZero: true },
+        y: { title: { display: true, text: 'Recent daily sales (last 30 days)' }, beginAtZero: true }
+      } }
+  });
+})();
+
+// ====== Chart 18 — Monthly consistency (CV) ======
+(function(){
+  const sorted = [...products].sort((a,b) => a.cv - b.cv);
+  new Chart(document.getElementById('c18'), {
+    type: 'bar',
+    data: {
+      labels: sorted.map(p => p.product_name),
+      datasets: [{ data: sorted.map(p => p.cv), backgroundColor: '#5D6278', borderWidth: 0 }]
+    },
+    options: { ...baseOpts, indexAxis: 'y',
+      plugins: { ...baseOpts.plugins, legend: { display: false },
+        tooltip: { ...baseOpts.plugins.tooltip,
+          callbacks: { label: ctx => `CV = ${ctx.parsed.x.toFixed(1)}% · month-to-month variation` }}},
+      scales: { x: { beginAtZero: true, max: 10,
+        title: { display: true, text: 'Coefficient of variation (%) — lower = steadier' } } } }
+  });
+})();
+
+// ====== Chart 19 — Old reorder point vs new trigger ======
+(function(){
+  const sorted = [...products]
+    .map(p => ({ ...p, correction: p.trigger - p.reorder_point }))
+    .sort((a,b) => b.correction - a.correction);
+  new Chart(document.getElementById('c19'), {
+    type: 'bar',
+    data: {
+      labels: sorted.map(p => p.product_name),
+      datasets: [
+        { label: 'Old reorder point', data: sorted.map(p => p.reorder_point),
+          backgroundColor: '#7A7268', borderWidth: 0 },
+        { label: 'New trigger', data: sorted.map(p => p.trigger),
+          backgroundColor: '#C9A84C', borderWidth: 0 },
+      ]
+    },
+    options: { ...baseOpts, indexAxis: 'y',
+      plugins: { ...baseOpts.plugins,
+        tooltip: { ...baseOpts.plugins.tooltip,
+          callbacks: {
+            label: ctx => {
+              const p = sorted[ctx.dataIndex];
+              return ctx.dataset.label === 'Old reorder point'
+                ? `Old reorder point: ${p.reorder_point}`
+                : `New trigger: ${p.trigger}  (+${p.correction} units)`;
+            }
+          } } },
+      scales: {
+        x: { beginAtZero: true, title: { display: true, text: 'Units' } },
+      } }
+  });
+})();
+
+// ====== Chart 20 — Cumulative daily units ======
+(function(){
+  let acc = 0;
+  const cum = daily.map(d => { acc += d.units; return { x: d.sale_date, y: acc }; });
+  new Chart(document.getElementById('c20'), {
+    type: 'line',
+    data: {
+      labels: cum.map(c => c.x),
+      datasets: [{ label: 'Cumulative units sold', data: cum.map(c => c.y),
+        borderColor: '#C9A84C', backgroundColor: 'rgba(201,168,76,0.15)',
+        pointRadius: 0, borderWidth: 2.5, fill: true, tension: 0.15 }]
+    },
+    options: { ...baseOpts,
+      plugins: { ...baseOpts.plugins, legend: { display: false } },
+      scales: {
+        x: { ticks: { autoSkip: true, maxTicksLimit: 8 } },
+        y: { beginAtZero: true, title: { display: true, text: 'Cumulative units sold' } }
+      } }
+  });
+})();
+
+// ====== Overview product summary table ======
+(function(){
+  const rows = products.map(p => `
+    <tr>
+      <td class="name"><strong>${p.product_name}</strong></td>
+      <td>${p.supplier_name}</td>
+      <td class="num">${p.total_units.toLocaleString()}</td>
+      <td class="num">RM ${p.total_revenue.toLocaleString()}</td>
+      <td class="num">RM ${p.total_margin.toLocaleString()}</td>
+      <td class="num">${p.transactions}</td>
+    </tr>`).join('');
+  document.getElementById('overview-table-wrap').innerHTML = `
+    <table class="urgent-table">
+      <thead><tr>
+        <th>Product</th><th>Supplier</th>
+        <th style="text-align:right">Units</th>
+        <th style="text-align:right">Revenue</th>
+        <th style="text-align:right">Margin</th>
+        <th style="text-align:right">Txns</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+})();
+
+// ====== Heat grid ======
+(function(){
+  const byProd = {};
+  productWeekday.forEach(r => {
+    if (!byProd[r.product_name]) byProd[r.product_name] = {};
+    byProd[r.product_name][r.day_of_week] = r.units;
+  });
+  // Compute global max for color scaling — the busiest product-day cell sets the top of the scale
+  const maxUnits = Math.max(...productWeekday.map(r => r.units));
+  const hiThresh = Math.round(maxUnits * 0.67);
+  const midThresh = Math.round(maxUnits * 0.33);
+  // Find the busiest cell for the legend caption
+  const peak = productWeekday.reduce((a,b) => b.units > a.units ? b : a);
+
+  function bucket(v) {
+    if (v == null) return { cls: 'h-lo', txt: '—' };
+    if (v >= hiThresh) return { cls: 'h-hi', txt: v.toLocaleString() };
+    if (v >= midThresh) return { cls: 'h-mid', txt: v.toLocaleString() };
+    return { cls: 'h-lo', txt: v.toLocaleString() };
+  }
+  const rows = products.map(p => `
+    <tr>
+      <td class="name">${p.product_name}</td>
+      ${WEEKDAYS.map(d => {
+        const b = bucket(byProd[p.product_name]?.[d]);
+        return `<td class="${b.cls}">${b.txt}</td>`;
+      }).join('')}
+    </tr>`).join('');
+  const legend = `
+    <div class="heat-legend">
+      <div class="heat-legend-row">
+        <span class="lg-item"><span class="lg-swatch h-hi"></span>Busiest days — at least ${hiThresh.toLocaleString()} units</span>
+        <span class="lg-item"><span class="lg-swatch h-mid"></span>Middle band — ${midThresh.toLocaleString()}–${(hiThresh-1).toLocaleString()} units</span>
+        <span class="lg-item"><span class="lg-swatch h-lo"></span>Quieter days — below ${midThresh.toLocaleString()} units</span>
+      </div>
+      <p class="heat-yardstick">Each number is units sold on that day across the six months. Shades divide every cell into three bands set against the busiest product-day (${peak.product_name} on ${peak.day_of_week}: ${peak.units.toLocaleString()} units). Top band starts at 67% of that peak; middle band at 33%.</p>
+    </div>`;
+  document.getElementById('heat-grid-wrap').innerHTML = `
+    <div style="overflow-x:auto">
+      <table class="heat-grid">
+        <thead><tr>
+          <th class="name-col">Product</th>
+          ${WEEKDAYS.map(d => `<th>${d.slice(0,3)}</th>`).join('')}
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+    ${legend}`;
+})();
+
+// ====== Urgent list table ======
+(function(){
+  const sorted = [...products].sort((a,b) => a.days_of_stock - b.days_of_stock);
+  const rows = sorted.map(p => `
+    <tr>
+      <td class="name"><strong>${p.product_name}</strong></td>
+      <td>${p.supplier_name}</td>
+      <td class="num">${p.current_stock}</td>
+      <td class="num">${p.recent_daily.toFixed(1)}</td>
+      <td class="num">${p.days_of_stock.toFixed(2)}</td>
+      <td class="num">${p.lead_time_days}</td>
+      <td><span class="sev-badge sev-${p.risk}">${p.risk}</span></td>
+    </tr>`).join('');
+  document.getElementById('urgent-table-wrap').innerHTML = `
+    <table class="urgent-table">
+      <thead><tr>
+        <th>Product</th><th>Supplier</th>
+        <th style="text-align:right">In stock</th>
+        <th style="text-align:right">Sells/day</th>
+        <th style="text-align:right">Days of stock</th>
+        <th style="text-align:right">Lead (d)</th>
+        <th>Risk</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+})();
+
+// ====== Trigger table ======
+(function(){
+  const rows = products.map(p => `
+    <tr>
+      <td class="name">${p.product_name}</td>
+      <td>${p.recent_daily.toFixed(1)}</td>
+      <td>${p.lead_time_days}</td>
+      <td>${p.trigger_base}</td>
+      <td>${p.trigger_cushion}</td>
+      <td class="trigger-val">${p.trigger}</td>
+      <td>${p.supplier_name}</td>
+    </tr>`).join('');
+  document.getElementById('trigger-table-wrap').innerHTML = `
+    <table class="trigger-table">
+      <thead><tr>
+        <th class="name-col">Product</th>
+        <th>Sells/day</th>
+        <th>Lead (d)</th>
+        <th>Base</th>
+        <th>Cushion</th>
+        <th>Order when stock ≤</th>
+        <th class="name-col">Supplier</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+})();
+
+// ====== Tab switcher ======
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const target = tab.dataset.tab;
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t === tab));
+    document.querySelectorAll('.story').forEach(s => s.classList.toggle('active', s.id === `story-${target}`));
+  });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — Scale The Chicken Curry | Pau</title>
+  <meta name="description" content="Interactive dashboard for the Scale The Chicken Curry flagship — 500 reviews, 30 menu items, Q1 2024." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --navy: #1A1F3A;
+      --navy-dark: #111526;
+      --gold: #C9A84C;
+      --gold-hover: #D4B660;
+      --cream: #FAF6EE;
+      --cream-alt: #F2EDE0;
+      --text: #3A3530;
+      --muted: #7A7268;
+      --border: #E0D9CF;
+      --white: #FFFFFF;
+      --radius: 10px;
+      --amplify: #27AE60;
+      --keep: #2E86AB;
+      --watch: #F1C40F;
+      --fix: #C1392B;
+      --silent: #7F8C8D;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; color: var(--text); background: var(--cream); line-height: 1.5; }
+    a { text-decoration: none; color: inherit; }
+
+    /* Back nav */
+    .back-nav { background: var(--navy-dark); padding: 0.9rem 2rem; }
+    .back-nav a { color: rgba(255,255,255,0.75); font-size: 0.9rem; font-weight: 500; }
+    .back-nav a:hover { color: var(--gold); }
+
+    /* Header */
+    .dash-header { background: var(--navy); color: var(--white); padding: 3rem 2rem 2rem; text-align: center; }
+    .dash-header .container { max-width: 1100px; margin: 0 auto; }
+    .dash-header .category-tag {
+      display: inline-block;
+      color: var(--gold);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.9rem;
+      border: 1px solid rgba(201,168,76,0.4);
+      border-radius: 20px;
+      margin-bottom: 1.25rem;
+    }
+    .dash-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 4vw, 2.35rem);
+      font-weight: 900;
+      line-height: 1.2;
+      margin-bottom: 0.5rem;
+    }
+    .dash-header .subtitle { font-size: 1rem; color: rgba(255,255,255,0.72); max-width: 640px; margin: 0 auto 1.75rem; }
+
+    /* Header CTA bar */
+    .header-ctas { display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap; }
+    .head-btn {
+      padding: 0.6rem 1.1rem;
+      border-radius: var(--radius);
+      font-weight: 600;
+      font-size: 0.88rem;
+      border: 1.5px solid var(--gold);
+      background: rgba(201,168,76,0.1);
+      color: var(--white);
+      transition: all 0.2s;
+    }
+    .head-btn:hover { background: var(--gold); color: var(--navy); }
+    .head-btn.primary { background: var(--gold); color: var(--navy); }
+    .head-btn.primary:hover { background: var(--gold-hover); }
+
+    /* Tabs */
+    .tab-nav { background: var(--cream-alt); border-bottom: 1px solid var(--border); padding: 0; position: sticky; top: 0; z-index: 20; }
+    .tab-nav .container { max-width: 1100px; margin: 0 auto; display: flex; overflow-x: auto; }
+    .tab-btn {
+      flex: 1;
+      padding: 1.1rem 1rem;
+      background: transparent;
+      border: none;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .tab-btn:hover { color: var(--navy); background: rgba(201,168,76,0.05); }
+    .tab-btn.active { color: var(--navy); border-bottom-color: var(--gold); }
+
+    /* Main content */
+    .main { max-width: 1100px; margin: 0 auto; padding: 2.5rem 1.5rem; }
+    .story { display: none; }
+    .story.active { display: block; }
+
+    .story-head { text-align: center; margin-bottom: 2rem; }
+    .story-head h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 0.35rem;
+    }
+    .story-intro { font-size: 1rem; color: var(--muted); font-weight: 500; }
+
+    .chart-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+    }
+    .chart-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-top: 4px solid var(--gold);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.1rem 1rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .chart-card.full { grid-column: 1 / -1; }
+    .chart-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 0.15rem;
+    }
+    .chart-sub {
+      font-size: 0.83rem;
+      color: var(--muted);
+      margin-bottom: 0.85rem;
+      line-height: 1.4;
+    }
+    .chart-canvas-wrap {
+      position: relative;
+      flex: 1;
+      min-height: 260px;
+    }
+    .chart-card.tall .chart-canvas-wrap { min-height: 320px; }
+
+    /* Kpi-strip cards (non-chart info) */
+    .kpi-card { background: var(--white); border: 1px solid var(--border); border-top: 4px solid var(--gold); border-radius: var(--radius); padding: 1.5rem 1.25rem; text-align: center; }
+    .kpi-card .num { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 900; color: var(--navy); margin-bottom: 0.15rem; }
+    .kpi-card .lbl { font-size: 0.82rem; color: var(--muted); }
+
+    /* Table (for combos + silent list) */
+    .data-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    .data-table th, .data-table td { padding: 0.55rem 0.65rem; text-align: left; border-bottom: 1px solid var(--border); }
+    .data-table th { background: var(--cream-alt); color: var(--navy); font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .data-table td { color: var(--text); }
+    .data-table .verdict { font-weight: 600; padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.75rem; display: inline-block; }
+    .v-amplify { background: rgba(39,174,96,0.15); color: #1f7a44; }
+    .v-keep { background: rgba(46,134,171,0.15); color: #1a5775; }
+    .v-watch { background: rgba(241,196,15,0.2); color: #8a6a02; }
+    .v-fix { background: rgba(193,57,43,0.15); color: #8b291f; }
+    .v-silent { background: rgba(127,140,141,0.18); color: #525a5b; }
+
+    /* Footer */
+    footer { background: var(--navy-dark); color: var(--white); padding: 3rem 2rem 1.5rem; margin-top: 3rem; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 3rem; max-width: 1100px; margin: 0 auto; padding-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .footer-brand .brand-name { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--white); margin-bottom: 0.5rem; }
+    .footer-brand .brand-name span { color: var(--gold); }
+    .footer-brand .tagline { color: var(--gold); font-style: italic; font-size: 0.88rem; margin-bottom: 0.75rem; }
+    .footer-brand p { font-size: 0.875rem; color: rgba(255,255,255,0.55); }
+    .footer-col h5 { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); margin-bottom: 1.1rem; }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 0.6rem; }
+    .footer-col ul li a { font-size: 0.875rem; color: rgba(255,255,255,0.6); }
+    .footer-col ul li a:hover { color: var(--white); }
+    .footer-bottom { max-width: 1100px; margin: 0 auto; padding-top: 1.5rem; font-size: 0.8rem; color: rgba(255,255,255,0.4); display: flex; justify-content: space-between; }
+    .footer-bottom a { color: var(--gold); }
+
+    /* Mobile */
+    @media (max-width: 820px) {
+      .chart-grid { grid-template-columns: 1fr; }
+      .chart-card.full { grid-column: 1; }
+      .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .footer-bottom { flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="back-nav">
+  <a href="/index.html">← Back to Pau</a>
+</nav>
+
+<header class="dash-header">
+  <div class="container">
+    <span class="category-tag">Customer Experience</span>
+    <h1>Scale The Chicken Curry — Dashboard</h1>
+    <p class="subtitle">500 reviews across 30 menu items, Q1 2024. Pick a tab.</p>
+    <div class="header-ctas">
+      <a class="head-btn" href="/case-study/scale-the-chicken-curry.html">← Back to Case Study</a>
+      <a class="head-btn" href="/flagships.html">See All Flagships</a>
+      <a class="head-btn primary" href="/ai-agent/scale-the-chicken-curry.html">🚀 AI Agent</a>
+    </div>
+  </div>
+</header>
+
+<nav class="tab-nav">
+  <div class="container">
+    <button class="tab-btn active" data-tab="overview">Menu Overview</button>
+    <button class="tab-btn" data-tab="winners">Crowd Favourites</button>
+    <button class="tab-btn" data-tab="problems">Problem Items</button>
+    <button class="tab-btn" data-tab="curry">Scale The Curry</button>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- STORY 1: OVERVIEW -->
+  <section class="story active" id="overview">
+    <div class="story-head">
+      <h2>Menu Overview</h2>
+      <p class="story-intro">500 reviews across thirty menu items.</p>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h3 class="chart-title">Menu verdict split</h3>
+        <p class="chart-sub">How 30 items fall into the four action bands — plus the silent nine.</p>
+        <div class="chart-canvas-wrap"><canvas id="c-verdict"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3 class="chart-title">Overall sentiment</h3>
+        <p class="chart-sub">500 reviews split into positive, negative, neutral.</p>
+        <div class="chart-canvas-wrap"><canvas id="c-sent"></canvas></div>
+      </div>
+      <div class="chart-card full tall">
+        <h3 class="chart-title">Reviews per item (ranked)</h3>
+        <p class="chart-sub">Which items customers actually talk about — volume leader sets the narrative.</p>
+        <div class="chart-canvas-wrap"><canvas id="c-vol"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3 class="chart-title">Monthly review volume</h3>
+        <p class="chart-sub">Q1 2024 review traffic by month.</p>
+        <div class="chart-canvas-wrap"><canvas id="c-monthly"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3 class="chart-title">How often customers review</h3>
+        <p class="chart-sub">Most post once — five reviewers post four times.</p>
+        <div class="chart-canvas-wrap"><canvas id="c-freq"></canvas></div>
+      </div>
+      <div class="chart-card full">
+        <h3 class="chart-title">Channel collection audit</h3>
+        <p class="chart-sub">Metadata only — how wide the listening net was cast across four channels.</p>
+        <div class="chart-canvas-wrap"><canvas id="c-channel"></canvas></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STORY 2: CROWD FAVOURITES -->
+  <section class="story" id="winners">
+    <div class="story-head">
+      <h2>Crowd Favourites</h2>
+      <p class="story-intro">Nine items customers quietly love.</p>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-card full tall">
+        <h3 class="chart-title">The nine Amplify items</h3>
+        <p class="chart-sub">Ranked by net sentiment. Every item here scores +30 or better — ready for social amplification.</p>
+        <div class="chart-canvas-wrap"><canvas id="c-amplify"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3 class="chart-title">Food vs drink winners</h3>
+        <p class="chart-sub">Six food, three drinks in the top band.</p>
+        <div class="chart-canvas-wrap"><canvas id="c-food-drink"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3 class="chart-title">Top 5 tied at +50</h3>
+        <p class="chart-sub">Five items share the highest net score — mixed food and drink.</p>
+        <div class="chart-canvas-wrap"><canvas id="c-top5"></canvas></div>
+      </div>
+      <div class="chart-card full">
+        <h3 class="chart-title">Volume × net sentiment</h3>
+        <p class="chart-sub">Where volume and net score both land high, the shop has a reliable asset worth promoting.</p>
+        <div class="chart-canvas-wrap"><canvas id="c-scatter-top"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3 class="chart-title">The Butter &amp; Kaya family</h3>
+        <p class="chart-sub">Three kaya-based items, all clean wins.</p>
+        <div class="chart-canvas-wrap"><canvas id="c-kaya"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3 class="chart-title">Simple drinks outperform</h3>
+        <p class="chart-sub">Lime, Honey Lemon, Milo — plain drinks, top scores.</p>
+        <div class="chart-canvas-wrap"><canvas id="c-simple-drinks"></canvas></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STORY 3: PROBLEMS -->
+  <section class="story" id="problems">
+    <div class="story-head">
+      <h2>Problem Items</h2>
+      <p class="story-intro">Three items running with more complaints than praise.</p>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h3 class="chart-title">The three Fix items</h3>
+        <p class="chart-sub">Net sentiment below zero — negative outweighs positive.</p>
+        <div class="chart-canvas-wrap"><canvas id="c-fix"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3 class="chart-title">The two Watch items</h3>
+        <p class="chart-sub">Popular but inconsistent — worth standardising before they slip.</p>
+        <div class="chart-canvas-wrap"><canvas id="c-watch"></canvas></div>
+      </div>
+      <div class="chart-card full">
+        <h3 class="chart-title">Hainan Cham — the signature drink in trouble</h3>
+        <p class="chart-sub">Highest review volume, 57% negative. The drink that names the shop is the single biggest drag.</p>
+        <div class="chart-canvas-wrap"><canvas id="c-cham"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3 class="chart-title">Fried Noodle — indifference problem</h3>
+        <p class="chart-sub">43% neutral is worse than split love/hate.</p>
+        <div class="chart-canvas-wrap"><canvas id="c-noodle"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3 class="chart-title">Nasi Lemak — volume meets variance</h3>
+        <p class="chart-sub">Highest-volume item on the menu, needs portion spec.</p>
+        <div class="chart-canvas-wrap"><canvas id="c-nasi"></canvas></div>
+      </div>
+      <div class="chart-card full">
+        <h3 class="chart-title">Headline impact of fixing the three</h3>
+        <p class="chart-sub">If Hainan Cham, Fried Noodle and Curry Banjir Toast are repaired, the shop's headline positive share lifts by five points with no other change.</p>
+        <div class="chart-canvas-wrap"><canvas id="c-impact"></canvas></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STORY 4: SCALE THE CURRY -->
+  <section class="story" id="curry">
+    <div class="story-head">
+      <h2>Scale The Curry</h2>
+      <p class="story-intro">The recipe line worth betting on next.</p>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-card full">
+        <h3 class="chart-title">The curry line today</h3>
+        <p class="chart-sub">Four menu items are built on curry. The two simplest — toast and steamed bread — sit near the top of the whole menu.</p>
+        <div class="chart-canvas-wrap"><canvas id="c-curry"></canvas></div>
+      </div>
+      <div class="chart-card full tall">
+        <h3 class="chart-title">Top 10 items — curry highlighted</h3>
+        <p class="chart-sub">Two of the shop's top ten items share the same chicken curry recipe.</p>
+        <div class="chart-canvas-wrap"><canvas id="c-top10"></canvas></div>
+      </div>
+      <div class="chart-card full">
+        <h3 class="chart-title">Recommended combo tests</h3>
+        <p class="chart-sub">Pairings built from items that already have positive review signal — no guesswork.</p>
+        <table class="data-table">
+          <thead><tr><th>Combo</th><th>Item A</th><th>Item B</th><th>Rationale</th></tr></thead>
+          <tbody>
+            <tr><td><strong>A</strong></td><td>Butter &amp; Kaya Croissant (+37.5)</td><td>Hainan Cham (revised)</td><td>Signature pair — a good croissant + retuned cham is the morning set that rebuilds cham's reputation.</td></tr>
+            <tr><td><strong>B</strong></td><td>Chicken Curry Toast (+50)</td><td>Lime Juice (+50)</td><td>Both at the top — curry &amp; lime pair on flavour; lunch-hour combo for the office crowd.</td></tr>
+            <tr><td><strong>C</strong> (new item test)</td><td>Chicken Curry Chee Cheong Fun or Chicken Curry Rice Bowl</td><td>—</td><td>Test a third chicken curry item to see whether the recipe pattern holds on a third plate.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="chart-card full">
+        <h3 class="chart-title">The silent nine — defer to sales data</h3>
+        <p class="chart-sub">Zero reviews ≠ zero sales. Cross-check each silent item against POS before any menu cut.</p>
+        <table class="data-table">
+          <thead><tr><th>Item</th><th>Category</th><th>Why it's silent</th></tr></thead>
+          <tbody id="silent-rows"></tbody>
+        </table>
+      </div>
+      <div class="chart-card full">
+        <h3 class="chart-title">Priority order for the next 90 days</h3>
+        <p class="chart-sub">Where the shop's attention goes, in order of impact on the headline number.</p>
+        <table class="data-table">
+          <thead><tr><th>#</th><th>Action</th><th>Why</th><th>Expected lift</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Hainan Cham recipe review</td><td>Signature drink, highest review volume, 57% negative</td><td>≈ +3 pts on headline positive</td></tr>
+            <tr><td>2</td><td>Fried Noodle wok-technique audit</td><td>43% neutral — customers walking away unmoved</td><td>≈ +1–2 pts</td></tr>
+            <tr><td>3</td><td>Nasi Lemak Ayam Goreng portion standardisation</td><td>Highest-volume item on menu, inconsistent delivery</td><td>≈ +1 pt</td></tr>
+            <tr><td>4</td><td>Amplify nine Amplify items on social</td><td>Under-promoted strengths — content rotation</td><td>Lift tail of distribution</td></tr>
+            <tr><td>5</td><td>Test Combos A &amp; B + third curry item</td><td>Scale the recipe that already wins</td><td>Revenue lift, not sentiment lift</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="brand-name">Pau <span>Analytics</span></div>
+      <p class="tagline">"Analytics that answers. AI that acts."</p>
+      <p>Two wings, one house. Data analytics and AI systems for Malaysian SMEs.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Work</h5>
+      <ul>
+        <li><a href="/flagships.html">Flagship Pairs</a></li>
+        <li><a href="/case-study/scale-the-chicken-curry.html">This Case Study</a></li>
+        <li><a href="/pricing.html">Pricing</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Pau</span>
+    <span><a href="/privacy-policy.html">Privacy Policy</a></span>
+  </div>
+</footer>
+
+<script>
+// ---- DATA (from cleaned/item_rollup.csv + aggregates) ----
+const items = [
+  // name, category, reviews, pos, neg, neu, net, verdict
+  { name: "Prawn Paste Chee Cheong Fun", cat: "food", n: 18, pos: 66.7, neg: 16.7, neu: 16.7, net: 50.0, verdict: "Amplify" },
+  { name: "Lime Juice",                  cat: "drink", n: 18, pos: 66.7, neg: 16.7, neu: 16.7, net: 50.0, verdict: "Amplify" },
+  { name: "Honey Lemon",                 cat: "drink", n: 16, pos: 56.2, neg: 6.2,  neu: 37.5, net: 50.0, verdict: "Amplify" },
+  { name: "Chicken Curry Toast",         cat: "food", n: 20, pos: 70.0, neg: 20.0, neu: 10.0, net: 50.0, verdict: "Amplify" },
+  { name: "Scramble Egg on Toast Breakfast", cat: "food", n: 22, pos: 68.2, neg: 18.2, neu: 13.6, net: 50.0, verdict: "Amplify" },
+  { name: "Milo",                        cat: "drink", n: 22, pos: 68.2, neg: 27.3, neu: 4.5,  net: 40.9, verdict: "Amplify" },
+  { name: "Chicken Curry Steamed Bread", cat: "food", n: 16, pos: 50.0, neg: 12.5, neu: 37.5, net: 37.5, verdict: "Amplify" },
+  { name: "Butter & Kaya Croissant",     cat: "food", n: 32, pos: 62.5, neg: 25.0, neu: 12.5, net: 37.5, verdict: "Amplify" },
+  { name: "Butter & Kaya Bun",           cat: "food", n: 22, pos: 54.5, neg: 22.7, neu: 22.7, net: 31.8, verdict: "Amplify" },
+  { name: "Lemon Ceylon",                cat: "drink", n: 14, pos: 64.3, neg: 35.7, neu: 0.0,  net: 28.6, verdict: "Keep" },
+  { name: "Gula Melaka Black Soy Milk",  cat: "drink", n: 18, pos: 44.4, neg: 16.7, neu: 38.9, net: 27.8, verdict: "Keep" },
+  { name: "Butter & Kaya Toast Double",  cat: "food", n: 26, pos: 53.8, neg: 26.9, neu: 19.2, net: 26.9, verdict: "Keep" },
+  { name: "Scramble Egg Croissant",      cat: "food", n: 20, pos: 50.0, neg: 25.0, neu: 25.0, net: 25.0, verdict: "Keep" },
+  { name: "Hainan Chicken Rice",         cat: "food", n: 35, pos: 51.4, neg: 28.6, neu: 20.0, net: 22.9, verdict: "Keep" },
+  { name: "Butter Crunchy Peanut Sugar Bun", cat: "food", n: 22, pos: 54.5, neg: 36.4, neu: 9.1,  net: 18.2, verdict: "Keep" },
+  { name: "Curry Mayo Scramble Egg Ham Cheese Croissant", cat: "food", n: 26, pos: 46.2, neg: 30.8, neu: 23.1, net: 15.4, verdict: "Keep" },
+  { name: "Nasi Lemak Ayam Goreng",      cat: "food", n: 38, pos: 50.0, neg: 36.8, neu: 13.2, net: 13.2, verdict: "Watch" },
+  { name: "Big Breakfast Set",           cat: "food", n: 30, pos: 43.3, neg: 43.3, neu: 13.3, net: 0.0,  verdict: "Watch" },
+  { name: "Curry Banjir Half Boiled Egg Toast", cat: "food", n: 20, pos: 40.0, neg: 45.0, neu: 15.0, net: -5.0, verdict: "Fix" },
+  { name: "Hainan Cham",                 cat: "drink", n: 35, pos: 40.0, neg: 57.1, neu: 2.9,  net: -17.1, verdict: "Fix" },
+  { name: "Fried Noodle",                cat: "food", n: 30, pos: 16.7, neg: 40.0, neu: 43.3, net: -23.3, verdict: "Fix" },
+];
+
+const silent = [
+  { name: "Kopi",                         cat: "drink", why: "Daily staple — too routine to review" },
+  { name: "Kopi O",                       cat: "drink", why: "Same — local staple, low price point" },
+  { name: "Teh",                          cat: "drink", why: "Same — local staple" },
+  { name: "Neslo",                        cat: "drink", why: "Functional drink, not photogenic" },
+  { name: "Butter & Kaya Steamed Bread",  cat: "food",  why: "Classic side, unremarkable" },
+  { name: "Half Boiled Egg",              cat: "food",  why: "Side order, nobody reviews eggs" },
+  { name: "Kaya Toast",                   cat: "food",  why: "Classic breakfast, expected to be good" },
+  { name: "Kaya Bun",                     cat: "food",  why: "Snack item, low price, under-reviewed" },
+  { name: "Plain Chee Cheong Fun",        cat: "food",  why: "Customers review the prawn paste version" },
+];
+
+const monthly = [
+  { m: "Jan 2024", reviews: 149, pos: 49.0, neg: 32.9, neu: 18.1, net: 16.1 },
+  { m: "Feb 2024", reviews: 173, pos: 54.9, neg: 26.6, neu: 18.5, net: 28.3 },
+  { m: "Mar 2024", reviews: 178, pos: 51.1, neg: 30.9, neu: 18.0, net: 20.2 },
+];
+
+const channels = [
+  { ch: "Twitter",   n: 139, pos: 56.1, neg: 24.5, neu: 19.4 },
+  { ch: "Instagram", n: 136, pos: 50.0, neg: 31.6, neu: 18.4 },
+  { ch: "Facebook",  n: 117, pos: 49.6, neg: 35.9, neu: 14.5 },
+  { ch: "Google",    n: 108, pos: 50.9, neg: 28.7, neu: 20.4 },
+];
+
+const custFreq = [
+  { f: "1 review",   customers: 178, reviews: 178 },
+  { f: "2 reviews",  customers: 151, reviews: 302 },
+  { f: "4 reviews",  customers: 5,   reviews: 20 },
+];
+
+// ---- Derived views ----
+const verdictCounts = { Amplify: 0, Keep: 0, Watch: 0, Fix: 0, Silent: 9 };
+items.forEach(i => verdictCounts[i.verdict]++);
+
+const amplifyItems = items.filter(i => i.verdict === "Amplify").sort((a,b) => b.net - a.net);
+const top5Tied = items.filter(i => i.net === 50).sort((a,b) => b.n - a.n);
+const fixItems = items.filter(i => i.verdict === "Fix").sort((a,b) => b.net - a.net);
+const watchItems = items.filter(i => i.verdict === "Watch").sort((a,b) => b.net - a.net);
+const cham = items.find(i => i.name === "Hainan Cham");
+const noodle = items.find(i => i.name === "Fried Noodle");
+const nasi = items.find(i => i.name === "Nasi Lemak Ayam Goreng");
+
+const kayaFamily = items.filter(i => /Butter.+Kaya|Kaya/i.test(i.name) && i.verdict !== "Silent");
+const simpleDrinks = ["Lime Juice","Honey Lemon","Milo"].map(n => items.find(i => i.name === n));
+const curryItems = ["Chicken Curry Toast","Chicken Curry Steamed Bread","Curry Mayo Scramble Egg Ham Cheese Croissant","Curry Banjir Half Boiled Egg Toast"]
+  .map(n => items.find(i => i.name === n));
+
+const top10 = [...items].sort((a,b) => b.net - a.net).slice(0, 10);
+
+// ---- Pau palette ----
+const NAVY = "#1A1F3A", GOLD = "#C9A84C", CREAM = "#FAF6EE", MUTED = "#7A7268";
+const AMPLIFY = "#27AE60", KEEP = "#2E86AB", WATCH = "#F1C40F", FIX = "#C1392B", SILENT = "#7F8C8D";
+const POS = "#27AE60", NEG = "#C1392B", NEU = "#95A5A6";
+
+// ---- Chart.js defaults ----
+Chart.defaults.font.family = "'Inter', sans-serif";
+Chart.defaults.color = "#3A3530";
+Chart.defaults.plugins.legend.labels.boxWidth = 14;
+Chart.defaults.plugins.legend.labels.padding = 14;
+Chart.defaults.plugins.legend.labels.font = { size: 12 };
+Chart.defaults.plugins.tooltip.backgroundColor = NAVY;
+Chart.defaults.plugins.tooltip.titleColor = GOLD;
+Chart.defaults.plugins.tooltip.padding = 10;
+Chart.defaults.plugins.tooltip.cornerRadius = 6;
+
+function verdictColor(v) {
+  return v === "Amplify" ? AMPLIFY : v === "Keep" ? KEEP : v === "Watch" ? WATCH : v === "Fix" ? FIX : SILENT;
+}
+
+// ---- Tab switching ----
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    document.querySelectorAll(".story").forEach(s => s.classList.remove("active"));
+    document.getElementById(btn.dataset.tab).classList.add("active");
+  });
+});
+
+// ==================================================================
+// STORY 1 CHARTS
+// ==================================================================
+
+// c-verdict: Menu verdict split (doughnut)
+new Chart(document.getElementById("c-verdict"), {
+  type: "doughnut",
+  data: {
+    labels: ["Amplify (9)","Keep (7)","Watch (2)","Fix (3)","Silent (9)"],
+    datasets: [{
+      data: [verdictCounts.Amplify, verdictCounts.Keep, verdictCounts.Watch, verdictCounts.Fix, verdictCounts.Silent],
+      backgroundColor: [AMPLIFY, KEEP, WATCH, FIX, SILENT],
+      borderWidth: 2, borderColor: CREAM,
+    }]
+  },
+  options: { maintainAspectRatio: false, plugins: { legend: { position: "bottom" } } }
+});
+
+// c-sent: overall sentiment
+new Chart(document.getElementById("c-sent"), {
+  type: "doughnut",
+  data: {
+    labels: ["Positive (259)","Negative (150)","Neutral (91)"],
+    datasets: [{ data: [259, 150, 91], backgroundColor: [POS, NEG, NEU], borderWidth: 2, borderColor: CREAM }]
+  },
+  options: { maintainAspectRatio: false, plugins: { legend: { position: "bottom" } } }
+});
+
+// c-vol: reviews per item (horizontal bar)
+const volSorted = [...items].sort((a,b) => a.n - b.n);
+new Chart(document.getElementById("c-vol"), {
+  type: "bar",
+  data: {
+    labels: volSorted.map(i => i.name),
+    datasets: [{
+      label: "Reviews",
+      data: volSorted.map(i => i.n),
+      backgroundColor: volSorted.map(i => verdictColor(i.verdict)),
+      borderWidth: 0,
+    }]
+  },
+  options: {
+    indexAxis: "y",
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { afterLabel: (c) => `Net ${items.find(i=>i.name===c.label).net >= 0 ? "+" : ""}${items.find(i=>i.name===c.label).net}, ${items.find(i=>i.name===c.label).verdict}` } } },
+    scales: { x: { grid: { color: "#EFEADC" } }, y: { grid: { display: false }, ticks: { font: { size: 10 } } } }
+  }
+});
+
+// c-monthly: monthly review volume
+new Chart(document.getElementById("c-monthly"), {
+  type: "bar",
+  data: {
+    labels: monthly.map(m => m.m),
+    datasets: [
+      { label: "Reviews", data: monthly.map(m => m.reviews), backgroundColor: NAVY, yAxisID: "y", order: 2 },
+      { label: "Net sentiment", type: "line", data: monthly.map(m => m.net), borderColor: GOLD, backgroundColor: GOLD, tension: 0.3, yAxisID: "y1", order: 1 },
+    ]
+  },
+  options: {
+    maintainAspectRatio: false,
+    scales: {
+      y: { position: "left", beginAtZero: true, title: { display: true, text: "Reviews" } },
+      y1: { position: "right", beginAtZero: true, title: { display: true, text: "Net sentiment" }, grid: { display: false } },
+    }
+  }
+});
+
+// c-freq: customer frequency
+new Chart(document.getElementById("c-freq"), {
+  type: "bar",
+  data: {
+    labels: custFreq.map(c => c.f),
+    datasets: [{ label: "Customers", data: custFreq.map(c => c.customers), backgroundColor: [KEEP, "#5BA0C5", GOLD] }]
+  },
+  options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+});
+
+// c-channel: channel audit
+new Chart(document.getElementById("c-channel"), {
+  type: "bar",
+  data: {
+    labels: channels.map(c => c.ch),
+    datasets: [
+      { label: "Positive", data: channels.map(c => Math.round(c.n * c.pos / 100)), backgroundColor: POS, stack: "s" },
+      { label: "Negative", data: channels.map(c => Math.round(c.n * c.neg / 100)), backgroundColor: NEG, stack: "s" },
+      { label: "Neutral",  data: channels.map(c => Math.round(c.n * c.neu / 100)), backgroundColor: NEU, stack: "s" },
+    ]
+  },
+  options: { maintainAspectRatio: false, scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true, title: { display: true, text: "Reviews collected" } } } }
+});
+
+// ==================================================================
+// STORY 2 CHARTS
+// ==================================================================
+
+// c-amplify: 9 Amplify items
+new Chart(document.getElementById("c-amplify"), {
+  type: "bar",
+  data: {
+    labels: amplifyItems.map(i => i.name),
+    datasets: [{ label: "Net sentiment", data: amplifyItems.map(i => i.net), backgroundColor: AMPLIFY, borderWidth: 0 }]
+  },
+  options: {
+    indexAxis: "y", maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { afterLabel: (c) => `${amplifyItems[c.dataIndex].n} reviews · ${amplifyItems[c.dataIndex].pos}% positive` } } },
+    scales: { x: { beginAtZero: true, max: 60, title: { display: true, text: "Net sentiment" } }, y: { grid: { display: false }, ticks: { font: { size: 11 } } } }
+  }
+});
+
+// c-food-drink
+const aFood = amplifyItems.filter(i => i.cat === "food").length;
+const aDrink = amplifyItems.filter(i => i.cat === "drink").length;
+new Chart(document.getElementById("c-food-drink"), {
+  type: "doughnut",
+  data: { labels: ["Food ("+aFood+")", "Drink ("+aDrink+")"], datasets: [{ data: [aFood, aDrink], backgroundColor: [NAVY, GOLD], borderWidth: 2, borderColor: CREAM }] },
+  options: { maintainAspectRatio: false, plugins: { legend: { position: "bottom" } } }
+});
+
+// c-top5
+new Chart(document.getElementById("c-top5"), {
+  type: "bar",
+  data: {
+    labels: top5Tied.map(i => i.name),
+    datasets: [{ label: "% Positive", data: top5Tied.map(i => i.pos), backgroundColor: top5Tied.map(i => i.cat === "drink" ? GOLD : NAVY) }]
+  },
+  options: {
+    indexAxis: "y", maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { afterLabel: (c) => `${top5Tied[c.dataIndex].n} reviews · Net +${top5Tied[c.dataIndex].net}` } } },
+    scales: { x: { beginAtZero: true, max: 80, title: { display: true, text: "% Positive" } }, y: { grid: { display: false }, ticks: { font: { size: 11 } } } }
+  }
+});
+
+// c-scatter-top: volume × net sentiment
+new Chart(document.getElementById("c-scatter-top"), {
+  type: "scatter",
+  data: {
+    datasets: [{
+      label: "Items",
+      data: items.map(i => ({ x: i.n, y: i.net, name: i.name, verdict: i.verdict })),
+      pointRadius: 7, pointHoverRadius: 10,
+      backgroundColor: items.map(i => verdictColor(i.verdict) + "CC"),
+      borderColor: items.map(i => verdictColor(i.verdict)),
+    }]
+  },
+  options: {
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: (c) => `${c.raw.name}  (${c.raw.verdict})  ·  ${c.raw.x} reviews, net ${c.raw.y >= 0 ? "+" : ""}${c.raw.y}` } }
+    },
+    scales: {
+      x: { title: { display: true, text: "Review volume" }, beginAtZero: true },
+      y: { title: { display: true, text: "Net sentiment" }, grid: { color: (ctx) => ctx.tick.value === 0 ? NAVY : "#EFEADC" } }
+    }
+  }
+});
+
+// c-kaya
+new Chart(document.getElementById("c-kaya"), {
+  type: "bar",
+  data: {
+    labels: kayaFamily.map(i => i.name.replace("Butter & Kaya ", "B&K ")),
+    datasets: [{ label: "Net", data: kayaFamily.map(i => i.net), backgroundColor: AMPLIFY }]
+  },
+  options: { indexAxis: "y", maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, max: 60 }, y: { grid: { display: false } } } }
+});
+
+// c-simple-drinks
+new Chart(document.getElementById("c-simple-drinks"), {
+  type: "bar",
+  data: {
+    labels: simpleDrinks.map(i => i.name),
+    datasets: [
+      { label: "% Positive", data: simpleDrinks.map(i => i.pos), backgroundColor: POS, stack: "s" },
+      { label: "% Negative", data: simpleDrinks.map(i => i.neg), backgroundColor: NEG, stack: "s" },
+      { label: "% Neutral",  data: simpleDrinks.map(i => i.neu), backgroundColor: NEU, stack: "s" },
+    ]
+  },
+  options: { maintainAspectRatio: false, scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true, max: 100, title: { display: true, text: "%" } } } }
+});
+
+// ==================================================================
+// STORY 3 CHARTS
+// ==================================================================
+
+// c-fix
+new Chart(document.getElementById("c-fix"), {
+  type: "bar",
+  data: {
+    labels: fixItems.map(i => i.name.length > 28 ? i.name.slice(0,28)+"…" : i.name),
+    datasets: [{ label: "Net", data: fixItems.map(i => i.net), backgroundColor: FIX }]
+  },
+  options: {
+    indexAxis: "y", maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => `${fixItems[c.dataIndex].name}  ·  Net ${fixItems[c.dataIndex].net}` } } },
+    scales: { x: { title: { display: true, text: "Net sentiment" } }, y: { grid: { display: false } } }
+  }
+});
+
+// c-watch
+new Chart(document.getElementById("c-watch"), {
+  type: "bar",
+  data: {
+    labels: watchItems.map(i => i.name),
+    datasets: [
+      { label: "% Positive", data: watchItems.map(i => i.pos), backgroundColor: POS, stack: "s" },
+      { label: "% Negative", data: watchItems.map(i => i.neg), backgroundColor: NEG, stack: "s" },
+      { label: "% Neutral",  data: watchItems.map(i => i.neu), backgroundColor: NEU, stack: "s" },
+    ]
+  },
+  options: { maintainAspectRatio: false, scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true, max: 100 } } }
+});
+
+// c-cham: Cham deep dive (doughnut with callouts)
+new Chart(document.getElementById("c-cham"), {
+  type: "doughnut",
+  data: {
+    labels: ["Negative (57.1%)","Positive (40.0%)","Neutral (2.9%)"],
+    datasets: [{ data: [cham.neg, cham.pos, cham.neu], backgroundColor: [FIX, POS, NEU], borderWidth: 2, borderColor: CREAM }]
+  },
+  options: { maintainAspectRatio: false, plugins: { legend: { position: "bottom" }, tooltip: { callbacks: { afterLabel: () => `35 reviews — highest drink volume on the menu` } } } }
+});
+
+// c-noodle: Fried Noodle indifference
+new Chart(document.getElementById("c-noodle"), {
+  type: "doughnut",
+  data: {
+    labels: ["Neutral (43.3%)","Negative (40.0%)","Positive (16.7%)"],
+    datasets: [{ data: [noodle.neu, noodle.neg, noodle.pos], backgroundColor: [NEU, FIX, POS], borderWidth: 2, borderColor: CREAM }]
+  },
+  options: { maintainAspectRatio: false, plugins: { legend: { position: "bottom" } } }
+});
+
+// c-nasi: Nasi Lemak breakdown
+new Chart(document.getElementById("c-nasi"), {
+  type: "bar",
+  data: {
+    labels: ["Nasi Lemak Ayam Goreng"],
+    datasets: [
+      { label: "% Positive", data: [nasi.pos], backgroundColor: POS, stack: "s" },
+      { label: "% Negative", data: [nasi.neg], backgroundColor: NEG, stack: "s" },
+      { label: "% Neutral",  data: [nasi.neu], backgroundColor: NEU, stack: "s" },
+    ]
+  },
+  options: { indexAxis: "y", maintainAspectRatio: false, scales: { x: { stacked: true, beginAtZero: true, max: 100 }, y: { stacked: true, grid: { display: false } } } }
+});
+
+// c-impact: Headline impact
+new Chart(document.getElementById("c-impact"), {
+  type: "bar",
+  data: {
+    labels: ["Today's headline", "After fixing 3 items"],
+    datasets: [
+      { label: "% Positive", data: [51.8, 56.9], backgroundColor: POS, stack: "s" },
+      { label: "% Negative", data: [30.0, 24.9], backgroundColor: NEG, stack: "s" },
+      { label: "% Neutral",  data: [18.2, 18.2], backgroundColor: NEU, stack: "s" },
+    ]
+  },
+  options: { maintainAspectRatio: false, scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true, max: 100, title: { display: true, text: "% of reviews" } } } }
+});
+
+// ==================================================================
+// STORY 4 CHARTS
+// ==================================================================
+
+// c-curry: curry items performance
+new Chart(document.getElementById("c-curry"), {
+  type: "bar",
+  data: {
+    labels: curryItems.map(i => i.name.length > 32 ? i.name.slice(0,32)+"…" : i.name),
+    datasets: [{ label: "Net", data: curryItems.map(i => i.net), backgroundColor: curryItems.map(i => verdictColor(i.verdict)) }]
+  },
+  options: {
+    indexAxis: "y", maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => `${curryItems[c.dataIndex].name}  ·  ${curryItems[c.dataIndex].verdict}  ·  Net ${curryItems[c.dataIndex].net}` } } },
+    scales: { x: { title: { display: true, text: "Net sentiment" } }, y: { grid: { display: false }, ticks: { font: { size: 11 } } } }
+  }
+});
+
+// c-top10: top 10 with curry highlighted
+new Chart(document.getElementById("c-top10"), {
+  type: "bar",
+  data: {
+    labels: top10.map(i => i.name),
+    datasets: [{
+      label: "Net",
+      data: top10.map(i => i.net),
+      backgroundColor: top10.map(i => /Chicken Curry/i.test(i.name) ? GOLD : NAVY),
+    }]
+  },
+  options: {
+    indexAxis: "y", maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { afterLabel: (c) => `${top10[c.dataIndex].n} reviews · ${top10[c.dataIndex].verdict}` } } },
+    scales: { x: { beginAtZero: true, max: 60, title: { display: true, text: "Net sentiment" } }, y: { grid: { display: false }, ticks: { font: { size: 11 } } } }
+  }
+});
+
+// Silent items table rows
+const silentRowsEl = document.getElementById("silent-rows");
+silent.forEach(s => {
+  const tr = document.createElement("tr");
+  tr.innerHTML = `<td>${s.name}</td><td>${s.cat}</td><td>${s.why}</td>`;
+  silentRowsEl.appendChild(tr);
+});
+</script>
+
+</body>
+</html>

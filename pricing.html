@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pricing | Pau Analytics</title>
+<meta name="description" content="Data analytics consulting for Malaysian SMEs. Monthly Check-Up (RM750), Growth Tracker (RM1,500), Full Analytics Partner (RM2,250), or Business Diagnostic (RM3,500 one-off).">
+<link rel="canonical" href="https://www.pauanalytics.com/pricing.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1A1F3A;
+    --navy-dark: #111526;
+    --gold: #C9A84C;
+    --gold-hover: #D4B660;
+    --cream: #FAF6EE;
+    --cream-alt: #F2EDE0;
+    --text: #3A3530;
+    --muted: #7A7268;
+    --border: #E0D9CF;
+    --white: #FFFFFF;
+    --radius: 10px;
+  }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; color: var(--text); background: var(--cream); line-height: 1.6; }
+  a { text-decoration: none; color: inherit; }
+  h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
+
+  /* Sticky header */
+  .sticky-header { position: sticky; top: 0; z-index: 100; background: var(--navy-dark); border-bottom: 1px solid rgba(201,168,76,0.2); }
+  .navbar { display: flex; align-items: center; justify-content: space-between; padding: 1rem 2rem; }
+  .nav-brand { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 900; color: var(--white); }
+  .nav-brand span { color: var(--gold); }
+  .navbar nav { display: flex; gap: 1.75rem; }
+  .navbar nav a { color: rgba(255,255,255,0.75); font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; transition: color 0.2s; }
+  .navbar nav a:hover, .navbar nav a.active { color: var(--gold); }
+
+  /* Page hero */
+  .page-hero { background: var(--navy); color: var(--white); padding: 5rem 1.5rem 4rem; text-align: center; position: relative; overflow: hidden; }
+  .page-hero::before { content: ''; position: absolute; top: -120px; right: -120px; width: 400px; height: 400px; border: 1px solid rgba(201,168,76,0.06); border-radius: 50%; }
+  .page-hero .container { max-width: 860px; margin: 0 auto; position: relative; z-index: 1; }
+  .page-hero .tag { display: inline-block; color: var(--gold); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.3rem 0.9rem; border: 1px solid rgba(201,168,76,0.4); border-radius: 20px; margin-bottom: 1.25rem; }
+  .page-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4.2vw, 2.8rem); font-weight: 900; color: var(--white); line-height: 1.2; margin-bottom: 1rem; }
+  .page-hero p { color: rgba(255,255,255,0.78); font-size: 1.1rem; line-height: 1.75; max-width: 640px; margin: 0 auto; }
+
+  /* Sections */
+  .section { padding: 5rem 1.5rem; }
+  .section-cream { background: var(--cream); }
+  .section-cream-alt { background: var(--cream-alt); }
+  .container { max-width: 1200px; margin: 0 auto; }
+  .section-header { text-align: center; margin-bottom: 3rem; }
+  .section-tag { display: inline-block; color: var(--muted); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.75rem; }
+  .section-header h2 { font-family: 'Playfair Display', serif; font-size: 2.3rem; color: var(--navy); line-height: 1.25; }
+
+  /* Pricing grid — rows aligned across cards via min-heights */
+  .pricing-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+  .pricing-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem 1.5rem; display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s; position: relative; }
+  .pricing-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(26,31,58,0.1); }
+  .pricing-card.featured { border: 2px solid var(--gold); box-shadow: 0 8px 25px rgba(201,168,76,0.18); }
+  .pricing-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--gold); color: var(--navy); font-size: 0.7rem; font-weight: 700; padding: 0.3rem 0.9rem; border-radius: 20px; letter-spacing: 0.08em; text-transform: uppercase; }
+  .pricing-name { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 900; color: var(--navy); margin-bottom: 0.35rem; line-height: 1.3; min-height: 3.4rem; }
+  .pricing-type { font-size: 0.78rem; color: var(--muted); font-weight: 600; letter-spacing: 0.04em; margin-bottom: 1rem; min-height: 2.4rem; line-height: 1.5; }
+  .pricing-price { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 900; color: var(--navy); line-height: 1; margin-bottom: 0.25rem; }
+  .pricing-period { font-size: 0.82rem; color: var(--muted); margin-bottom: 1.25rem; min-height: 2.4rem; line-height: 1.4; }
+  .pricing-period em { color: var(--gold); font-style: normal; font-weight: 600; }
+  .pricing-desc { font-size: 0.92rem; color: var(--text); line-height: 1.65; margin-bottom: 1.25rem; min-height: 4.9rem; }
+  .pricing-features { list-style: none; padding: 0; margin: 0 0 1.5rem; flex: 1; }
+  .pricing-features li { font-size: 0.88rem; color: var(--text); padding: 0.5rem 0; padding-left: 1.5rem; position: relative; line-height: 1.5; border-bottom: 1px solid var(--border); }
+  .pricing-features li:last-child { border-bottom: none; }
+  .pricing-features li::before { content: '▸'; color: var(--gold); position: absolute; left: 0.25rem; font-weight: 700; }
+
+  /* Buttons */
+  .btn { display: inline-block; padding: 0.8rem 1.5rem; font-weight: 700; border-radius: var(--radius); transition: all 0.2s; border: 2px solid transparent; font-family: inherit; cursor: pointer; font-size: 0.9rem; text-align: center; }
+  .btn-outline { background: transparent; color: var(--navy); border-color: var(--navy); }
+  .btn-outline:hover { background: var(--navy); color: var(--white); }
+  .btn-primary { background: var(--gold); color: var(--navy); border-color: var(--gold); }
+  .btn-primary:hover { background: var(--gold-hover); border-color: var(--gold-hover); }
+  .btn-dark { background: var(--navy); color: var(--white); border-color: var(--navy); padding: 0.9rem 1.9rem; }
+  .btn-dark:hover { background: var(--navy-dark); }
+
+  /* What to Expect cards — bullets aligned across cards */
+  .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.75rem; }
+  .card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem 1.75rem; transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 10px 25px rgba(26,31,58,0.08); }
+  .card-gold-top { border-top: 3px solid var(--gold); }
+  .card h3 { font-family: 'Playfair Display', serif; color: var(--navy); font-size: 1.2rem; margin-bottom: 1rem; min-height: 1.5rem; line-height: 1.3; }
+  .card ul { list-style: none; padding: 0; margin: 0; }
+  .card li { font-size: 0.95rem; color: var(--text); padding: 0.55rem 0; padding-left: 1.5rem; position: relative; line-height: 1.5; border-bottom: 1px solid var(--border); }
+  .card li:last-child { border-bottom: none; }
+  .card li::before { content: '▸'; color: var(--gold); position: absolute; left: 0.25rem; font-weight: 700; }
+
+  /* FAQ */
+  .faq-list { max-width: 860px; margin: 0 auto; }
+  .faq-item { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 0.75rem; overflow: hidden; }
+  .faq-question { width: 100%; text-align: left; background: transparent; border: none; padding: 1.25rem 1.5rem; font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 600; color: var(--navy); cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+  .faq-question:hover { color: var(--gold); }
+  .faq-icon { color: var(--gold); font-size: 1.3rem; font-weight: 400; transition: transform 0.2s; flex-shrink: 0; }
+  .faq-item.open .faq-icon { transform: rotate(45deg); }
+  .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+  .faq-item.open .faq-answer { max-height: 400px; }
+  .faq-answer-inner { padding: 0 1.5rem 1.5rem; color: var(--text); font-size: 0.95rem; line-height: 1.75; }
+
+  /* Gold CTA strip */
+  .section-gold { background: var(--gold); padding: 4rem 1.5rem; text-align: center; }
+  .cta-strip h2 { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 900; color: var(--navy); margin-bottom: 0.75rem; }
+  .cta-strip p { color: var(--navy); margin-bottom: 2rem; max-width: 560px; margin-left: auto; margin-right: auto; }
+
+  /* Footer */
+  footer { background: var(--navy-dark); color: var(--white); padding: 3.5rem 2rem 1.5rem; }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 3rem; max-width: 1200px; margin: 0 auto; padding-bottom: 2.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .footer-brand .brand-name { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 900; color: var(--white); margin-bottom: 0.5rem; }
+  .footer-brand .brand-name span { color: var(--gold); }
+  .footer-brand .tagline { color: var(--gold); font-style: italic; font-size: 0.88rem; margin-bottom: 0.75rem; }
+  .footer-brand p { font-size: 0.875rem; color: rgba(255,255,255,0.55); line-height: 1.65; }
+  .footer-col h5 { font-family: 'Inter', sans-serif; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--gold); margin-bottom: 1.1rem; }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 0.6rem; }
+  .footer-col ul li a { font-size: 0.875rem; color: rgba(255,255,255,0.6); transition: color 0.2s; }
+  .footer-col ul li a:hover { color: var(--white); }
+  .footer-bottom { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding-top: 1.5rem; font-size: 0.8rem; color: rgba(255,255,255,0.4); flex-wrap: wrap; gap: 0.5rem; }
+  .footer-bottom a { color: var(--gold); }
+
+  @media (max-width: 1100px) {
+    .pricing-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 900px) {
+    .pricing-grid { grid-template-columns: 1fr; }
+    .three-col { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .footer-bottom { flex-direction: column; text-align: center; }
+    .navbar nav { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sticky-header">
+  <div class="navbar">
+    <div class="nav-brand">Pau <span>Analytics</span></div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="case-study.html">Case Study</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="ai-agent.html">AI Agent</a>
+      <a href="pricing.html" class="active">Pricing</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="tag">Pricing</span>
+    <h1>Straightforward Pricing.</h1>
+    <p>Every plan gives you clear answers and confident decisions.</p>
+  </div>
+</section>
+
+<!-- PRICING TIERS -->
+<section class="section section-cream">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Plans</span>
+      <h2>Choose the Level of Support You Need</h2>
+    </div>
+    <div class="pricing-grid">
+
+      <div class="pricing-card">
+        <div class="pricing-name">Monthly Check-Up</div>
+        <div class="pricing-type">📋 Performance Report</div>
+        <div class="pricing-price">RM750</div>
+        <div class="pricing-period">/month &nbsp;·&nbsp; <em>Annual prepayment saves RM1,000</em></div>
+        <div class="pricing-desc">Know what's working each month — and what to fix next. A clear, plain-language review with next steps.</div>
+        <ul class="pricing-features">
+          <li>1 business question analysed per month</li>
+          <li>Plain-language analyst report with findings</li>
+          <li>Clear next-step recommendations</li>
+          <li>Delivered in 2–3 weeks</li>
+          <li>Email support included</li>
+        </ul>
+        <a href="contact.html" class="btn btn-outline">Get Started</a>
+      </div>
+
+      <div class="pricing-card featured">
+        <div class="pricing-badge">Most Popular</div>
+        <div class="pricing-name">Growth Tracker</div>
+        <div class="pricing-type">📋 Report + 📊 Dashboard</div>
+        <div class="pricing-price">RM1,500</div>
+        <div class="pricing-period">/month &nbsp;·&nbsp; <em>Annual prepayment saves RM3,000</em></div>
+        <div class="pricing-desc">Track sales, customers, and campaigns in real time — so you decide on today's numbers, not last month's.</div>
+        <ul class="pricing-features">
+          <li>Up to 3 business questions per month</li>
+          <li>Plain-language analyst report with findings</li>
+          <li>Live interactive dashboard, filtered by question</li>
+          <li>Monthly data refresh included</li>
+          <li>Priority email support</li>
+        </ul>
+        <a href="contact.html" class="btn btn-primary">Get Started</a>
+      </div>
+
+      <div class="pricing-card">
+        <div class="pricing-name">Full Analytics Partner</div>
+        <div class="pricing-type">📋 Report + 📊 Dashboard + 🤝 Full Analytics Partner</div>
+        <div class="pricing-price">RM2,250</div>
+        <div class="pricing-period">/month &nbsp;·&nbsp; <em>Annual prepayment saves RM2,000</em></div>
+        <div class="pricing-desc">Report, dashboard, and a working <strong>Full Analytics Partner</strong> grounded in your live data — the rule, running every day.</div>
+        <ul class="pricing-features">
+          <li>Unlimited business questions</li>
+          <li>Plain-language analyst report with findings</li>
+          <li>Live interactive dashboard</li>
+          <li>Full Analytics Partner on AlloyDB + MCP</li>
+          <li>BYO API key — system is yours at handover</li>
+        </ul>
+        <a href="contact.html" class="btn btn-outline">Get Started</a>
+      </div>
+
+      <div class="pricing-card">
+        <div class="pricing-name">Business Diagnostic</div>
+        <div class="pricing-type">ONE-OFF &nbsp;·&nbsp; 📋 Report + 📊 Dashboard</div>
+        <div class="pricing-price">RM3,500</div>
+        <div class="pricing-period">one-time payment</div>
+        <div class="pricing-desc">A full assessment of your business data — find where you're losing money and what to focus on next.</div>
+        <ul class="pricing-features">
+          <li>Comprehensive business data review</li>
+          <li>Plain-language analyst report with findings</li>
+          <li>Interactive dashboard included</li>
+          <li>Delivered in 2–3 weeks</li>
+          <li>Ideal first step before a monthly plan</li>
+        </ul>
+        <a href="contact.html" class="btn btn-outline">Get Started</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- WHAT TO EXPECT -->
+<section class="section section-cream-alt">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">What to Expect</span>
+      <h2>What Happens When You Work With Us</h2>
+    </div>
+    <div class="three-col">
+      <div class="card card-gold-top">
+        <h3>What You Get</h3>
+        <ul>
+          <li>Plain-language analyst report with findings</li>
+          <li>Interactive dashboard, filter by question</li>
+          <li>Full Analytics Partner on higher tier</li>
+        </ul>
+      </div>
+      <div class="card card-gold-top">
+        <h3>What We Need From You</h3>
+        <ul>
+          <li>Your business data (Excel, CSV, POS export)</li>
+          <li>A clear business question to answer</li>
+          <li>30-minute kickoff call to align scope</li>
+        </ul>
+      </div>
+      <div class="card card-gold-top">
+        <h3>What Happens at Handover</h3>
+        <ul>
+          <li>Report, dashboard link, and source code</li>
+          <li>Your API key powers the system</li>
+          <li>Yours to keep, run, or change</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section section-cream">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">FAQ</span>
+      <h2>Common Pricing Questions</h2>
+    </div>
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <button class="faq-question">Do I need to commit to a long-term contract? <span class="faq-icon">+</span></button>
+        <div class="faq-answer"><div class="faq-answer-inner">No minimum commitment. Monthly plans can be cancelled anytime. Annual prepayment offers a discount but is not required.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">What format does my data need to be in? <span class="faq-icon">+</span></button>
+        <div class="faq-answer"><div class="faq-answer-inner">Most common formats work — Excel, CSV, Google Sheets, or a simple export from your POS or system. We handle the cleaning and preparation.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">How long does the first report take? <span class="faq-icon">+</span></button>
+        <div class="faq-answer"><div class="faq-answer-inner">Typically 2–3 weeks from the kickoff call, depending on data complexity and how specific the business question is.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">What if I'm not sure which plan to choose? <span class="faq-icon">+</span></button>
+        <div class="faq-answer"><div class="faq-answer-inner">Start with a Business Diagnostic (RM3,500 one-off). It gives you a complete picture of your business data and a clear sense of where ongoing analysis would help most — before you commit to a monthly plan.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">How does the Full Analytics Partner work? <span class="faq-icon">+</span></button>
+        <div class="faq-answer"><div class="faq-answer-inner">Your Full Analytics Partner sits on top of your live data (AlloyDB + MCP). It runs the rule from the analyst report every day — checking stock, flagging pre-churn customers, reviewing campaign ROI, whatever the engagement calls for. Your team can ask natural-language questions in Malay, English, or Mandarin. You own the source code and API key at handover.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">Can I upgrade or downgrade my plan? <span class="faq-icon">+</span></button>
+        <div class="faq-answer"><div class="faq-answer-inner">Yes. You can change plans at the end of any billing month. We'll carry over any work in progress to your new plan.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">Who owns the reports, dashboards, and Full Analytics Partner? <span class="faq-icon">+</span></button>
+        <div class="faq-answer"><div class="faq-answer-inner">You do. Everything delivered is yours to keep, share, and use however you need. On the Full Analytics Partner tier, the system runs on your own API key — no vendor lock-in, no subscription trap.</div></div>
+      </div>
+
+    </div>
+
+    <p style="text-align: center; margin-top: 2.5rem; font-size: 0.95rem; color: var(--muted);">
+      Looking for broader questions about how we work? See our <a href="faq.html" style="color: var(--gold); font-weight: 600;">full FAQ →</a>
+    </p>
+  </div>
+</section>
+
+<!-- GOLD CTA STRIP -->
+<section class="section-gold cta-strip">
+  <div class="container">
+    <h2>Not Sure Which Tier Fits?</h2>
+    <p>Tell us your business challenge. We'll recommend the right starting point.</p>
+    <a href="contact.html" class="btn btn-dark">Start a Conversation</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="brand-name">Pau <span>Analytics</span></div>
+      <p class="tagline">"Analytics that answers. AI that acts."</p>
+      <p>Data analytics consulting for Malaysian SMEs — reports, dashboards, and AI agents tied to real business decisions.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Work</h5>
+      <ul>
+        <li><a href="case-study.html">Case Study</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="ai-agent.html">AI Agent</a></li>
+        <li><a href="pricing.html">Pricing</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="about.html">About</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Pau Analytics</span>
+    <span><a href="privacy-policy.html">Privacy Policy</a></span>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.faq-question').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.parentElement;
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+</script>
+
+</body>
+</html>
