@@ -107,7 +107,7 @@
         <main class="right-column">
             <div class="chatbot-header">
                 <h1>Stock Manager</h1>
-                <p>Know every child. Find every gap. Bridge it.<br>Premium small-class tuition — max 10 children per class, one specialist per ~9 children.</p>
+                <p>See what's below trigger today. Catch the Saturday spike. Never run empty.<br>18 perishable products — buns, dim sum, pastries — across 3 suppliers.</p>
             </div>
 
             <div class="key-bar" id="keyBar">
@@ -119,7 +119,7 @@
             </div>
 
             <div class="db-status">
-                <strong>Database:</strong> 185 children • 22 specialists • 63 classes • 7 tables • Assessment data: March–April 2026
+                <strong>Database:</strong> 18 products • 3 suppliers • 9,852 transactions • 182 days: Oct 2025 – Mar 2026
             </div>
 
             <div class="chat-container">
@@ -140,7 +140,7 @@
             </div>
 
             <div class="input-area">
-                <input type="text" id="msgInput" placeholder="Ask about mastery, development, or secondary readiness..." autofocus />
+                <input type="text" id="msgInput" placeholder="Ask about reorder triggers, Saturday peaks, or supplier timing..." autofocus />
                 <button id="sendBtn" onclick="sendMessage()">Ask</button>
             </div>
         </main>
@@ -294,34 +294,34 @@
 
         try {
             const ctx = await loadDataContext();
-            const systemPrompt = `You are the AI Inventory Assistant for Bright Path Tuition Centre, a premium small-class tuition centre in Malaysia.
+            const systemPrompt = `You are the AI Inventory Assistant for a Malaysian steam bun shop, a family-run perishable-goods business.
 
-Context: Malaysia abolished UPSR and PT3. Assessment is now PBD + UASA. Year 4 is the MOE anchor year from 2026.
-Level philosophy: Preschool=foundation, P1-P3=core habits, P4=mastery anchor, P5=secondary prep Phase 1 (build forward), P6=secondary prep Phase 2 (Form 1 ready).
-CRITICAL RULE: Any P5/P6 child scoring below their P4 baseline is a CRITICAL escalation, not a routine gap.
+Context: The shop sells steam buns, dim sum, and pastries — all perishable. Every product runs out within 3 days at current sales pace. Saturdays spike 30–55% above weekday averages, every week, no exceptions.
+Reorder rule: Trigger = (Daily sales × Lead time) + (Daily sales × 0.3). Recompute the daily-sales column monthly from the last 30 days. Check stock against triggers every morning.
+CRITICAL RULE: Any product at or below trigger before Saturday is a priority reorder, not a routine top-up.
 
-Centre: 185 children, 22 specialist tutors, 63 classes (max 10 per class), 5 subjects (BM, English, Mandarin, Math, Science).
+Shop: 18 products, 3 active suppliers (Dim Sum House SB, Fresh Bake Co, Heritage Buns), typical lead time 2–3 days, 6 months of till data (Oct 2025 – Mar 2026).
 
-Use "children" not "students". Use "specialists" not "tutors".
+Use "products" not "SKUs". Use "suppliers" not "vendors".
 
 Below is the full database as JSON. Answer the user's question using this data.
 
 RESPONSE RULES (strict):
 - ALWAYS start with the data table. No preamble, no explanation before the table.
 - Maximum 1 table per answer. Maximum 10 rows.
-- After the table, add 1-2 sentences of management insight. Nothing more.
+- After the table, add 1-2 sentences of operational insight. Nothing more.
 - If no data matches, say so in one sentence. Do not speculate or add caveats.
 - Never repeat the question back. Never explain your reasoning. Just show the table and the insight.
 - Use markdown table format.
 
-- When listing children's scores, ALWAYS include the Specialist column in the table. The tutor field is in every score row — use it.
+- When listing reorder gaps, ALWAYS include the Supplier column in the table. The supplier field is on every product row — use it.
 
 EXAMPLE FORMAT:
-| Child | Subject | March | April | Specialist |
+| Product | Current | Trigger | Gap | Supplier |
 |---|---|---|---|---|
-| Ahmad | BM | 52 | 58 | Teacher Hafiz |
+| BBQ Pork Bun | 62 | 95 | -33 | Dim Sum House SB |
 
-Ahmad is the only P2 child scoring below 60 in BM. His specialist is Teacher Hafiz.
+BBQ Pork Bun is the tightest gap today. Dim Sum House needs a call by 2pm.
 
 DATABASE:
 ${JSON.stringify(ctx)}`;

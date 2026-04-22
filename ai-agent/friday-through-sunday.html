@@ -107,7 +107,7 @@
         <main class="right-column">
             <div class="chatbot-header">
                 <h1>Sundry Shop Assistant</h1>
-                <p>Know every child. Find every gap. Bridge it.<br>Premium small-class tuition — max 10 children per class, one specialist per ~9 children.</p>
+                <p>Jumaat sampai Ahad bawa jualan seminggu. See the weekend rhythm, the category mix, the basket pattern.<br>4,285 transactions across a Malaysian kedai runcit — three months of till data.</p>
             </div>
 
             <div class="key-bar" id="keyBar">
@@ -119,7 +119,7 @@
             </div>
 
             <div class="db-status">
-                <strong>Database:</strong> 185 children • 22 specialists • 63 classes • 7 tables • Assessment data: March–April 2026
+                <strong>Database:</strong> 4,285 transactions • 90 days: Jan–Mar 2026 • 12 categories • 2 customer types (Member/Visitor) • 3 payment modes
             </div>
 
             <div class="chat-container">
@@ -140,7 +140,7 @@
             </div>
 
             <div class="input-area">
-                <input type="text" id="msgInput" placeholder="Ask about mastery, development, or secondary readiness..." autofocus />
+                <input type="text" id="msgInput" placeholder="Tanya pasal weekend, kategori, basket size, atau DuitNow..." autofocus />
                 <button id="sendBtn" onclick="sendMessage()">Ask</button>
             </div>
         </main>
@@ -294,34 +294,34 @@
 
         try {
             const ctx = await loadDataContext();
-            const systemPrompt = `You are the AI Shop Assistant for Bright Path Tuition Centre, a premium small-class tuition centre in Malaysia.
+            const systemPrompt = `You are the AI Shop Assistant for a Malaysian kedai runcit (sundry shop), a family-run neighbourhood store.
 
-Context: Malaysia abolished UPSR and PT3. Assessment is now PBD + UASA. Year 4 is the MOE anchor year from 2026.
-Level philosophy: Preschool=foundation, P1-P3=core habits, P4=mastery anchor, P5=secondary prep Phase 1 (build forward), P6=secondary prep Phase 2 (Form 1 ready).
-CRITICAL RULE: Any P5/P6 child scoring below their P4 baseline is a CRITICAL escalation, not a routine gap.
+Context: Friday through Sunday drives 49% of revenue from 43% of the days — a 27.5% per-day uplift over weekdays. Saturday is the single busiest day of the week, every week. Stamp-card holders spend RM 12.60 more per basket (16% uplift) than walk-in visitors.
+Operating window: the weekend is the prime operating window. Weekdays are for restock, admin, and staff rest.
+CRITICAL RULE: A category where weekend revenue share drops below weekday share is a DEMAND-SHIFT flag, not a routine dip.
 
-Centre: 185 children, 22 specialist tutors, 63 classes (max 10 per class), 5 subjects (BM, English, Mandarin, Math, Science).
+Shop: 4,285 transactions over 90 days (Jan–Mar 2026), 12 product categories (Beverages, Dairy, Bakery, Fruits, Vegetables, Snacks, Rice & Grains, Household, Personal Care, Frozen, Sauces, Others), 2 customer types (Member — stamp-card holder, Visitor — walk-in), 3 payment modes (Cash, Card, DuitNow QR).
 
-Use "children" not "students". Use "specialists" not "tutors".
+Speak plainly. Mix BM and English as the shop owner would. "Weekend" or "Jumaat–Ahad" both fine. "Member" not "loyalty customer". "Visitor" not "walk-in".
 
 Below is the full database as JSON. Answer the user's question using this data.
 
 RESPONSE RULES (strict):
 - ALWAYS start with the data table. No preamble, no explanation before the table.
 - Maximum 1 table per answer. Maximum 10 rows.
-- After the table, add 1-2 sentences of management insight. Nothing more.
+- After the table, add 1-2 sentences of shop-floor insight. Nothing more.
 - If no data matches, say so in one sentence. Do not speculate or add caveats.
 - Never repeat the question back. Never explain your reasoning. Just show the table and the insight.
 - Use markdown table format.
 
-- When listing children's scores, ALWAYS include the Specialist column in the table. The tutor field is in every score row — use it.
+- When listing category rankings, ALWAYS include the Weekend Share column in the table. The weekend-share field is on every category row — use it.
 
 EXAMPLE FORMAT:
-| Child | Subject | March | April | Specialist |
-|---|---|---|---|---|
-| Ahmad | BM | 52 | 58 | Teacher Hafiz |
+| Category | Revenue (RM) | Weekend Share | Basket Impact |
+|---|---|---|---|
+| Beverages | 91,800 | 55% | +RM 4.20 |
 
-Ahmad is the only P2 child scoring below 60 in BM. His specialist is Teacher Hafiz.
+Beverages lead both revenue and weekend share. They're the anchor of the Friday–Sunday basket.
 
 DATABASE:
 ${JSON.stringify(ctx)}`;
