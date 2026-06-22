@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sales Data App | Pau Analytics</title>
+<meta name="description" content="The app that collects and structures your sales data into one universal retail schema.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="masthead">
+  <div class="bar">
+    <a class="brand" href="index.html">Pau <span>Analytics</span></a>
+    <nav class="nav" aria-label="Primary">
+      <a href="index.html" class="top-link">Home</a>
+      <div class="drop">
+      <a href="solutions.html" class="drop-trig" aria-haspopup="true">Solutions<svg viewBox="0 0 10 6" width="10" height="6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
+      <div class="drop-menu" role="menu"><a href="increase-sales.html" role="menuitem">Increase Sales<span>What should I sell more of?</span></a><a href="improve-profit.html" role="menuitem">Improve Profit<span>What actually drives profit?</span></a><a href="understand-customers.html" role="menuitem">Understand Customers<span>Which customers matter most?</span></a></div>
+    </div>
+      <div class="drop">
+      <a href="products.html" class="drop-trig active" aria-haspopup="true">Products<svg viewBox="0 0 10 6" width="10" height="6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
+      <div class="drop-menu" role="menu"><a href="sales-data-app.html" role="menuitem">Sales Data App<span>The engine behind every insight</span></a><a href="dashboard.html" role="menuitem">Dashboard<span>Performance at a glance</span></a><a href="ai-assistant.html" role="menuitem">AI Assistant<span>Ask in plain English</span></a><a href="full-package.html" role="menuitem">Full Package<span>App, dashboard, assistant, reporting</span></a></div>
+    </div>
+      <a href="case-studies.html" class="top-link">Case Studies</a>
+      <a href="pricing.html" class="top-link">Pricing</a>
+      <a href="about.html" class="top-link">About</a>
+      <a href="contact.html" class="top-link">Contact</a>
+    </nav>
+    <a class="bar-cta" href="contact.html">Book a call</a>
+    <button class="menu-btn" aria-label="Menu" aria-expanded="false"
+      onclick="const o=document.body.classList.toggle('nav-open');this.setAttribute('aria-expanded',o)">Menu</button>
+  </div>
+  <nav class="mobile-nav" aria-label="Mobile">
+    <a href="index.html">Home</a>
+    <span class="m-head">Solutions</span><a class="m-sub" href="increase-sales.html">Increase Sales</a><a class="m-sub" href="improve-profit.html">Improve Profit</a><a class="m-sub" href="understand-customers.html">Understand Customers</a>
+    <span class="m-head">Products</span><a class="m-sub" href="sales-data-app.html">Sales Data App</a><a class="m-sub" href="dashboard.html">Dashboard</a><a class="m-sub" href="ai-assistant.html">AI Assistant</a><a class="m-sub" href="full-package.html">Full Package</a>
+    <a href="case-studies.html">Case Studies</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+</header>
+<main>
+<section class="page-hero"><div class="wrap">
+  <p class="eyebrow">Product &middot; Sales Data App</p><h1>The engine behind every insight</h1><p class="lede">Before any report, dashboard or assistant can tell you something useful, the data has to be gathered and put in order. That is the app's only job: quietly collecting and structuring every transaction into one clean shape every instrument can read.</p>
+</div></section><div class="band"><div class="wrap">
+  <div class="collect-head"><span class="mono-label">What the app collects</span></div>
+  <div class="chips"><span class="chip">transaction_date</span><span class="chip">order_id</span><span class="chip">product_name</span><span class="chip">product_category</span><span class="chip">quantity</span><span class="chip">unit_price</span><span class="chip">unit_cost</span><span class="chip">customer_id</span><span class="chip">location</span><span class="chip">discount</span><span class="chip-sep">derives &#8594;</span><span class="chip chip-d">line_revenue</span><span class="chip chip-d">profit</span><span class="chip chip-d">margin</span></div>
+</div></div>
+<section class="section"><div class="wrap narrow">
+  <div class="sec-head left"><p class="eyebrow">One shape, any retailer</p><h2>The universal retail schema</h2>
+  <p class="sec-note">The same handful of fields describe a bicycle shop, an appliance chain and a fashion boutique. Collect them once and every instrument works without rebuilding the pipeline each time.</p></div>
+  <table class="schema"><thead><tr><th>Field</th><th>Role</th><th>Why it matters</th></tr></thead>
+  <tbody>
+    <tr><td class="mono">transaction_date</td><td><span class="role role-collect">collect</span></td><td>Every sale has a date</td></tr>
+    <tr><td class="mono">order_id</td><td><span class="role role-collect">collect</span></td><td>Groups lines into a basket</td></tr>
+    <tr><td class="mono">product_name</td><td><span class="role role-collect">collect</span></td><td>What was sold</td></tr>
+    <tr><td class="mono">product_category</td><td><span class="role role-collect">collect</span></td><td>Rolls products into groups</td></tr>
+    <tr><td class="mono">quantity</td><td><span class="role role-collect">collect</span></td><td>Units per line</td></tr>
+    <tr><td class="mono">unit_price</td><td><span class="role role-collect">collect</span></td><td>Price per unit</td></tr>
+    <tr><td class="mono">unit_cost</td><td><span class="role role-collect">collect</span></td><td>Cost per unit &mdash; enables margin</td></tr>
+    <tr><td class="mono">customer_id</td><td><span class="role role-collect">collect</span></td><td>Who bought, when tracked</td></tr>
+    <tr><td class="mono">location</td><td><span class="role role-collect">collect</span></td><td>Branch, city or region</td></tr>
+    <tr><td class="mono">discount</td><td><span class="role role-collect">collect</span></td><td>Promotion applied</td></tr>
+    <tr><td class="mono">refund_flag</td><td><span class="role role-optional">optional</span></td><td>Returns, when recorded</td></tr>
+    <tr><td class="mono">line_revenue</td><td><span class="role role-derive">derive</span></td><td>quantity &times; unit_price</td></tr>
+    <tr><td class="mono">profit / margin</td><td><span class="role role-derive">derive</span></td><td>revenue &minus; cost</td></tr>
+  </tbody></table>
+</div></section>
+<section class="section section-paper"><div class="wrap narrow">
+  <div class="sec-head left"><p class="eyebrow">What it answers</p><h2>Questions the app makes answerable</h2></div>
+  <div class="qa">
+    <div class="qa-item"><b>What should I sell more of?</b><span>product &amp; category performance</span></div>
+    <div class="qa-item"><b>What actually drives profit?</b><span>margin &amp; pricing</span></div>
+    <div class="qa-item"><b>Which customers matter most?</b><span>customer value &amp; retention</span></div>
+    <div class="qa-item"><b>Which store underperforms?</b><span>location comparison</span></div>
+  </div>
+  <p class="mono-label small businesses-line">Proven across &mdash; bicycle retail &middot; home appliances &middot; fashion retail</p>
+</div></section>
+<section class="section"><div class="wrap">
+  <div class="sec-head"><p class="eyebrow">From collection to decision</p><h2>What the app feeds</h2></div>
+  <div class="feeds">
+    <a class="feed" href="case-studies.html"><b>Report</b><p>The headline finding and the next step, written plainly.</p></a>
+    <a class="feed" href="dashboard.html"><b>Dashboard</b><p>The same numbers, live and filterable.</p></a>
+    <a class="feed" href="ai-assistant.html"><b>AI assistant</b><p>Ask the data your own questions, safely.</p></a>
+  </div>
+</div></section>
+<section class="cta"><div class="wrap cta-in">
+  <h2>Want the app built around your data?</h2><a class="btn btn-ink" href="contact.html">Book a discovery call</a>
+</div></section>
+</main>
+<footer class="foot">
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <div class="brand">Pau <span>Analytics</span></div>
+      <p class="motto">"Analytics that answers. AI that acts."</p>
+      <p class="fine">Turn your sales data into decisions about what to sell, how to price, and which customers to keep. For Malaysian SMEs.</p>
+    </div>
+    <div class="foot-col">
+      <h5>Solutions</h5>
+      <a href="increase-sales.html">Increase Sales</a>
+      <a href="improve-profit.html">Improve Profit</a>
+      <a href="understand-customers.html">Understand Customers</a>
+    </div>
+    <div class="foot-col">
+      <h5>Products</h5>
+      <a href="sales-data-app.html">Sales Data App</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="ai-assistant.html">AI Assistant</a>
+      <a href="full-package.html">Full Package</a>
+    </div>
+    <div class="foot-col">
+      <h5>Company</h5>
+      <a href="case-studies.html">Case Studies</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </div>
+  <div class="foot-base">
+    <span>&copy; 2026 Pau Analytics</span>
+    
+  </div>
+</footer>
+</body>
+</html>

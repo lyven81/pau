@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Understanding Customer Value - Fashion Boutique Customer Dashboard | Pau Analytics Dashboard</title>
+  <link rel="canonical" href="https://www.pauanalytics.com/dashboard/understanding-customer-value.html" />
+  <meta name="description" content="" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <style>
+    
+        :root {
+            --primary-color: #403B36;
+            --secondary-color: #CBA135;
+            --background-color: #FCF9F2;
+            --text-color: #2C2C2C;
+            --card-background: #FFFFFF;
+            --shadow: 0 4px 20px rgba(64, 59, 54, 0.1);
+            --gradient: linear-gradient(135deg, #403B36 0%, #5A524B 100%);
+            --gold-gradient: linear-gradient(135deg, #CBA135 0%, #E8C55A 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #403B36 0%, #2C2822 100%);
+            color: #FCF9F2;
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* CTA Buttons */
+        .cta-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .cta-button {
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .cta-primary {
+            background: linear-gradient(135deg, #CBA135 0%, #B8903A 100%);
+            color: #403B36;
+        }
+
+        .cta-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(203, 161, 53, 0.4);
+        }
+
+        .cta-secondary {
+            background: transparent;
+            border: 2px solid #CBA135;
+            color: #FCF9F2;
+        }
+
+        .cta-secondary:hover {
+            background: rgba(203, 161, 53, 0.1);
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .page-nav {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px auto;
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            padding: 12px 24px;
+            background: white;
+            border: 2px solid var(--secondary-color);
+            border-radius: 8px;
+            font-weight: 600;
+            color: var(--primary-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+        }
+
+        .page-btn.active {
+            background: var(--gold-gradient);
+            color: white;
+            border-color: var(--secondary-color);
+        }
+
+        .page-btn:hover:not(.active) {
+            background: rgba(203, 161, 53, 0.1);
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px auto;
+        }
+
+        .kpi-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: all 0.3s ease;
+            border-top: 4px solid var(--secondary-color);
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(64, 59, 54, 0.15);
+        }
+
+        .kpi-label {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .kpi-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+            margin: 30px auto;
+        }
+
+        .chart-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+        }
+
+        .chart-title {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            border-bottom: 3px solid var(--secondary-color);
+            padding-bottom: 10px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        thead {
+            background: var(--gradient);
+            color: white;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #E0E0E0;
+        }
+
+        tr:hover {
+            background-color: rgba(203, 161, 53, 0.1);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        .metric-positive {
+            color: #2E7D32;
+            font-weight: 600;
+        }
+
+        .metric-negative {
+            color: #C62828;
+            font-weight: 600;
+        }
+
+        .metric-warning {
+            color: #F57C00;
+            font-weight: 600;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+
+        .footer p {
+            margin: 5px 0;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .chart-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .kpi-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+
+            .page-nav {
+                flex-direction: column;
+            }
+        }
+    
+    /* Override old layout */
+    .left-column { display: none !important; }
+    .right-column { margin-left: 0 !important; width: 100% !important; }
+    .container { display: block; }
+  </style>
+</head>
+<body>
+
+
+
+<!-- HERO -->
+
+
+<!-- DASHBOARD CONTENT -->
+<section class="section section-cream">
+  <div class="container">
+    <div class="dashboard-container">
+        <!-- Header -->
+        </div>
+
+        <div class="page-nav">
+            <button class="page-btn active" onclick="showPage(1)">Overview</button>
+            <button class="page-btn" onclick="showPage(2)">Customers</button>
+            <button class="page-btn" onclick="showPage(3)">Value</button>
+            <button class="page-btn" onclick="showPage(4)">Products</button>
+        </div>
+
+        <div id="loading" class="loading">Loading data...</div>
+
+        <!-- Page 1: Overview -->
+        <div id="page1" class="page active">
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-label">Total Customers</div>
+                    <div class="kpi-value" id="totalCustomers">-</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Total Orders</div>
+                    <div class="kpi-value" id="totalOrders">-</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Total Revenue</div>
+                    <div class="kpi-value" id="totalRevenue">-</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Total Profit</div>
+                    <div class="kpi-value" id="totalProfit">-</div>
+                </div>
+            </div>
+
+            <div class="chart-grid">
+                <div class="chart-card full-width">
+                    <div class="chart-title">Revenue vs Profit Trend (Monthly)</div>
+                    <div class="chart-container" style="height: 350px;">
+                        <canvas id="revenueProfitTrendChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-grid">
+                <div class="chart-card">
+                    <div class="chart-title">Revenue by Customer State</div>
+                    <div class="chart-container">
+                        <canvas id="revenueByCountryChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title">Average Profit per Order Over Time</div>
+                    <div class="chart-container">
+                        <canvas id="avgProfitPerOrderChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 2: Customers -->
+        <div id="page2" class="page">
+            <div class="chart-grid">
+                <div class="chart-card">
+                    <div class="chart-title">Customer Count by State</div>
+                    <div class="chart-container">
+                        <canvas id="customerCountByCountryChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title">Revenue by State</div>
+                    <div class="chart-container">
+                        <canvas id="revenueByCountryChart2"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-grid">
+                <div class="chart-card">
+                    <div class="chart-title">Profit by State</div>
+                    <div class="chart-container">
+                        <canvas id="profitByCountryChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title">Orders per Customer Distribution</div>
+                    <div class="chart-container">
+                        <canvas id="ordersPerCustomerChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-card full-width" style="margin-top: 20px;">
+                <div class="chart-title">Cumulative Profit by Customers (Pareto)</div>
+                <div class="chart-container" style="height: 350px;">
+                    <canvas id="paretoChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 3: Value -->
+        <div id="page3" class="page">
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-label">Average Profit per Customer</div>
+                    <div class="kpi-value" id="avgProfitPerCustomer">-</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Average Profit Margin</div>
+                    <div class="kpi-value" id="avgProfitMargin">-</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Average Order Value</div>
+                    <div class="kpi-value" id="avgOrderValue">-</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Orders per Customer</div>
+                    <div class="kpi-value" id="ordersPerCustomer">-</div>
+                </div>
+            </div>
+
+            <div class="chart-card full-width">
+                <div class="chart-title">Top 20 Customers by Profit</div>
+                <div style="overflow-x: auto;">
+                    <table id="topCustomersTable">
+                        <thead>
+                            <tr>
+                                <th>Customer Name</th>
+                                <th>State</th>
+                                <th>Total Orders</th>
+                                <th>Total Revenue</th>
+                                <th>Total Profit</th>
+                                <th>Profit Margin</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="chart-grid" style="margin-top: 20px;">
+                <div class="chart-card">
+                    <div class="chart-title">Revenue vs Profit by Customer</div>
+                    <div class="chart-container">
+                        <canvas id="revenueProfitScatterChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title">Profit per Order Distribution</div>
+                    <div class="chart-container">
+                        <canvas id="profitPerOrderDistChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 4: Products -->
+        <div id="page4" class="page">
+            <div class="chart-grid">
+                <div class="chart-card">
+                    <div class="chart-title">Units Sold by Product Category</div>
+                    <div class="chart-container">
+                        <canvas id="unitsByCategoryChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title">Revenue by Product Category</div>
+                    <div class="chart-container">
+                        <canvas id="revenueByCategoryChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-card full-width" style="margin-top: 20px;">
+                <div class="chart-title">Top 15 Products by Profit</div>
+                <div style="overflow-x: auto;">
+                    <table id="topProductsTable">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Category</th>
+                                <th>Units Sold</th>
+                                <th>Total Revenue</th>
+                                <th>Total Profit</th>
+                                <th>Avg Profit Margin</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="chart-grid" style="margin-top: 20px;">
+                <div class="chart-card">
+                    <div class="chart-title">Units Sold vs Profit by Product</div>
+                    <div class="chart-container">
+                        <canvas id="unitsProfitScatterChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title">Category Mix by State</div>
+                    <div class="chart-container">
+                        <canvas id="categoryMixByCountryChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2025 Pau Analytics</p>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+<script>
+        // Global data storage
+        let rawData = [];
+        let charts = {};
+
+        // Load dataset
+        const FASHION_CSV = `OrderNo,OrderDate,YearMonth,OrderQuantity,ItemPrice,ItemCost,Revenue,Cost,Profit,ProfitMargin,Product,Model,ProductCategory,ProductSubcategory,CustomerCountry,CustomerState,CustomerCity,CustomerName
+SO115830,2025-11-08,2025-11,2,554.67,210.77,1109.34,421.54,687.8,0.62,Leather Handbag,AB-Hand,Accessories,Bags,Malaysia,Penang,George Town,Jia Subra 11305
+SO107335,2025-12-24,2025-12,1,299.64,137.83,299.64,137.83,161.81,0.54,Leather Heels,FW-Heels,Footwear,Womens,Malaysia,Johor,Johor Bahru,Ravi Yusof 05197
+SO123766,2025-03-06,2025-03,1,554.58,210.74,554.58,210.74,343.84,0.62,Leather Handbag,AB-Hand,Accessories,Bags,Malaysia,Perak,Ipoh,Mun Ng 17040
+SO108542,2025-09-02,2025-09,1,172.64,69.06,172.64,69.06,103.58,0.6,Silk Blouse,WT-Silk,Womenswear,Tops,Malaysia,Selangor,Petaling Jaya,Priya Aziz 06081
+SO139850,2025-07-08,2025-07,2,213.63,85.45,427.26,170.9,256.36,0.6,Midi Dress,WD-Midi,Womenswear,Dresses,Malaysia,Negeri Sembilan,Seremban,Imran Krishnan 28607
+SO115942,2025-12-23,2025-12,1,71.51,25.74,71.51,25.74,45.77,0.6401,Silk Scarf,AS-Scarf,Accessories,Small,Malaysia,Selangor,Subang Jaya,Ravi Krishnan 11383
+SO136753,2025-09-23,2025-09,1,565.97,215.07,565.97,215.07,350.9,0.62,Leather Handbag,AB-Hand,Accessories,Bags,Malaysia,Kuala Lumpur,Kuala Lumpur,Mei Teh 26351
+SO129437,2025-01-28,2025-01,1,172.43,77.59,172.43,77.59,94.84,0.55,Chinos,MB-Chino,Menswear,Bottoms,Malaysia,Perak,Ipoh,Aisha Yusof 21129
+SO106301,2025-03-20,2025-03,1,262.78,99.86,262.78,99.86,162.92,0.62,Crossbody Bag,AB-Cross,Accessories,Bags,Malaysia,Johor,Johor Bahru,Chong Aziz 04501
+SO118591,2025-05-14,2025-05,1,172.56,77.65,172.56,77.65,94.91,0.55,Chinos,MB-Chino,Menswear,Bottoms,Malaysia,Selangor,Petaling Jaya,Wei Nair 13290
+SO127183,2025-01-22,2025-01,1,240.18,115.29,240.18,115.29,124.89,0.52,Sneakers,FU-Sneak,Footwear,Unisex,Malaysia,Negeri Sembilan,Seremban,Jia Tan 19498
+SO139456,2025-04-21,2025-04,1,88.44,37.14,88.44,37.14,51.3,0.5801,Cotton Blouse,WT-Cotton,Womenswear,Tops,Malaysia,Kuala Lumpur,Kuala Lumpur,Ravi Menon 28334
+SO107336,2025-08-05,2025-08,1,578.07,219.67,578.07,219.67,358.4,0.62,Leather Handbag,AB-Hand,Accessories,Bags,Malaysia,Johor,Johor Bahru,Ravi Yusof 05197
+SO139452,2025-03-17,2025-03,1,250.18,120.09,250.18,120.09,130.09,0.52,Sneakers,FU-Sneak,Footwear,Unisex,Malaysia,Sarawak,Kuching,Kai Aziz 28331
+SO118040,2025-10-11,2025-10,1,117.95,47.18,117.95,47.18,70.77,0.6,Sunglasses,AS-Sun,Accessories,Small,Malaysia,Sarawak,Kuching,Aina Teh 12901
+SO114701,2025-01-06,2025-01,1,213.12,85.25,213.12,85.25,127.87,0.6,Midi Dress,WD-Midi,Womenswear,Dresses,Malaysia,Kuala Lumpur,Kuala Lumpur,Imran Rao 10506
+SO121836,2025-02-11,2025-02,2,89.7,37.67,179.4,75.34,104.06,0.58,Cotton Blouse,WT-Cotton,Womenswear,Tops,Malaysia,Kuala Lumpur,Bangsar,Tariq Ong 15683
+SO139484,2025-03-14,2025-03,1,548.24,208.33,548.24,208.33,339.91,0.62,Leather Handbag,AB-Hand,Accessories,Bags,Malaysia,Kuala Lumpur,Kuala Lumpur,Sara Foo 28347
+SO112067,2025-10-01,2025-10,1,176.38,70.55,176.38,70.55,105.83,0.6,Silk Blouse,WT-Silk,Womenswear,Tops,Malaysia,Negeri Sembilan,Seremban,Siti Nair 08592
+SO109887,2025-11-07,2025-11,1,584.68,222.18,584.68,222.18,362.5,0.62,Leather Handbag,AB-Hand,Accessories,Bags,Malaysia,Kuala Lumpur,Kuala Lumpur,Kai Menon 07042
+SO131532,2025-11-08,2025-11,2,209.87,83.95,419.74,167.9,251.84,0.6,Midi Dress,WD-Midi,Womenswear,Dresses,Malaysia,Kuala Lumpur,Bangsar,Jia Goh 22629
+SO109890,2025-03-12,2025-03,2,281.06,129.29,562.12,258.58,303.54,0.54,Leather Heels,FW-Heels,Footwear,Womens,Malaysia,Kuala Lumpur,Kuala Lumpur,Kai Menon 07042
+SO126307,2025-08-04,2025-08,1,578.61,219.87,578.61,219.87,358.74,0.62,Leather Handbag,AB-Hand,Accessories,Bags,Malaysia,Selangor,Shah Alam,Aisha Goh 18855
+SO110290,2025-03-06,2025-03,1,97.84,42.07,97.84,42.07,55.77,0.57,Polo Shirt,MS-Polo,Menswear,Shirts,Malaysia,Sabah,Kota Kinabalu,Aisha Chan 07351
+SO114972,2025-07-13,2025-07,1,331.6,145.9,331.6,145.9,185.7,0.56,Tailored Jacket,MO-Jacket,Menswear,Outerwear,Malaysia,Selangor,Petaling Jaya,Hong Bakar 10686
+SO100586,2025-05-10,2025-05,1,292.84,134.71,292.84,134.71,158.13,0.54,Leather Heels,FW-Heels,Footwear,Womens,Malaysia,Kuala Lumpur,Bangsar,Imran Menon 00408
+SO100423,2025-06-03,2025-06,1,179.32,71.73,179.32,71.73,107.59,0.6,Silk Blouse,WT-Silk,Womenswear,Tops,Malaysia,Melaka,Melaka,Aina Nair 00293
+SO117750,2025-07-06,2025-07,1,552.66,210.01,552.66,210.01,342.65,0.62,Leather Handbag,AB-Hand,Accessories,Bags,Malaysia,Selangor,Subang Jaya,Arjun Lim 12675
+SO114974,2025-08-26,2025-08,1,156.66,65.8,156.66,65.8,90.86,0.58,Linen Shirt,MS-Linen,Menswear,Shirts,Malaysia,Selangor,Petaling Jaya,Hong Bakar 10686
+SO108289,2025-01-19,2025-01,2,257.8,123.74,515.6,247.48,268.12,0.52,Sneakers,FU-Sneak,Footwear,Unisex,Malaysia,Sabah,Kota Kinabalu,Chong Bakar 05892
+SO123200,2025-12-15,2025-12,2,270.95,102.96,541.9,205.92,335.98,0.62,Crossbody Bag,AB-Cross,Accessories,Bags,Malaysia,Perak,Ipoh,Li Loke 16637
+SO127618,2025-02-17,2025-02,1,67.61,24.34,67.61,24.34,43.27,0.64,Silk Scarf,AS-Scarf,Accessories,Small,Malaysia,Penang,George Town,Ling Hashim 19830
+SO115755,2025-06-07,2025-06,1,94.24,39.58,94.24,39.58,54.66,0.58,Cotton Blouse,WT-Cotton,Womenswear,Tops,Malaysia,Kuala Lumpur,Bangsar,Hong Razak 11246
+SO124696,2025-07-18,2025-07,1,226.66,90.66,226.66,90.66,136.0,0.6,Midi Dress,WD-Midi,Womenswear,Dresses,Malaysia,Selangor,Subang Jaya,Imran Foo 17707
+SO111102,2025-08-02,2025-08,1,313.22,144.08,313.22,144.08,169.14,0.54,Leather Loafers,FM-Loaf,Footwear,Mens,Malaysia,Penang,George Town,Hong Teh 07932
+SO100781,2025-05-09,2025-05,2,223.37,89.35,446.74,178.7,268.04,0.6,Midi Dress,WD-Midi,Womenswear,Dresses,Malaysia,Selangor,Subang Jaya,Ling Menon 00532
+SO130354,2025-07-21,2025-07,1,136.75,57.44,136.75,57.44,79.31,0.58,Tailored Skirt,WB-Skirt,Womenswear,Bottoms,Malaysia,Selangor,Petaling Jaya,Arjun Teh 21791
+SO128309,2025-05-27,2025-05,1,246.93,118.53,246.93,118.53,128.4,0.52,Sneakers,FU-Sneak,Footwear,Unisex,Malaysia,Penang,George Town,Farah Lim 20335
+SO104535,2025-07-11,2025-07,1,188.14,75.26,188.14,75.26,112.88,0.6,Silk Blouse,WT-Silk,Womenswear,Tops,Malaysia,Perak,Ipoh,Jia Nair 03224
+SO104541,2025-06-09,2025-06,1,289.78,133.3,289.78,133.3,156.48,0.54,Leather Loafers,FM-Loaf,Footwear,Mens,Malaysia,Perak,Ipoh,Jia Nair 03224
+SO112958,2025-07-25,2025-07,1,301.6,138.74,301.6,138.74,162.86,0.54,Leather Loafers,FM-Loaf,Footwear,Mens,Malaysia,Sabah,Kota Kinabalu,Adam Bakar 09200
+SO100348,2025-12-27,2025-12,2,122.54,49.02,245.08,98.04,147.04,0.6,Sunglasses,AS-Sun,Accessories,Small,Malaysia,Sarawak,Kuching,Chong Abdullah 00227
+SO126312,2025-09-25,2025-09,1,219.68,87.87,219.68,87.87,131.81,0.6,Midi Dress,WD-Midi,Womenswear,Dresses,Malaysia,Selangor,Shah Alam,Aisha Goh 18855
+SO127740,2025-07-10,2025-07,1,111.25,42.27,111.25,42.27,68.98,0.62,Leather Wallet,AS-Wallet,Accessories,Small,Malaysia,Kuala Lumpur,Kuala Lumpur,Tariq Rao 19926
+SO128379,2025-10-27,2025-10,1,286.6,131.84,286.6,131.84,154.76,0.54,Leather Loafers,FM-Loaf,Footwear,Mens,Malaysia,Kuala Lumpur,Kuala Lumpur,Yee Nair 20385
+SO107339,2025-10-20,2025-10,2,576.83,219.2,1153.66,438.4,715.26,0.62,Leather Handbag,AB-Hand,Accessories,Bags,Malaysia,Johor,Johor Bahru,Ravi Yusof 05197
+SO110645,2025-03-10,2025-03,1,118.6,47.44,118.6,47.44,71.16,0.6,Sunglasses,AS-Sun,Accessories,Small,Malaysia,Perak,Ipoh,Priya Ng 07607
+SO108195,2025-03-14,2025-03,1,133.01,55.86,133.01,55.86,77.15,0.58,Tailored Skirt,WB-Skirt,Womenswear,Bottoms,Malaysia,Selangor,Subang Jaya,Li Wong 05809
+SO114457,2025-03-06,2025-03,2,293.38,134.95,586.76,269.9,316.86,0.54,Leather Heels,FW-Heels,Footwear,Womens,Malaysia,Selangor,Petaling Jaya,Priya Subra 10325
+SO124168,2025-02-08,2025-02,1,148.8,62.5,148.8,62.5,86.3,0.58,Linen Shirt,MS-Linen,Menswear,Shirts,Malaysia,Sabah,Kota Kinabalu,Hong Cheah 17303
+SO126316,2025-12-23,2025-12,1,174.93,69.97,174.93,69.97,104.96,0.6,Silk Blouse,WT-Silk,Womenswear,Tops,Malaysia,Selangor,Shah Alam,Aisha Goh 18855
+SO116878,2025-08-25,2025-08,1,145.17,60.97,145.17,60.97,84.2,0.58,Tailored Skirt,WB-Skirt,Womenswear,Bottoms,Malaysia,Selangor,Petaling Jaya,Daniel Abdullah 12063
+SO111086,2025-01-24,2025-01,2,226.66,90.66,453.32,181.32,272.0,0.6,Midi Dress,WD-Midi,Womenswear,Dresses,Malaysia,Kuala Lumpur,Kuala Lumpur,Priya Tan 07920
+SO112965,2025-12-01,2025-12,2,309.56,142.4,619.12,284.8,334.32,0.54,Leather Loafers,FM-Loaf,Footwear,Mens,Malaysia,Sabah,Kota Kinabalu,Adam Bakar 09200
+SO122379,2025-08-15,2025-08,1,146.1,61.36,146.1,61.36,84.74,0.58,Tailored Skirt,WB-Skirt,Womenswear,Bottoms,Malaysia,Kuala Lumpur,Kuala Lumpur,Chong Chan 16065
+SO107241,2025-01-21,2025-01,1,70.1,25.24,70.1,25.24,44.86,0.6399,Silk Scarf,AS-Scarf,Accessories,Small,Malaysia,Johor,Johor Bahru,Priya Teh 05119
+SO124701,2025-12-16,2025-12,2,538.89,204.78,1077.78,409.56,668.22,0.62,Leather Handbag,AB-Hand,Accessories,Bags,Malaysia,Selangor,Subang Jaya,Imran Foo 17707
+SO107607,2025-01-20,2025-01,1,162.72,73.22,162.72,73.22,89.5,0.55,Slim Jeans,WB-Jeans,Womenswear,Bottoms,Malaysia,Selangor,Subang Jaya,Sara Bakar 05374
+SO115838,2025-09-08,2025-09,2,300.29,138.13,600.58,276.26,324.32,0.54,Leather Heels,FW-Heels,Footwear,Womens,Malaysia,Penang,George Town,Jia Subra 11305
+SO133385,2025-04-27,2025-04,2,96.81,41.63,193.62,83.26,110.36,0.57,Polo Shirt,MS-Polo,Menswear,Shirts,Malaysia,Negeri Sembilan,Seremban,Yee Ong 23949
+SO115831,2025-04-19,2025-04,2,575.36,218.64,1150.72,437.28,713.44,0.62,Leather Handbag,AB-Hand,Accessories,Bags,Malaysia,Penang,George Town,Jia Subra 11305
+SO102916,2025-04-14,2025-04,1,166.77,75.05,166.77,75.05,91.72,0.55,Slim Jeans,WB-Jeans,Womenswear,Bottoms,Malaysia,Kuala Lumpur,Bangsar,Mun Krishnan 02075
+SO138262,2025-05-26,2025-05,1,93.32,40.13,93.32,40.13,53.19,0.57,Polo Shirt,MS-Polo,Menswear,Shirts,Malaysia,Sarawak,Kuching,Ling Cheah 27436
+SO114407,2025-05-20,2025-05,1,125.68,50.27,125.68,50.27,75.41,0.6,Sunglasses,AS-Sun,Accessories,Small,Malaysia,Melaka,Melaka,Adam Wong 10287
+SO119944,2025-03-11,2025-03,1,214.93,85.97,214.93,85.97,128.96,0.6,Midi Dress,WD-Midi,Womenswear,Dresses,Malaysia,Sabah,Kota Kinabalu,Priya Cheah 14277
+SO126251,2025-05-14,2025-05,2,277.79,127.78,555.58,255.56,300.02,0.54,Leather Heels,FW-Heels,Footwear,Womens,Malaysia,Selangor,Subang Jaya,Siti Ng 18818
+SO110631,2025-10-26,2025-10,1,305.84,140.69,305.84,140.69,165.15,0.54,Leather Loafers,FM-Loaf,Footwear,Mens,Malaysia,Johor,Johor Bahru,Kai Lim 07597
+SO126307,2025-08-04,2025-08,2,309.05,142.16,618.1,284.32,333.78,0.54,Leather Loafers,FM-Loaf,Footwear,Mens,Malaysia,Selangor,Shah Alam,Aisha Goh 18855
+SO126202,2025-02-24,2025-02,1,188.65,75.46,188.65,75.46,113.19,0.6,Silk Blouse,WT-Silk,Womenswear,Tops,Malaysia,Penang,George Town,Adam Wong 18779
+SO133382,2025-12-16,2025-12,1,227.69,91.08,227.69,91.08,136.61,0.6,Midi Dress,WD-Midi,Womenswear,Dresses,Malaysia,Negeri Sembilan,Seremban,Yee Ong 23949
+SO114966,2025-09-19,2025-09,1,187.11,74.84,187.11,74.84,112.27,0.6,Silk Blouse,WT-Silk,Womenswear,Tops,Malaysia,Selangor,Petaling Jaya,Hong Bakar 10686
+SO109891,2025-04-12,2025-04,1,547.81,208.17,547.81,208.17,339.64,0.62,Leather Handbag,AB-Hand,Accessories,Bags,Malaysia,Kuala Lumpur,Kuala Lumpur,Kai Menon 07042
+SO113378,2025-06-19,2025-06,1,174.31,69.72,174.31,69.72,104.59,0.6,Silk Blouse,WT-Silk,Womenswear,Tops,Malaysia,Selangor,Petaling Jaya,Jia Lim 09502
+SO124699,2025-11-17,2025-11,1,561.66,213.43,561.66,213.43,348.23,0.62,Leather Handbag,AB-Hand,Accessories,Bags,Malaysia,Selangor,Subang Jaya,Imran Foo 17707
+SO139215,2025-10-21,2025-10,1,88.52,37.18,88.52,37.18,51.34,0.58,Cotton Blouse,WT-Cotton,Womenswear,Tops,Malaysia,Kuala Lumpur,Kuala Lumpur,Hong Ong 28150
+SO108539,2025-10-06,2025-10,1,133.49,56.07,133.49,56.07,77.42,0.58,Tailored Skirt,WB-Skirt,Womenswear,Bottoms,Malaysia,Selangor,Petaling Jaya,Priya Aziz 06081
+SO136942,2025-12-20,2025-12,1,286.04,131.58,286.04,131.58,154.46,0.54,Leather Loafers,FM-Loaf,Footwear,Mens,Malaysia,Selangor,Subang Jaya,Arjun Krishnan 26461
+SO119949,2025-04-18,2025-04,1,301.3,138.6,301.3,138.6,162.7,0.54,Leather Loafers,FM-Loaf,Footwear,Mens,Malaysia,Sabah,Kota Kinabalu,Priya Cheah 14277
+SO125666,2025-12-01,2025-12,1,167.89,75.55,167.89,75.55,92.34,0.55,Slim Jeans,WB-Jeans,Womenswear,Bottoms,Malaysia,Sabah,Kota Kinabalu,Ravi Nair 18381
+SO114965,2025-06-04,2025-06,1,292.53,134.56,292.53,134.56,157.97,0.54,Leather Loafers,FM-Loaf,Footwear,Mens,Malaysia,Selangor,Petaling Jaya,Hong Bakar 10686
+SO104536,2025-02-10,2025-02,1,307.97,135.51,307.97,135.51,172.46,0.56,Tailored Jacket,MO-Jacket,Menswear,Outerwear,Malaysia,Perak,Ipoh,Jia Nair 03224
+SO103948,2025-08-09,2025-08,1,228.57,91.43,228.57,91.43,137.14,0.6,Midi Dress,WD-Midi,Womenswear,Dresses,Malaysia,Johor,Johor Bahru,Imran Cheah 02813
+SO114975,2025-02-05,2025-02,1,553.0,210.14,553.0,210.14,342.86,0.62,Leather Handbag,AB-Hand,Accessories,Bags,Malaysia,Selangor,Petaling Jaya,Hong Bakar 10686
+SO126313,2025-08-25,2025-08,1,584.09,221.95,584.09,221.95,362.14,0.62,Leather Handbag,AB-Hand,Accessories,Bags,Malaysia,Selangor,Shah Alam,Aisha Goh 18855
+SO122094,2025-09-07,2025-09,1,135.61,56.96,135.61,56.96,78.65,0.58,Tailored Skirt,WB-Skirt,Womenswear,Bottoms,Malaysia,Selangor,Subang Jaya,Daniel Ismail 15851
+SO108538,2025-09-06,2025-09,1,69.35,24.97,69.35,24.97,44.38,0.6399,Silk Scarf,AS-Scarf,Accessories,Small,Malaysia,Selangor,Petaling Jaya,Priya Aziz 06081
+SO121830,2025-03-07,2025-03,1,180.64,72.26,180.64,72.26,108.38,0.6,Silk Blouse,WT-Silk,Womenswear,Tops,Malaysia,Kuala Lumpur,Bangsar,Tariq Ong 15683
+SO119947,2025-05-13,2025-05,1,259.26,98.52,259.26,98.52,160.74,0.62,Crossbody Bag,AB-Cross,Accessories,Bags,Malaysia,Sabah,Kota Kinabalu,Priya Cheah 14277
+SO133392,2025-10-07,2025-10,1,287.98,132.47,287.98,132.47,155.51,0.54,Leather Loafers,FM-Loaf,Footwear,Mens,Malaysia,Negeri Sembilan,Seremban,Yee Ong 23949
+SO130913,2025-03-13,2025-03,1,78.17,29.7,78.17,29.7,48.47,0.6201,Leather Belt,AS-Belt,Accessories,Small,Malaysia,Selangor,Shah Alam,Aisha Menon 22169
+SO107744,2025-11-14,2025-11,1,184.87,73.95,184.87,73.95,110.92,0.6,Silk Blouse,WT-Silk,Womenswear,Tops,Malaysia,Kuala Lumpur,Bangsar,Hana Goh 05482
+SO110533,2025-04-24,2025-04,1,70.89,25.52,70.89,25.52,45.37,0.64,Silk Scarf,AS-Scarf,Accessories,Small,Malaysia,Kuala Lumpur,Bangsar,Nurul Cheah 07526
+SO136895,2025-10-17,2025-10,2,78.41,29.8,156.82,59.6,97.22,0.6199,Leather Belt,AS-Belt,Accessories,Small,Malaysia,Sarawak,Kuching,Imran Goh 26431
+SO139146,2025-03-10,2025-03,1,95.61,41.11,95.61,41.11,54.5,0.57,Polo Shirt,MS-Polo,Menswear,Shirts,Malaysia,Kuala Lumpur,Kuala Lumpur,Hong Lim 28090
+SO135960,2025-03-09,2025-03,1,72.41,26.07,72.41,26.07,46.34,0.64,Silk Scarf,AS-Scarf,Accessories,Small,Malaysia,Selangor,Petaling Jaya,Siti Razak 25774
+SO110589,2025-05-18,2025-05,1,165.88,74.65,165.88,74.65,91.23,0.55,Chinos,MB-Chino,Menswear,Bottoms,Malaysia,Johor,Johor Bahru,Ling Abdullah 07561
+SO106857,2025-05-27,2025-05,2,80.27,30.5,160.54,61.0,99.54,0.62,Leather Belt,AS-Belt,Accessories,Small,Malaysia,Selangor,Shah Alam,Daniel Subra 04878
+SO114967,2025-07-16,2025-07,1,293.06,134.81,293.06,134.81,158.25,0.54,Leather Heels,FW-Heels,Footwear,Womens,Malaysia,Selangor,Petaling Jaya,Hong Bakar 10686
+SO126312,2025-09-25,2025-09,1,306.47,134.85,306.47,134.85,171.62,0.56,Tailored Jacket,MO-Jacket,Menswear,Outerwear,Malaysia,Selangor,Shah Alam,Aisha Goh 18855
+SO115833,2025-05-06,2025-05,1,305.32,140.45,305.32,140.45,164.87,0.54,Leather Loafers,FM-Loaf,Footwear,Mens,Malaysia,Penang,George Town,Jia Subra 11305
+SO111083,2025-01-17,2025-01,1,134.3,56.41,134.3,56.41,77.89,0.58,Tailored Skirt,WB-Skirt,Womenswear,Bottoms,Malaysia,Penang,George Town,Sara Razak 07917
+SO133389,2025-08-23,2025-08,1,177.72,71.09,177.72,71.09,106.63,0.6,Silk Blouse,WT-Silk,Womenswear,Tops,Malaysia,Negeri Sembilan,Seremban,Yee Ong 23949
+SO105384,2025-09-07,2025-09,1,148.98,62.57,148.98,62.57,86.41,0.58,Linen Shirt,MS-Linen,Menswear,Shirts,Malaysia,Penang,George Town,Imran Tan 03845
+SO126306,2025-05-09,2025-05,2,304.24,133.87,608.48,267.74,340.74,0.56,Tailored Jacket,MO-Jacket,Menswear,Outerwear,Malaysia,Selangor,Shah Alam,Aisha Goh 18855
+SO115837,2025-11-24,2025-11,1,275.62,126.79,275.62,126.79,148.83,0.54,Leather Heels,FW-Heels,Footwear,Womens,Malaysia,Penang,George Town,Jia Subra 11305
+SO115168,2025-05-10,2025-05,1,156.69,70.51,156.69,70.51,86.18,0.55,Slim Jeans,WB-Jeans,Womenswear,Bottoms,Malaysia,Kuala Lumpur,Bangsar,Yee Teh 10838
+SO122748,2025-09-23,2025-09,1,174.95,78.73,174.95,78.73,96.22,0.55,Chinos,MB-Chino,Menswear,Bottoms,Malaysia,Sarawak,Kuching,Ling Ng 16315
+SO116379,2025-09-05,2025-09,1,145.45,61.09,145.45,61.09,84.36,0.58,Linen Shirt,MS-Linen,Menswear,Shirts,Malaysia,Kuala Lumpur,Kuala Lumpur,Aina Aziz 11703
+SO130920,2025-05-12,2025-05,1,67.55,24.32,67.55,24.32,43.23,0.64,Silk Scarf,AS-Scarf,Accessories,Small,Malaysia,Selangor,Petaling Jaya,Imran Ong 22176
+SO138979,2025-12-18,2025-12,1,286.26,131.68,286.26,131.68,154.58,0.54,Leather Heels,FW-Heels,Footwear,Womens,Malaysia,Selangor,Subang Jaya,Ravi Goh 27972
+SO139661,2025-08-06,2025-08,1,82.88,31.49,82.88,31.49,51.39,0.6201,Leather Belt,AS-Belt,Accessories,Small,Malaysia,Sabah,Kota Kinabalu,Aina Subra 28478
+SO110033,2025-10-16,2025-10,1,143.61,60.32,143.61,60.32,83.29,0.58,Tailored Skirt,WB-Skirt,Womenswear,Bottoms,Malaysia,Selangor,Petaling Jaya,Hong Chan 07159
+SO126314,2025-04-15,2025-04,1,222.36,88.94,222.36,88.94,133.42,0.6,Midi Dress,WD-Midi,Womenswear,Dresses,Malaysia,Selangor,Shah Alam,Aisha Goh 18855
+SO124701,2025-12-16,2025-12,1,312.93,137.69,312.93,137.69,175.24,0.56,Tailored Jacket,MO-Jacket,Menswear,Outerwear,Malaysia,Selangor,Subang Jaya,Imran Foo 17707
+SO137211,2025-07-03,2025-07,1,143.65,60.33,143.65,60.33,83.32,0.58,Linen Shirt,MS-Linen,Menswear,Shirts,Malaysia,Perak,Ipoh,Arjun Loke 26669
+SO121828,2025-07-01,2025-07,1,318.62,140.19,318.62,140.19,178.43,0.56,Tailored Jacket,MO-Jacket,Menswear,Outerwear,Malaysia,Kuala Lumpur,Bangsar,Tariq Ong 15683
+SO119953,2025-08-02,2025-08,1,537.63,204.3,537.63,204.3,333.33,0.62,Leather Handbag,AB-Hand,Accessories,Bags,Malaysia,Sabah,Kota Kinabalu,Priya Cheah 14277
+SO105128,2025-01-08,2025-01,1,164.73,74.13,164.73,74.13,90.6,0.55,Slim Jeans,WB-Jeans,Womenswear,Bottoms,Malaysia,Kuala Lumpur,Kuala Lumpur,Tariq Abdullah 03655
+SO110555,2025-12-17,2025-12,1,155.6,70.02,155.6,70.02,85.58,0.55,Slim Jeans,WB-Jeans,Womenswear,Bottoms,Malaysia,Sarawak,Kuching,Farah Yusof 07540
+SO126317,2025-07-14,2025-07,1,291.06,133.89,291.06,133.89,157.17,0.54,Leather Loafers,FM-Loaf,Footwear,Mens,Malaysia,Selangor,Shah Alam,Aisha Goh 18855
+SO122750,2025-11-03,2025-11,1,110.71,42.07,110.71,42.07,68.64,0.62,Leather Wallet,AS-Wallet,Accessories,Small,Malaysia,Sabah,Kota Kinabalu,Hong Yusof 16317
+SO136789,2025-04-15,2025-04,1,306.45,134.84,306.45,134.84,171.61,0.56,Tailored Jacket,MO-Jacket,Menswear,Outerwear,Malaysia,Kuala Lumpur,Kuala Lumpur,Nurul Lim 26367
+SO105176,2025-01-21,2025-01,1,308.62,141.97,308.62,141.97,166.65,0.54,Leather Loafers,FM-Loaf,Footwear,Mens,Malaysia,Johor,Johor Bahru,Mun Tan 03699
+SO105623,2025-01-13,2025-01,2,222.84,89.14,445.68,178.28,267.4,0.6,Midi Dress,WD-Midi,Womenswear,Dresses,Malaysia,Melaka,Melaka,Arjun Lim 04026
+SO100392,2025-10-07,2025-10,2,94.59,40.67,189.18,81.34,107.84,0.57,Polo Shirt,MS-Polo,Menswear,Shirts,Malaysia,Penang,George Town,Mun Ong 00264
+SO128809,2025-06-13,2025-06,1,93.38,39.22,93.38,39.22,54.16,0.58,Cotton Blouse,WT-Cotton,Womenswear,Tops,Malaysia,Selangor,Subang Jaya,Yee Lim 20693
+SO112170,2025-03-26,2025-03,1,78.1,29.68,78.1,29.68,48.42,0.62,Leather Belt,AS-Belt,Accessories,Small,Malaysia,Selangor,Subang Jaya,Aisha Lee 08665
+SO136571,2025-09-24,2025-09,1,90.62,38.06,90.62,38.06,52.56,0.58,Cotton Blouse,WT-Cotton,Womenswear,Tops,Malaysia,Johor,Johor Bahru,Arjun Tan 26225
+SO107335,2025-12-24,2025-12,1,281.06,129.29,281.06,129.29,151.77,0.54,Leather Heels,FW-Heels,Footwear,Womens,Malaysia,Johor,Johor Bahru,Ravi Yusof 05197
+SO121835,2025-06-21,2025-06,2,303.48,139.6,606.96,279.2,327.76,0.54,Leather Loafers,FM-Loaf,Footwear,Mens,Malaysia,Kuala Lumpur,Bangsar,Tariq Ong 15683
+SO100441,2025-06-18,2025-06,1,68.28,24.58,68.28,24.58,43.7,0.64,Silk Scarf,AS-Scarf,Accessories,Small,Malaysia,Kuala Lumpur,Kuala Lumpur,Li Goh 00308
+SO104966,2025-04-12,2025-04,1,110.2,41.88,110.2,41.88,68.32,0.62,Leather Wallet,AS-Wallet,Accessories,Small,Malaysia,Selangor,Subang Jaya,Adam Wong 03534
+SO122684,2025-07-05,2025-07,1,210.75,84.3,210.75,84.3,126.45,0.6,Midi Dress,WD-Midi,Womenswear,Dresses,Malaysia,Penang,George Town,Farah Rao 16267
+SO105683,2025-07-17,2025-07,1,211.25,84.5,211.25,84.5,126.75,0.6,Midi Dress,WD-Midi,Womenswear,Dresses,Malaysia,Negeri Sembilan,Seremban,Mei Foo 04064
+SO107470,2025-11-12,2025-11,2,259.81,124.71,519.62,249.42,270.2,0.52,Sneakers,FU-Sneak,Footwear,Unisex,Malaysia,Selangor,Shah Alam,Aina Ismail 05287
+SO129548,2025-02-09,2025-02,2,160.08,72.04,320.16,144.08,176.08,0.55,Slim Jeans,WB-Jeans,Womenswear,Bottoms,Malaysia,Selangor,Subang Jaya,Mun Subra 21212
+SO106547,2025-05-16,2025-05,1,280.47,129.02,280.47,129.02,151.45,0.54,Leather Heels,FW-Heels,Footwear,Womens,Malaysia,Johor,Johor Bahru,Chong Tan 04666
+SO138882,2025-09-01,2025-09,1,112.86,42.89,112.86,42.89,69.97,0.62,Leather Wallet,AS-Wallet,Accessories,Small,Malaysia,Kuala Lumpur,Kuala Lumpur,Kai Razak 27919
+SO111696,2025-07-19,2025-07,2,78.84,29.96,157.68,59.92,97.76,0.62,Leather Belt,AS-Belt,Accessories,Small,Malaysia,Perak,Ipoh,Aina Nair 08335
+SO112975,2025-05-11,2025-05,1,68.94,24.82,68.94,24.82,44.12,0.64,Silk Scarf,AS-Scarf,Accessories,Small,Malaysia,Penang,George Town,Priya Teh 09207
+SO109888,2025-07-04,2025-07,1,251.29,120.62,251.29,120.62,130.67,0.52,Sneakers,FU-Sneak,Footwear,Unisex,Malaysia,Kuala Lumpur,Kuala Lumpur,Kai Menon 07042
+SO121831,2025-10-02,2025-10,2,92.61,38.9,185.22,77.8,107.42,0.58,Cotton Blouse,WT-Cotton,Womenswear,Tops,Malaysia,Kuala Lumpur,Bangsar,Tariq Ong 15683
+SO119953,2025-08-02,2025-08,1,268.38,101.98,268.38,101.98,166.4,0.62,Crossbody Bag,AB-Cross,Accessories,Bags,Malaysia,Sabah,Kota Kinabalu,Priya Cheah 14277
+SO100585,2025-08-02,2025-08,1,237.51,114.0,237.51,114.0,123.51,0.52,Sneakers,FU-Sneak,Footwear,Unisex,Malaysia,Kuala Lumpur,Bangsar,Imran Menon 00408
+SO116522,2025-03-16,2025-03,1,302.71,139.25,302.71,139.25,163.46,0.54,Leather Loafers,FM-Loaf,Footwear,Mens,Malaysia,Kuala Lumpur,Kuala Lumpur,Imran Yusof 11806
+SO126309,2025-06-13,2025-06,1,176.65,70.66,176.65,70.66,105.99,0.6,Silk Blouse,WT-Silk,Womenswear,Tops,Malaysia,Selangor,Shah Alam,Aisha Goh 18855
+SO107362,2025-06-15,2025-06,1,97.95,42.12,97.95,42.12,55.83,0.57,Polo Shirt,MS-Polo,Menswear,Shirts,Malaysia,Kuala Lumpur,Kuala Lumpur,Kai Teh 05211
+SO115837,2025-11-24,2025-11,1,547.51,208.05,547.51,208.05,339.46,0.62,Leather Handbag,AB-Hand,Accessories,Bags,Malaysia,Penang,George Town,Jia Subra 11305
+SO111480,2025-06-18,2025-06,1,134.88,56.65,134.88,56.65,78.23,0.58,Tailored Skirt,WB-Skirt,Womenswear,Bottoms,Malaysia,Sarawak,Kuching,Arjun Tan 08186
+SO133389,2025-08-23,2025-08,1,536.04,203.7,536.04,203.7,332.34,0.62,Leather Handbag,AB-Hand,Accessories,Bags,Malaysia,Negeri Sembilan,Seremban,Yee Ong 23949`;
+        function loadData() {
+            rawData = Papa.parse(FASHION_CSV.trim(), { header: true, dynamicTyping: true }).data.filter(row => row.OrderNo);
+            updateDashboard();
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        function loadCSV(url) {
+            return new Promise((resolve, reject) => {
+                Papa.parse(url, {
+                    download: true,
+                    header: true,
+                    dynamicTyping: true,
+                    complete: (results) => resolve(results.data.filter(row => Object.values(row).some(v => v !== null && v !== ''))),
+                    error: (error) => reject(error)
+                });
+            });
+        }
+
+        function updateDashboard() {
+            updateKPIs();
+            updatePage1Charts();
+            updatePage2Charts();
+            updatePage3Charts();
+            updatePage4Charts();
+        }
+
+        function updateKPIs() {
+            // Calculate totals
+            const customers = new Set(rawData.map(r => r.CustomerName)).size;
+            const orders = new Set(rawData.map(r => r.OrderNo)).size;
+            const totalRevenue = rawData.reduce((sum, r) => sum + (r.Revenue || 0), 0);
+            const totalProfit = rawData.reduce((sum, r) => sum + (r.Profit || 0), 0);
+            const avgProfitMargin = rawData.reduce((sum, r) => sum + (r.ProfitMargin || 0), 0) / rawData.length * 100;
+
+            document.getElementById('totalCustomers').textContent = customers.toLocaleString();
+            document.getElementById('totalOrders').textContent = orders.toLocaleString();
+            document.getElementById('totalRevenue').textContent = 'RM ' + totalRevenue.toLocaleString(undefined, {maximumFractionDigits: 0});
+            document.getElementById('totalProfit').textContent = 'RM ' + totalProfit.toLocaleString(undefined, {maximumFractionDigits: 0});
+
+            // Page 3 KPIs
+            document.getElementById('avgProfitPerCustomer').textContent = 'RM ' + (totalProfit / customers).toFixed(0);
+            document.getElementById('avgProfitMargin').textContent = avgProfitMargin.toFixed(1) + '%';
+            document.getElementById('avgOrderValue').textContent = 'RM ' + (totalRevenue / orders).toFixed(0);
+            document.getElementById('ordersPerCustomer').textContent = (orders / customers).toFixed(2);
+        }
+
+        function updatePage1Charts() {
+            // Revenue vs Profit Trend by Month
+            const monthlyData = {};
+            rawData.forEach(r => {
+                const month = r.YearMonth;
+                if (!monthlyData[month]) monthlyData[month] = { revenue: 0, profit: 0 };
+                monthlyData[month].revenue += r.Revenue || 0;
+                monthlyData[month].profit += r.Profit || 0;
+            });
+
+            const sortedMonths = Object.keys(monthlyData).sort();
+
+            updateChart('revenueProfitTrendChart', {
+                type: 'line',
+                data: {
+                    labels: sortedMonths,
+                    datasets: [
+                        {
+                            label: 'Revenue',
+                            data: sortedMonths.map(m => monthlyData[m].revenue),
+                            borderColor: '#667eea',
+                            backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Profit',
+                            data: sortedMonths.map(m => monthlyData[m].profit),
+                            borderColor: '#28a745',
+                            backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top' }
+                    }
+                }
+            });
+
+            // Revenue by State
+            const countryRevenue = {};
+            rawData.forEach(r => {
+                const country = r.CustomerState || 'Unknown';
+                countryRevenue[country] = (countryRevenue[country] || 0) + (r.Revenue || 0);
+            });
+
+            const sortedCountries = Object.entries(countryRevenue).sort((a, b) => b[1] - a[1]);
+
+            updateChart('revenueByCountryChart', {
+                type: 'bar',
+                data: {
+                    labels: sortedCountries.map(c => c[0]),
+                    datasets: [{
+                        label: 'Revenue (RM)',
+                        data: sortedCountries.map(c => c[1]),
+                        backgroundColor: '#667eea'
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            // Avg Profit per Order Over Time
+            const monthlyOrders = {};
+            rawData.forEach(r => {
+                const month = r.YearMonth;
+                if (!monthlyOrders[month]) monthlyOrders[month] = { profit: 0, orders: new Set() };
+                monthlyOrders[month].profit += r.Profit || 0;
+                monthlyOrders[month].orders.add(r.OrderNo);
+            });
+
+            updateChart('avgProfitPerOrderChart', {
+                type: 'line',
+                data: {
+                    labels: sortedMonths,
+                    datasets: [{
+                        label: 'Avg Profit per Order (RM)',
+                        data: sortedMonths.map(m => monthlyOrders[m].profit / monthlyOrders[m].orders.size),
+                        borderColor: '#CBA135',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        function updatePage2Charts() {
+            // Customer Count by State
+            const customersByCountry = {};
+            rawData.forEach(r => {
+                const country = r.CustomerState || 'Unknown';
+                if (!customersByCountry[country]) customersByCountry[country] = new Set();
+                customersByCountry[country].add(r.CustomerName);
+            });
+
+            const countryCustomerCounts = Object.entries(customersByCountry)
+                .map(([country, customers]) => [country, customers.size])
+                .sort((a, b) => b[1] - a[1]);
+
+            updateChart('customerCountByCountryChart', {
+                type: 'bar',
+                data: {
+                    labels: countryCustomerCounts.map(c => c[0]),
+                    datasets: [{
+                        label: 'Customers',
+                        data: countryCustomerCounts.map(c => c[1]),
+                        backgroundColor: '#764ba2'
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            // Revenue by State (duplicate for page 2)
+            const countryRevenue = {};
+            rawData.forEach(r => {
+                const country = r.CustomerState || 'Unknown';
+                countryRevenue[country] = (countryRevenue[country] || 0) + (r.Revenue || 0);
+            });
+
+            const sortedCountries = Object.entries(countryRevenue).sort((a, b) => b[1] - a[1]);
+
+            updateChart('revenueByCountryChart2', {
+                type: 'bar',
+                data: {
+                    labels: sortedCountries.map(c => c[0]),
+                    datasets: [{
+                        label: 'Revenue (RM)',
+                        data: sortedCountries.map(c => c[1]),
+                        backgroundColor: '#667eea'
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            // Profit by State
+            const countryProfit = {};
+            rawData.forEach(r => {
+                const country = r.CustomerState || 'Unknown';
+                countryProfit[country] = (countryProfit[country] || 0) + (r.Profit || 0);
+            });
+
+            const sortedByProfit = Object.entries(countryProfit).sort((a, b) => b[1] - a[1]);
+
+            updateChart('profitByCountryChart', {
+                type: 'bar',
+                data: {
+                    labels: sortedByProfit.map(c => c[0]),
+                    datasets: [{
+                        label: 'Profit (RM)',
+                        data: sortedByProfit.map(c => c[1]),
+                        backgroundColor: '#28a745'
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            // Orders per Customer Distribution
+            const customerOrders = {};
+            rawData.forEach(r => {
+                const customer = r.CustomerName;
+                if (!customerOrders[customer]) customerOrders[customer] = new Set();
+                customerOrders[customer].add(r.OrderNo);
+            });
+
+            const orderCounts = Object.values(customerOrders).map(orders => orders.size);
+            const orderBins = { '1 order': 0, '2 orders': 0, '3+ orders': 0 };
+            orderCounts.forEach(count => {
+                if (count === 1) orderBins['1 order']++;
+                else if (count === 2) orderBins['2 orders']++;
+                else orderBins['3+ orders']++;
+            });
+
+            updateChart('ordersPerCustomerChart', {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(orderBins),
+                    datasets: [{
+                        data: Object.values(orderBins),
+                        backgroundColor: ['#dc3545', '#ffc107', '#28a745']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+
+            // Pareto Chart - Cumulative Profit by Customers
+            const customerProfits = {};
+            rawData.forEach(r => {
+                const customer = r.CustomerName;
+                customerProfits[customer] = (customerProfits[customer] || 0) + (r.Profit || 0);
+            });
+
+            const sortedCustomerProfits = Object.entries(customerProfits)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 30);
+
+            const totalProfit = sortedCustomerProfits.reduce((sum, c) => sum + c[1], 0);
+            let cumulative = 0;
+            const cumulativePercent = sortedCustomerProfits.map(c => {
+                cumulative += c[1];
+                return (cumulative / totalProfit * 100).toFixed(1);
+            });
+
+            updateChart('paretoChart', {
+                type: 'bar',
+                data: {
+                    labels: sortedCustomerProfits.map(c => c[0].split(' ')[0]),
+                    datasets: [
+                        {
+                            type: 'bar',
+                            label: 'Profit (RM)',
+                            data: sortedCustomerProfits.map(c => c[1]),
+                            backgroundColor: '#667eea',
+                            yAxisID: 'y'
+                        },
+                        {
+                            type: 'line',
+                            label: 'Cumulative %',
+                            data: cumulativePercent,
+                            borderColor: '#CBA135',
+                            backgroundColor: 'transparent',
+                            yAxisID: 'y1',
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { position: 'left', title: { display: true, text: 'Profit (RM)' } },
+                        y1: { position: 'right', min: 0, max: 100, title: { display: true, text: 'Cumulative %' }, grid: { drawOnChartArea: false } }
+                    }
+                }
+            });
+        }
+
+        function updatePage3Charts() {
+            // Top Customers Table
+            const customerData = {};
+            rawData.forEach(r => {
+                const customer = r.CustomerName;
+                if (!customerData[customer]) {
+                    customerData[customer] = {
+                        country: r.CustomerState,
+                        orders: new Set(),
+                        revenue: 0,
+                        profit: 0,
+                        marginSum: 0,
+                        count: 0
+                    };
+                }
+                customerData[customer].orders.add(r.OrderNo);
+                customerData[customer].revenue += r.Revenue || 0;
+                customerData[customer].profit += r.Profit || 0;
+                customerData[customer].marginSum += r.ProfitMargin || 0;
+                customerData[customer].count++;
+            });
+
+            const sortedCustomers = Object.entries(customerData)
+                .map(([name, data]) => ({
+                    name,
+                    country: data.country,
+                    orders: data.orders.size,
+                    revenue: data.revenue,
+                    profit: data.profit,
+                    margin: (data.marginSum / data.count * 100).toFixed(1)
+                }))
+                .sort((a, b) => b.profit - a.profit)
+                .slice(0, 20);
+
+            const tableBody = document.querySelector('#topCustomersTable tbody');
+            tableBody.innerHTML = '';
+
+            sortedCustomers.forEach(customer => {
+                const row = tableBody.insertRow();
+                const marginClass = customer.margin > 50 ? 'metric-positive' : customer.margin > 30 ? 'metric-warning' : '';
+                row.innerHTML = `
+                    <td><strong>${customer.name}</strong></td>
+                    <td>${customer.country}</td>
+                    <td>${customer.orders}</td>
+                    <td>RM ${customer.revenue.toLocaleString(undefined, {maximumFractionDigits: 0})}</td>
+                    <td><span class="metric-positive">RM ${customer.profit.toLocaleString(undefined, {maximumFractionDigits: 0})}</span></td>
+                    <td><span class="${marginClass}">${customer.margin}%</span></td>
+                `;
+            });
+
+            // Revenue vs Profit Scatter
+            const customerScatter = Object.entries(customerData)
+                .map(([name, data]) => ({ x: data.revenue, y: data.profit, label: name }))
+                .slice(0, 50);
+
+            updateChart('revenueProfitScatterChart', {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'Customers',
+                        data: customerScatter,
+                        backgroundColor: '#667eea'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { title: { display: true, text: 'Revenue (RM)' } },
+                        y: { title: { display: true, text: 'Profit (RM)' } }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: (context) => `${context.raw.label}: Revenue RM ${context.raw.x.toFixed(0)}, Profit RM ${context.raw.y.toFixed(0)}`
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Profit per Order Distribution
+            const orderProfits = {};
+            rawData.forEach(r => {
+                const order = r.OrderNo;
+                orderProfits[order] = (orderProfits[order] || 0) + (r.Profit || 0);
+            });
+
+            const profitValues = Object.values(orderProfits);
+            const profitBins = {
+                '$0-50': 0, '$50-200': 0, '$200-500': 0, '$500-1000': 0, '$1000+': 0
+            };
+
+            profitValues.forEach(profit => {
+                if (profit < 50) profitBins['$0-50']++;
+                else if (profit < 200) profitBins['$50-200']++;
+                else if (profit < 500) profitBins['$200-500']++;
+                else if (profit < 1000) profitBins['$500-1000']++;
+                else profitBins['$1000+']++;
+            });
+
+            updateChart('profitPerOrderDistChart', {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(profitBins),
+                    datasets: [{
+                        label: 'Number of Orders',
+                        data: Object.values(profitBins),
+                        backgroundColor: ['#dc3545', '#ffc107', '#17a2b8', '#28a745', '#667eea']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        function updatePage4Charts() {
+            // Units Sold by Category
+            const categoryUnits = {};
+            rawData.forEach(r => {
+                const category = r.ProductCategory || 'Unknown';
+                categoryUnits[category] = (categoryUnits[category] || 0) + (r.OrderQuantity || 0);
+            });
+
+            const sortedCategories = Object.entries(categoryUnits).sort((a, b) => b[1] - a[1]);
+
+            updateChart('unitsByCategoryChart', {
+                type: 'bar',
+                data: {
+                    labels: sortedCategories.map(c => c[0]),
+                    datasets: [{
+                        label: 'Units Sold',
+                        data: sortedCategories.map(c => c[1]),
+                        backgroundColor: ['#667eea', '#764ba2', '#f093fb', '#CBA135']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            // Revenue by Category
+            const categoryRevenue = {};
+            rawData.forEach(r => {
+                const category = r.ProductCategory || 'Unknown';
+                categoryRevenue[category] = (categoryRevenue[category] || 0) + (r.Revenue || 0);
+            });
+
+            const sortedByRevenue = Object.entries(categoryRevenue).sort((a, b) => b[1] - a[1]);
+
+            updateChart('revenueByCategoryChart', {
+                type: 'doughnut',
+                data: {
+                    labels: sortedByRevenue.map(c => c[0]),
+                    datasets: [{
+                        data: sortedByRevenue.map(c => c[1]),
+                        backgroundColor: ['#667eea', '#764ba2', '#f093fb', '#CBA135']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+
+            // Top Products Table
+            const productData = {};
+            rawData.forEach(r => {
+                const product = r.Product || 'Unknown';
+                if (!productData[product]) {
+                    productData[product] = {
+                        category: r.ProductCategory,
+                        units: 0,
+                        revenue: 0,
+                        profit: 0,
+                        marginSum: 0,
+                        count: 0
+                    };
+                }
+                productData[product].units += r.OrderQuantity || 0;
+                productData[product].revenue += r.Revenue || 0;
+                productData[product].profit += r.Profit || 0;
+                productData[product].marginSum += r.ProfitMargin || 0;
+                productData[product].count++;
+            });
+
+            const sortedProducts = Object.entries(productData)
+                .map(([name, data]) => ({
+                    name: name.length > 30 ? name.substring(0, 30) + '...' : name,
+                    category: data.category,
+                    units: data.units,
+                    revenue: data.revenue,
+                    profit: data.profit,
+                    margin: (data.marginSum / data.count * 100).toFixed(1)
+                }))
+                .sort((a, b) => b.profit - a.profit)
+                .slice(0, 15);
+
+            const productTableBody = document.querySelector('#topProductsTable tbody');
+            productTableBody.innerHTML = '';
+
+            sortedProducts.forEach(product => {
+                const row = productTableBody.insertRow();
+                const marginClass = product.margin > 50 ? 'metric-positive' : product.margin > 30 ? 'metric-warning' : '';
+                row.innerHTML = `
+                    <td><strong>${product.name}</strong></td>
+                    <td>${product.category}</td>
+                    <td>${product.units}</td>
+                    <td>RM ${product.revenue.toLocaleString(undefined, {maximumFractionDigits: 0})}</td>
+                    <td><span class="metric-positive">RM ${product.profit.toLocaleString(undefined, {maximumFractionDigits: 0})}</span></td>
+                    <td><span class="${marginClass}">${product.margin}%</span></td>
+                `;
+            });
+
+            // Units vs Profit Scatter
+            const productScatter = Object.entries(productData)
+                .map(([name, data]) => ({ x: data.units, y: data.profit, label: name.substring(0, 20) }))
+                .slice(0, 30);
+
+            updateChart('unitsProfitScatterChart', {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        label: 'Products',
+                        data: productScatter,
+                        backgroundColor: '#764ba2'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { title: { display: true, text: 'Units Sold' } },
+                        y: { title: { display: true, text: 'Profit (RM)' } }
+                    }
+                }
+            });
+
+            // Category Mix by State
+            const countryCategory = {};
+            rawData.forEach(r => {
+                const country = r.CustomerState || 'Unknown';
+                const category = r.ProductCategory || 'Unknown';
+                if (!countryCategory[country]) countryCategory[country] = {};
+                countryCategory[country][category] = (countryCategory[country][category] || 0) + (r.Revenue || 0);
+            });
+
+            const countries = Object.keys(countryCategory).sort();
+            const categories = [...new Set(rawData.map(r => r.ProductCategory))].filter(c => c);
+
+            const categoryColors = { 'Womenswear': '#667eea', 'Menswear': '#764ba2', 'Footwear': '#f093fb', 'Accessories': '#CBA135' };
+
+            updateChart('categoryMixByCountryChart', {
+                type: 'bar',
+                data: {
+                    labels: countries,
+                    datasets: categories.map(cat => ({
+                        label: cat,
+                        data: countries.map(country => countryCategory[country][cat] || 0),
+                        backgroundColor: categoryColors[cat] || '#999'
+                    }))
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { stacked: true },
+                        y: { stacked: true }
+                    }
+                }
+            });
+        }
+
+        function updateChart(id, config) {
+            if (charts[id]) {
+                charts[id].destroy();
+            }
+            const ctx = document.getElementById(id);
+            if (ctx) {
+                charts[id] = new Chart(ctx, config);
+            }
+        }
+
+        function showPage(pageNum) {
+            // Update page visibility
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById(`page${i}`).classList.remove('active');
+            }
+            document.getElementById(`page${pageNum}`).classList.add('active');
+
+            // Update button states
+            const buttons = document.querySelectorAll('.page-btn');
+            buttons.forEach((btn, i) => {
+                btn.classList.toggle('active', i === pageNum - 1);
+            });
+        }
+
+        // Initialize
+        loadData();
+    </script>
+
+</body>
+</html>

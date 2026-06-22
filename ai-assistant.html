@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>About | Pau Analytics</title><meta name="description" content="Data should make life easier, not harder.">
+<title>AI Assistant | Pau Analytics</title><meta name="description" content="Ask your data in plain English, safely.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css"></head><body><header class="masthead"><div class="bar">
@@ -8,11 +8,11 @@
 <a href="index.html" class="top-link">Home</a>
 <div class="drop"><a href="solutions.html" class="drop-trig" aria-haspopup="true">Solutions<svg viewBox="0 0 10 6" width="10" height="6"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
 <div class="drop-menu" role="menu"><a href="increase-sales.html">Increase Sales<span>What should I sell more of?</span></a><a href="improve-profit.html">Improve Profit<span>What actually drives profit?</span></a><a href="understand-customers.html">Understand Customers<span>Which customers matter most?</span></a></div></div>
-<div class="drop"><a href="products.html" class="drop-trig" aria-haspopup="true">Products<svg viewBox="0 0 10 6" width="10" height="6"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
+<div class="drop"><a href="products.html" class="drop-trig active" aria-haspopup="true">Products<svg viewBox="0 0 10 6" width="10" height="6"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
 <div class="drop-menu" role="menu"><a href="sales-data-app.html">Sales Data App<span>The engine behind every insight</span></a><a href="dashboard.html">Dashboard<span>Performance at a glance</span></a><a href="ai-assistant.html">AI Assistant<span>Ask in plain English</span></a><a href="full-package.html">Full Package<span>App, dashboard, assistant, reporting</span></a></div></div>
 <a href="case-studies.html" class="top-link">Case Studies</a>
 <a href="pricing.html" class="top-link">Pricing</a>
-<a href="about.html" class="top-link active">About</a>
+<a href="about.html" class="top-link">About</a>
 <a href="contact.html" class="top-link">Contact</a>
 </nav>
 <a class="bar-cta" href="contact.html">Book a call</a>
@@ -21,13 +21,17 @@
 <nav class="mobile-nav" aria-label="Mobile"><a href="index.html">Home</a>
 <span class="m-head">Solutions</span><a class="m-sub" href="increase-sales.html">Increase Sales</a><a class="m-sub" href="improve-profit.html">Improve Profit</a><a class="m-sub" href="understand-customers.html">Understand Customers</a>
 <span class="m-head">Products</span><a class="m-sub" href="sales-data-app.html">Sales Data App</a><a class="m-sub" href="dashboard.html">Dashboard</a><a class="m-sub" href="ai-assistant.html">AI Assistant</a><a class="m-sub" href="full-package.html">Full Package</a>
-<a href="case-studies.html">Case Studies</a><a href="pricing.html">Pricing</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav></header><main><section class="page-hero"><div class="wrap"><p class="eyebrow">About</p><h1>Data should make life easier, not harder</h1></div></section>
-<section class="section"><div class="wrap narrow">
-<p class="prose-p">Pau Analytics helps Malaysian SME owners use the data they already have in a way that feels natural, practical and genuinely useful, so decisions get easier, not more complicated.</p>
-<p class="prose-p">The way we work is simple: take what you already have, your till, your inventory system, your WhatsApp order log, prepare it, and uncover the patterns that matter. Which products quietly lose money. Why weekends outrun the weekday plan. Which customers are about to leave before anyone notices.</p>
-<p class="prose-p">What we build depends on the question. The analyst report is a full inspection of what is running well and what needs attention; the dashboard is the live gauge you check at a glance; the AI assistant answers as you go. New in this rebuild, we also build the app or workflow that collects and prepares the data in the first place, so good analysis no longer waits on messy spreadsheets.</p>
-<p class="prose-p">Most owners we work with have run their business for years and know the shop, the stock and the customers better than anyone. We don't pretend otherwise. Our job is to make that knowledge legible in the data, and put a clear next step in front of it.</p>
-<div class="sol-actions"><a class="btn btn-ink" href="case-studies.html">See the work</a><a class="btn btn-ghost" href="contact.html">Talk to us</a></div>
+<a href="case-studies.html">Case Studies</a><a href="pricing.html">Pricing</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav></header><main><section class="page-hero"><div class="wrap"><p class="eyebrow">Product &middot; AI Assistant</p><h1>Ask your data in plain English</h1><p class="lede">A governed assistant that answers business questions from your own data. It runs only a fixed set of approved, read-only queries, so it can explain patterns but can never expose or dump records.</p></div></section>
+<section class="section"><div class="wrap"><div class="sec-head"><p class="eyebrow">How it stays safe</p><h2>Helpful, but governed by design</h2></div>
+<div class="tiles">
+<div class="tile"><b>Approved questions only</b><p>A fixed toolset of pre-written queries. The assistant picks one; it never writes its own SQL.</p></div>
+<div class="tile"><b>Read-only</b><p>The connection cannot insert, update or delete. Writes are physically impossible.</p></div>
+<div class="tile"><b>No bulk export</b><p>It returns patterns and summaries, and refuses requests to dump full records.</p></div>
+<div class="tile"><b>Plain-language answers</b><p>Replies in clear business English, with the numbers behind them.</p></div>
+<div class="tile"><b>Your data only</b><p>Runs on the same prepared data behind your report and dashboard.</p></div>
+<div class="tile"><b>Runs anywhere</b><p>Lives in the browser over your committed database, no server required.</p></div>
+</div>
+<div class="sol-actions" style="justify-content:center;margin-top:30px"><a class="btn btn-gold" href="case-studies.html">See it in the case studies</a><a class="btn btn-ghost" href="pricing.html">See pricing</a></div>
 </div></section><section class="cta"><div class="wrap cta-in"><h2>Tell us the question. We'll tell you what's possible.</h2><a class="btn btn-ink" href="contact.html">Book a discovery call</a></div></section></main><footer class="foot"><div class="foot-grid">
 <div class="foot-brand"><div class="brand">Pau <span>Analytics</span></div><p class="motto">"Analytics that answers. AI that acts."</p><p class="fine">Turn your sales data into decisions about what to sell, how to price, and which customers to keep. For Malaysian SMEs.</p></div>
 <div class="foot-col"><h5>Solutions</h5><a href="increase-sales.html">Increase Sales</a><a href="improve-profit.html">Improve Profit</a><a href="understand-customers.html">Understand Customers</a></div>
