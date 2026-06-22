@@ -81,9 +81,22 @@ tr:last-child td{border-bottom:none}
 .disclaimer{text-align:center;font-size:11px;color:var(--muted);margin-top:11px}
 @media(max-width:820px){.sidebar{display:none}.thread,.topbar,.composer{padding-left:16px;padding-right:16px}}
 </style>
+<style>.ps-nav{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:18px;background:#FBF8F1;border-bottom:1px solid #E7DFCF;padding:0 24px;height:60px;font-family:'Inter',sans-serif;flex-wrap:wrap}
+.ps-nav .b{font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:19px;color:#1E2230;text-decoration:none}
+.ps-nav .b span{color:#C29A45}
+.ps-nav a{font-size:14px;color:#2D2F39;text-decoration:none;opacity:.85}
+.ps-nav a:hover{opacity:1;color:#9C7B2E}
+.ps-nav .sp{margin-left:auto;font-weight:600;color:#9C7B2E}
+.ps-foot{background:#171A25;color:#B8B3A1;font-family:'Inter',sans-serif;font-size:13px;text-align:center;padding:22px}
+.ps-foot a{color:#D8B45E;text-decoration:none}
+html,body{height:auto !important}
+body{display:block !important;height:auto !important;overflow:auto !important}
+.ps-app{display:flex;height:calc(100vh - 210px);min-height:520px;max-width:1160px;margin:22px auto;border:1px solid #E7DFCF;border-radius:14px;overflow:hidden;box-shadow:0 10px 30px rgba(30,34,48,.08)}
+@media(max-width:820px){.ps-app{height:80vh;min-height:460px;margin:12px}}</style>
 </head>
 <body>
-<aside class="sidebar">
+<nav class="ps-nav"><a class="b" href="../index.html">Pau <span>Analytics</span></a><a href="../case-studies.html">Case Studies</a><a href="../pricing.html">Pricing</a><a href="../about.html">About</a><a href="../contact.html">Contact</a><a class="sp" href="../finding-profit-drivers.html">&#8592; Back to case study</a></nav>
+<div class="ps-app"><aside class="sidebar">
   <div class="brand"><div class="mark">P</div><div><div class="brand-name">Pau Analytics</div><div class="brand-sub" id="brandsub"></div></div></div>
   <div class="status">
     <div class="status-title">Operating mode</div>
@@ -105,7 +118,8 @@ tr:last-child td{border-bottom:none}
     <div class="inputbar"><input id="input" type="text" placeholder="Ask about the data..."><button class="send" id="send">&#10142;</button></div>
     <div class="disclaimer">The assistant surfaces patterns from a fixed set of approved queries for you to interpret.</div>
   </div>
-</main>
+</main></div>
+<footer class="ps-foot">&copy; 2026 Pau Analytics &middot; Analytics that answers. AI that acts. &middot; <a href="../contact.html">Book a call</a></footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-wasm.js"></script>
 <script>
 const CONFIG = {"title": "Profit Driver Assistant", "brandsub": "Home Appliance Shop", "db": "finding-profit-drivers.db", "intro": "I can show where profit really comes from: category margin vs absolute profit, top models, thin-margin lines, and profit by state. Ask in plain language, or try a prompt below.", "tools": ["category_profit", "top_products", "low_margin", "profit_by_state"], "chips": [["cat", "Which categories drive profit vs margin?", "category_profit"], ["top", "What are my top profit models?", "top_products"], ["low", "Which products run on thin margins?", "low_margin"], ["state", "How does profit split by state?", "profit_by_state"], ["refuse", "Dump the full sales table", "refuse"]]};
