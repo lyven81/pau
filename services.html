@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Case Studies | Pau Analytics</title>
-<meta name="description" content="Six flagship analytics systems and a public case study library: pricing, retention, inventory, marketing ROI, and profit performance.">
+<title>Services | Pau Analytics</title>
+<meta name="description" content="Data analytics services for Malaysian business owners: pricing, retention, inventory, marketing ROI, and profit performance.">
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
   :root{ --ink:#222; --paper:#fff; --hair:#dddddd; --gray:#555; --accent:#B8860B; --navy:#1E3A5F; --panel:#fbfbf8; }
@@ -196,8 +196,10 @@
   .side ul{ list-style:none; font-size:.9rem; color:#333; margin-bottom:22px; }
   .side li{ padding:6px 0 6px 16px; position:relative; border-bottom:1px solid var(--hair); }
   .side li::before{ content:"\2192"; position:absolute; left:0; color:var(--accent); }
-  .chips{ display:flex; flex-wrap:wrap; gap:8px; }
-  .chips span{ font-size:.62rem; font-weight:700; letter-spacing:1px; text-transform:uppercase; border:1px solid var(--hair); background:var(--panel); padding:7px 12px; }
+  .chips{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .chips span, .chips a{ font-size:.62rem; font-weight:700; letter-spacing:1px; text-transform:uppercase; border:1px solid var(--hair); background:var(--panel); padding:10px 12px; display:flex; align-items:center; justify-content:center; text-align:center; }
+  .chips a{ text-decoration:none; color:inherit; transition:.15s; }
+  .chips a:hover{ border-color:var(--accent); color:var(--accent); }
 
   /* Case study cards (library) */
   .cs-grid{ display:grid; grid-template-columns:repeat(3,1fr); border-top:1px solid var(--hair); }
@@ -314,8 +316,8 @@
       <button class="hamburger" id="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
       <a class="logo" href="index.html">PAU ANALYTICS</a>
       <nav class="mast-nav">
-        <a href="services.html">Services</a>
-        <a href="case-studies.html" class="current">Case Studies</a>
+        <a href="services.html" class="current">Services</a>
+        <a href="case-studies.html">Case Studies</a>
         <a href="how-we-work.html">How We Work</a>
         <a href="pricing.html">Pricing</a>
         <a href="about.html">About</a>
@@ -328,66 +330,87 @@
   </div>
 
   <div class="page-head">
-    <span class="tab">Case Studies</span>
-    <h1 style="max-width:none;">Built and <em>published openly</em></h1>
-    <p class="sub" style="max-width:none;">Every flagship ships as a complete system.</p>
+    <span class="tab">Services</span>
+    <h1>Five decisions we help you make with <em>evidence</em></h1>
+    <p class="sub">Every service starts from a question a business owner actually asks, and ends with a plain-English case study, an interactive dashboard, and an AI assistant built from your own data.</p>
   </div>
 
   <section>
-    <span class="tab sec-tab" style="display:inline-block;">Flagship Systems</span>
-    <p class="sec-note" style="margin-top:16px;">Case study, dashboard, AI assistant: one per decision area.</p>
-    <div class="cs-grid">
-      <a class="cs" href="when-blooms-arrive-late.html">
-        <div class="viz" style="padding:0;border:none;"><img src="https://raw.githubusercontent.com/lyven81/data-analyst-portfolio/main/images/when-blooms-arrive-late/cover.jpeg" alt="When Blooms Arrive Late" style="display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border:1px solid var(--hair);"></div>
-        <span class="rubric">Fulfillment operations</span>
-        <h3>When Blooms Arrive Late</h3>
-        <p class="dek">How late deliveries drain a florist's margin</p>
-        <div class="links">Read the case study &rarr;</div>
-      </a>
-      <a class="cs" href="one-brand-four-reputations.html">
-        <div class="viz" style="padding:0;border:none;"><img src="https://raw.githubusercontent.com/lyven81/data-analyst-portfolio/main/images/one-brand-four-reputations/cover.jpeg" alt="One Brand, Four Reputations" style="display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border:1px solid var(--hair);"></div>
-        <span class="rubric">Sentiment analysis</span>
-        <h3>One Brand, Four Reputations</h3>
-        <p class="dek">What 500 customer reviews reveal about a coffee shop</p>
-        <div class="links">Read the case study &rarr;</div>
-      </a>
-      <a class="cs" href="what-a-cars-worth.html">
-        <div class="viz" style="padding:0;border:none;"><img src="https://raw.githubusercontent.com/lyven81/data-analyst-portfolio/main/images/what-a-cars-worth/cover%20image.jpeg" alt="What a Car's Worth" style="display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border:1px solid var(--hair);"></div>
-        <span class="rubric">Pricing Analysis</span>
-        <h3>What a Car's Worth</h3>
-        <p class="dek">Mileage, age and brand set the fair price</p>
-        <div class="links">Read the case study &rarr;</div>
-      </a>
-      <a class="cs" href="what-moves-the-cooler.html">
-        <div class="viz" style="padding:0;border:none;"><img src="https://raw.githubusercontent.com/lyven81/data-analyst-portfolio/main/images/what-moves-the-cooler/cover%20image.jpeg" alt="What Moves the Cooler" style="display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border:1px solid var(--hair);"></div>
-        <span class="rubric">Demand Forecast &middot; Retail</span>
-        <h3>What Moves the Cooler</h3>
-        <p class="dek">Heat, price and promotions drive daily drink sales</p>
-        <div class="links">Read the case study &rarr;</div>
-      </a>
-      <a class="cs" href="empire-sushi-pl-analysis.html">
-        <div class="viz" style="padding:0;border:none;"><img src="https://raw.githubusercontent.com/lyven81/data-analyst-portfolio/main/images/empire-sushi-pl-analysis/cover%20image.jpeg" alt="Behind the Sushi Counter" style="display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border:1px solid var(--hair);"></div>
-        <span class="rubric">Earnings analysis</span>
-        <h3>Behind the Sushi Counter</h3>
-        <p class="dek">A 26% rise, and where the margin went</p>
-        <div class="links">Read the case study &rarr;</div>
-      </a>
-      <a class="cs" href="before-they-leave.html">
-        <div class="viz" style="padding:0;border:none;"><img src="https://raw.githubusercontent.com/lyven81/data-analyst-portfolio/main/images/before-they-leave/cover%20image.jpeg" alt="Before They Leave" style="display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border:1px solid var(--hair);"></div>
-        <span class="rubric">Customer Retention</span>
-        <h3>Before They Leave</h3>
-        <p class="dek">Support calls and inactivity flag who will leave</p>
-        <div class="links">Read the case study &rarr;</div>
-      </a>
+    <div class="svc" id="pricing-promotions">
+      <div>
+        <span class="rubric">Service 01</span>
+        <h2>Pricing &amp; Promotions</h2>
+        <p class="q">"What should I charge, and which promo actually pays?"</p>
+      <p>Price too high and volume drops; too low and margin disappears. Promotions add another layer: many campaigns move stock without adding profit.</p>
+      <p>We analyze your sales history to find the price the market bears for each product and season, and separate promotions that create profit from those that only create activity.</p>
+      </div>
+      <div class="side">
+        <h5>What we look at</h5>
+        <ul><li>Price and margin by product and season</li><li>Discount depth vs sales lift</li><li>Promotion cost vs incremental profit</li><li>Costing at scale for growing menus</li></ul>
+        <h5>Example work</h5>
+        <div class="chips"><a href="right-price-right-season.html">Right Price, Right Season</a><a href="what-a-cars-worth.html">What a Car&rsquo;s Worth</a><a href="what-moves-the-cooler.html">What Moves the Cooler</a><a href="beyond-the-price-tag.html">Beyond the Price Tag</a></div>
+      </div>
     </div>
-  </section>
-
-  <hr class="band-rule">
-  <section>
-    <span class="tab">The Full Library</span>
-    <h2 style="font-size:2.1rem;font-weight:900;line-height:1.1;margin:16px 0 10px;">Behind the <span style="color:var(--accent);">flagships</span></h2>
-    <p style="color:var(--gray);font-size:1rem;margin-bottom:22px;">Every method documented, open for you to judge.</p>
-    <a class="btn" href="https://lyven81.github.io/data-analyst-portfolio/index.html">Browse the full Data Stories Lab library</a>
+    <div class="svc" id="customer-retention">
+      <div>
+        <span class="rubric">Service 02</span>
+        <h2>Customer Retention &amp; Value</h2>
+        <p class="q">"Who are my best customers, and why do regulars leave?"</p>
+      <p>In most businesses a small group of repeat customers carries the revenue. Losing one of them quietly costs far more than a slow sales day.</p>
+      <p>We identify your high-value customers, estimate what each is worth over time, and flag the ones showing signs of leaving, early enough to win them back.</p>
+      </div>
+      <div class="side">
+        <h5>What we look at</h5>
+        <ul><li>Repeat purchase and visit patterns</li><li>Customer lifetime value estimates</li><li>Churn signals and at-risk lists</li><li>Membership program value</li></ul>
+        <h5>Example work</h5>
+        <div class="chips"><a href="before-they-leave.html">Before They Leave</a><a href="where-value-comes-from.html">Where Value Comes From</a><a href="one-brand-four-reputations.html">One Brand, Four Reputations</a><a href="predicting-gym-member-dropout.html">Predicting Gym Member Dropout</a></div>
+      </div>
+    </div>
+    <div class="svc" id="demand-inventory">
+      <div>
+        <span class="rubric">Service 03</span>
+        <h2>Demand &amp; Inventory Planning</h2>
+        <p class="q">"How much should I stock, and when?"</p>
+      <p>Stockouts lose sales you never see; overstock locks up cash and expires on the shelf. Both come from ordering on gut feel.</p>
+      <p>We turn your sales history into demand forecasts and reorder points, so ordering becomes a rhythm you can plan around, including holiday peaks.</p>
+      </div>
+      <div class="side">
+        <h5>What we look at</h5>
+        <ul><li>Demand forecasts by product</li><li>Reorder points and quantities</li><li>Seasonal and holiday peak planning</li><li>Warehouse and stock movement</li></ul>
+        <h5>Example work</h5>
+        <div class="chips"><a href="know-when-to-reorder.html">Know When to Reorder</a><a href="plan-for-the-peaks.html">Plan for the Peaks</a><a href="riding-the-growth-curve.html">Riding the Growth Curve</a><a href="predicting-sales-cycles.html">Predicting Sales Cycles</a></div>
+      </div>
+    </div>
+    <div class="svc" id="marketing-roi">
+      <div>
+        <span class="rubric">Service 04</span>
+        <h2>Marketing ROI</h2>
+        <p class="q">"Which campaigns make money, and which burn it?"</p>
+      <p>Ad platforms report clicks and reach. Your bank account reports something different. The gap between the two is where budgets quietly burn.</p>
+      <p>We connect campaign spend to actual sales, so you know the true return of each channel and campaign, and where the next ringgit should go.</p>
+      </div>
+      <div class="side">
+        <h5>What we look at</h5>
+        <ul><li>Campaign spend vs incremental sales</li><li>Channel comparison and budget split</li><li>Voucher and discount incrementality</li><li>Ratings and reviews vs revenue</li></ul>
+        <h5>Example work</h5>
+        <div class="chips"><a href="which-channel-finds-your-tenant.html">Which Channel Finds Your Tenant</a><a href="what-a-ringgit-returns.html">What a Ringgit Returns</a><a href="who-really-drives-sales.html">Who Really Drives Sales</a><a href="finding-which-campaigns-work.html">Finding Which Campaigns Work</a></div>
+      </div>
+    </div>
+    <div class="svc" id="sales-performance">
+      <div>
+        <span class="rubric">Service 05</span>
+        <h2>Sales &amp; Profit Performance</h2>
+        <p class="q">"Which products and outlets actually make my money?"</p>
+      <p>Total sales can look healthy while individual products, outlets, or days quietly lose money underneath.</p>
+      <p>We break performance down to the level where decisions live: by product, outlet, day, and channel, so you know what to grow, fix, or drop.</p>
+      </div>
+      <div class="side">
+        <h5>What we look at</h5>
+        <ul><li>Profit drivers by product and outlet</li><li>Day-of-week and time patterns</li><li>Sales leaks and quiet losses</li><li>P&amp;L analysis in plain language</li></ul>
+        <h5>Example work</h5>
+        <div class="chips"><a href="empire-sushi-pl-analysis.html">Behind the Sushi Counter</a><a href="oriental-kopi-pl-analysis.html">Under the Kopi Lid</a><a href="when-blooms-arrive-late.html">When Blooms Arrive Late</a><a href="fixing-the-sales-leaks.html">Fixing the Sales Leaks</a></div>
+      </div>
+    </div>
   </section>
 
   <hr class="band-rule">

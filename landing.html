@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Case Studies | Pau Analytics</title>
-<meta name="description" content="Six flagship analytics systems and a public case study library: pricing, retention, inventory, marketing ROI, and profit performance.">
+<title>Get Answers From Your Own Business Data | Pau Analytics</title>
+<meta name="description" content="Send the question you are stuck on. A real data analyst reads your own numbers and returns the answer in plain language, within one week.">
+<meta name="robots" content="noindex">
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
   :root{ --ink:#222; --paper:#fff; --hair:#dddddd; --gray:#555; --accent:#B8860B; --navy:#1E3A5F; --panel:#fbfbf8; }
@@ -13,8 +14,6 @@
   a{ color:inherit; text-decoration:none; }
 
   /* Masthead (DSL) */
-  .topbar{ position:sticky; top:0; z-index:120; background:#fff; box-shadow:0 1px 6px rgba(0,0,0,.06); }
-  body.embed .topbar{ box-shadow:none; }
   .masthead{ display:flex; align-items:center; justify-content:space-between; padding:14px 28px; max-width:1240px; margin:0 auto; gap:18px; }
   .mast-left{ display:flex; align-items:center; gap:20px; }
   .logo{ background:#222; color:#fff; font-weight:700; letter-spacing:3px; font-size:.95rem; padding:8px 12px; white-space:nowrap; }
@@ -291,126 +290,271 @@
     .engage h2{ font-size:1.7rem; }
   }
   @media (max-width:560px){ .plans{ grid-template-columns:1fr; } }
+
+  /* Landing-only */
+  .land-mast{ display:flex; align-items:center; justify-content:space-between; padding:14px 28px; max-width:1240px; margin:0 auto; }
+  .wa-top{ font-size:.62rem; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; border:1px solid #222; padding:9px 16px; }
+  .wa-top:hover{ background:#222; color:#fff; }
+  .wa-float{ position:fixed; right:20px; bottom:20px; z-index:300; background:#25D366; color:#fff; font-weight:700; font-size:.72rem; letter-spacing:1px; text-transform:uppercase; padding:14px 20px; box-shadow:0 6px 18px rgba(0,0,0,.25); }
+  .wa-float:hover{ background:#1ebe5b; }
+  .trust-line{ margin-top:18px; font-size:.72rem; letter-spacing:1px; text-transform:uppercase; color:var(--gray); }
+  .trust-line b{ color:var(--accent); }
+  .form-wrap{ display:grid; grid-template-columns:1.05fr .95fr; gap:44px; align-items:start; }
+  .form-wrap .panel{ max-width:none; }
+  .privacy-note{ font-size:.78rem; color:var(--gray); font-style:italic; margin-top:-8px; }
+  @media (max-width:900px){
+    .form-wrap{ grid-template-columns:1fr; gap:28px; }
+    .wa-float{ right:12px; bottom:12px; padding:12px 16px; }
+  }
 </style>
 </head>
 <body>
 
-  <div class="overlay" id="overlay"></div>
-  <nav class="drawer" id="drawer">
-    <button class="drawer-close" id="drawerClose" aria-label="Close menu">&times;</button>
-    <a href="index.html">Home</a>
-    <a href="services.html">Services</a>
-    <a href="case-studies.html">Case Studies</a>
-    <a href="how-we-work.html">How We Work</a>
-    <a href="pricing.html">Pricing</a>
-    <a href="about.html">About</a>
-    <a href="contact.html">Contact</a>
-        <a href="faq.html">FAQ</a>
-  </nav>
-
-  <div class="topbar">
-  <div class="masthead">
-    <div class="mast-left">
-      <button class="hamburger" id="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
-      <a class="logo" href="index.html">PAU ANALYTICS</a>
-      <nav class="mast-nav">
-        <a href="services.html">Services</a>
-        <a href="case-studies.html" class="current">Case Studies</a>
-        <a href="how-we-work.html">How We Work</a>
-        <a href="pricing.html">Pricing</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
-        <a href="faq.html">FAQ</a>
-      </nav>
-    </div>
+  <!-- MINIMAL MASTHEAD: no nav, no exits -->
+  <div class="land-mast">
+    <span class="logo">PAU ANALYTICS</span>
+    <a class="wa-top" href="https://wa.me/60149207099?text=I%27d%20like%20to%20discuss%20a%20data%20analytics%20project">WhatsApp Us</a>
   </div>
   <hr class="rule-top">
-  </div>
 
-  <div class="page-head">
-    <span class="tab">Case Studies</span>
-    <h1 style="max-width:none;">Built and <em>published openly</em></h1>
-    <p class="sub" style="max-width:none;">Every flagship ships as a complete system.</p>
-  </div>
-
+  <!-- HERO -->
   <section>
-    <span class="tab sec-tab" style="display:inline-block;">Flagship Systems</span>
-    <p class="sec-note" style="margin-top:16px;">Case study, dashboard, AI assistant: one per decision area.</p>
-    <div class="cs-grid">
-      <a class="cs" href="when-blooms-arrive-late.html">
-        <div class="viz" style="padding:0;border:none;"><img src="https://raw.githubusercontent.com/lyven81/data-analyst-portfolio/main/images/when-blooms-arrive-late/cover.jpeg" alt="When Blooms Arrive Late" style="display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border:1px solid var(--hair);"></div>
-        <span class="rubric">Fulfillment operations</span>
-        <h3>When Blooms Arrive Late</h3>
-        <p class="dek">How late deliveries drain a florist's margin</p>
-        <div class="links">Read the case study &rarr;</div>
-      </a>
-      <a class="cs" href="one-brand-four-reputations.html">
-        <div class="viz" style="padding:0;border:none;"><img src="https://raw.githubusercontent.com/lyven81/data-analyst-portfolio/main/images/one-brand-four-reputations/cover.jpeg" alt="One Brand, Four Reputations" style="display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border:1px solid var(--hair);"></div>
-        <span class="rubric">Sentiment analysis</span>
-        <h3>One Brand, Four Reputations</h3>
-        <p class="dek">What 500 customer reviews reveal about a coffee shop</p>
-        <div class="links">Read the case study &rarr;</div>
-      </a>
-      <a class="cs" href="what-a-cars-worth.html">
-        <div class="viz" style="padding:0;border:none;"><img src="https://raw.githubusercontent.com/lyven81/data-analyst-portfolio/main/images/what-a-cars-worth/cover%20image.jpeg" alt="What a Car's Worth" style="display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border:1px solid var(--hair);"></div>
-        <span class="rubric">Pricing Analysis</span>
-        <h3>What a Car's Worth</h3>
-        <p class="dek">Mileage, age and brand set the fair price</p>
-        <div class="links">Read the case study &rarr;</div>
-      </a>
-      <a class="cs" href="what-moves-the-cooler.html">
-        <div class="viz" style="padding:0;border:none;"><img src="https://raw.githubusercontent.com/lyven81/data-analyst-portfolio/main/images/what-moves-the-cooler/cover%20image.jpeg" alt="What Moves the Cooler" style="display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border:1px solid var(--hair);"></div>
-        <span class="rubric">Demand Forecast &middot; Retail</span>
-        <h3>What Moves the Cooler</h3>
-        <p class="dek">Heat, price and promotions drive daily drink sales</p>
-        <div class="links">Read the case study &rarr;</div>
-      </a>
-      <a class="cs" href="empire-sushi-pl-analysis.html">
-        <div class="viz" style="padding:0;border:none;"><img src="https://raw.githubusercontent.com/lyven81/data-analyst-portfolio/main/images/empire-sushi-pl-analysis/cover%20image.jpeg" alt="Behind the Sushi Counter" style="display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border:1px solid var(--hair);"></div>
-        <span class="rubric">Earnings analysis</span>
-        <h3>Behind the Sushi Counter</h3>
-        <p class="dek">A 26% rise, and where the margin went</p>
-        <div class="links">Read the case study &rarr;</div>
-      </a>
-      <a class="cs" href="before-they-leave.html">
-        <div class="viz" style="padding:0;border:none;"><img src="https://raw.githubusercontent.com/lyven81/data-analyst-portfolio/main/images/before-they-leave/cover%20image.jpeg" alt="Before They Leave" style="display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border:1px solid var(--hair);"></div>
-        <span class="rubric">Customer Retention</span>
-        <h3>Before They Leave</h3>
-        <p class="dek">Support calls and inactivity flag who will leave</p>
-        <div class="links">Read the case study &rarr;</div>
-      </a>
+    <div class="hero-grid" style="padding-top:20px;">
+      <div>
+        <span class="tab">For Business Owners &middot; Malaysia</span>
+        <h1 style="margin-top:18px;">You have the data. The decisions are still <em>guesses</em>.</h1>
+        <p class="dek">Send us the question you are stuck on. A real data analyst reads your own numbers and returns the answer in plain language, within one week.</p>
+        <div class="cta-row">
+          <a class="btn" href="#form">Get your answer</a>
+          <a class="btn ghost" href="https://wa.me/60149207099?text=I%27d%20like%20to%20discuss%20a%20data%20analytics%20project">WhatsApp us instead</a>
+        </div>
+        <p class="trust-line">Reply within <b>24 hours</b> &middot; Findings within <b>one week</b> &middot; No new software</p>
+      </div>
+      <div class="dash" role="img" aria-label="Sample analytics dashboard">
+        <div class="bar"><span>Profit &amp; Performance Review</span><span>Sample deliverable</span></div>
+        <div class="body">
+          <div class="kpis">
+            <div class="kpi"><b>RM486k</b><span>Quarter revenue</span></div>
+            <div class="kpi up"><b>+9.2%</b><span>Margin upside</span></div>
+            <div class="kpi down"><b>RM128k</b><span>At-risk revenue</span></div>
+          </div>
+          <div class="chart-label">Revenue vs margin, by month</div>
+          <svg viewBox="0 0 320 118" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <line x1="0" y1="100" x2="320" y2="100" stroke="#dddddd" stroke-width="1"/>
+            <line x1="0" y1="60" x2="320" y2="60" stroke="#eeeeee" stroke-width="1"/>
+            <line x1="0" y1="20" x2="320" y2="20" stroke="#eeeeee" stroke-width="1"/>
+            <rect x="14" y="58" width="26" height="42" fill="#1E3A5F"/>
+            <rect x="66" y="44" width="26" height="56" fill="#1E3A5F"/>
+            <rect x="118" y="52" width="26" height="48" fill="#1E3A5F"/>
+            <rect x="170" y="30" width="26" height="70" fill="#1E3A5F"/>
+            <rect x="222" y="38" width="26" height="62" fill="#1E3A5F"/>
+            <rect x="274" y="18" width="26" height="82" fill="#1E3A5F"/>
+            <polyline points="27,72 79,62 131,68 183,48 235,40 287,28" fill="none" stroke="#B8860B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="27" cy="72" r="3" fill="#B8860B"/><circle cx="79" cy="62" r="3" fill="#B8860B"/>
+            <circle cx="131" cy="68" r="3" fill="#B8860B"/><circle cx="183" cy="48" r="3" fill="#B8860B"/>
+            <circle cx="235" cy="40" r="3" fill="#B8860B"/><circle cx="287" cy="28" r="3" fill="#B8860B"/>
+          </svg>
+          <div class="legend">
+            <span><i style="background:#1E3A5F"></i>Revenue</span>
+            <span><i style="background:#B8860B"></i>Margin %</span>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
+  <!-- PAIN -->
   <hr class="band-rule">
   <section>
-    <span class="tab">The Full Library</span>
-    <h2 style="font-size:2.1rem;font-weight:900;line-height:1.1;margin:16px 0 10px;">Behind the <span style="color:var(--accent);">flagships</span></h2>
-    <p style="color:var(--gray);font-size:1rem;margin-bottom:22px;">Every method documented, open for you to judge.</p>
-    <a class="btn" href="https://lyven81.github.io/data-analyst-portfolio/index.html">Browse the full Data Stories Lab library</a>
+    <span class="tab sec-tab" style="display:inline-block;">Sound Familiar?</span>
+    <div class="quotes" style="margin-top:20px;">
+      <div class="principle"><p>"Sales look fine, but the bank balance says otherwise. Where is the money going?"</p></div>
+      <div class="principle"><p>"I ran three promotions last quarter. I honestly cannot tell you which one made money."</p></div>
+      <div class="principle"><p>"My best customers just quietly stopped coming, and I only noticed months later."</p></div>
+      <div class="principle"><p>"I order stock by feel. Some weeks the shelf is empty, some months the storeroom is full."</p></div>
+    </div>
+    <p class="fine">Your data can answer these. <a href="#form">Ask your question below.</a></p>
   </section>
 
+  <!-- WHAT YOU RECEIVE -->
   <hr class="band-rule">
-  <section class="engage" id="contact">
-    <span class="tab">Engage</span>
-    <h2>Bring us the decision you are <em>stuck on</em></h2>
-    <p>One short conversation, and we will tell you whether your data can answer it, and what the analysis would look like.</p>
-    <a class="btn" href="mailto:admin@pauanalytics.com">Contact Pau Analytics</a>
-    <p class="mail">or email <a href="mailto:admin@pauanalytics.com">admin@pauanalytics.com</a> &middot; Kuala Lumpur, Malaysia</p>
+  <section>
+    <span class="tab sec-tab" style="display:inline-block;">What You Receive</span>
+    <p class="sec-note" style="margin-top:16px;">One finding, three instruments, built from your own numbers.</p>
+    <div class="sys3">
+      <div class="sys">
+        <span class="rubric">Instrument 1</span>
+        <h4>Case Study</h4>
+        <p>The full analysis in plain language: what we found, how we found it, and what to do about it. Written for the owner, not the analyst.</p>
+      </div>
+      <div class="sys">
+        <span class="rubric">Instrument 2</span>
+        <h4>Dashboard</h4>
+        <p>A live view of your key numbers. Filter by product, month, and outlet. Updated as new data arrives.</p>
+      </div>
+      <div class="sys">
+        <span class="rubric">Instrument 3</span>
+        <h4>AI Assistant</h4>
+        <p>Ask follow-up questions in plain words. The assistant runs only approved queries on a read-only copy of your data.</p>
+      </div>
+    </div>
   </section>
+
+  <!-- HOW IT WORKS -->
+  <hr class="band-rule">
+  <section>
+    <span class="tab sec-tab" style="display:inline-block;">How It Works</span>
+    <p class="sec-note" style="margin-top:16px;max-width:none;">From your first message to findings walkthrough within one week.</p>
+    <div class="steps3">
+      <div class="step">
+        <span class="rubric">Step 1</span>
+        <h4>Send your question</h4>
+        <p>Use the form below or WhatsApp. Describe your business and the decision you are stuck on. Reply within 24 hours.</p>
+      </div>
+      <div class="step">
+        <span class="rubric">Step 2</span>
+        <h4>Free scope call</h4>
+        <p>A short conversation to confirm your data can answer the question. If it cannot, we say so plainly, at no charge.</p>
+      </div>
+      <div class="step">
+        <span class="rubric">Step 3</span>
+        <h4>Findings in one week</h4>
+        <p>You send the data exports you already have. We return the findings, explained in plain language, within one week.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROOF -->
+  <hr class="band-rule">
+  <section>
+    <div class="proof-grid">
+      <div>
+        <span class="tab">Real Finding</span>
+        <h2 style="font-size:2.1rem;font-weight:900;line-height:1.1;margin:16px 0 14px;">A florist was losing revenue and could not see where</h2>
+        <p style="color:#333;font-size:.98rem;margin-bottom:12px;max-width:56ch;">Late deliveries were quietly triggering refunds. We took her own order and delivery records, found the leak, and built the system so she could watch it every week.</p>
+        <a class="btn" href="#form" style="margin-top:8px;">Find your leak</a>
+      </div>
+      <div class="navy-panel">
+        <div class="big"><em>11%</em></div>
+        <div class="big-sub">of revenue lost to refunds on late deliveries, found in her own data</div>
+        <div class="kpis">
+          <div class="kpi"><b>3 zones</b><span>flagged as delay hot spots</span></div>
+          <div class="kpi"><b>1 week</b><span>from data to findings</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <hr class="band-rule">
+  <section>
+    <span class="tab sec-tab" style="display:inline-block;">Pricing</span>
+    <p class="sec-note" style="margin-top:16px;">Clear packages, no hidden scope, no lock-in. Prices in Malaysian Ringgit.</p>
+    <div class="plans">
+      <div class="plan">
+        <div class="nm">Business Diagnostic</div>
+        <div class="amt">RM3,500<small> one-off</small></div>
+        <div class="for">One big question, answered once</div>
+        <ul>
+          <li>Deep dive on one decision area</li>
+          <li>Full written case study and findings</li>
+          <li>Findings walkthrough call</li>
+          <li>Recommendations you can act on</li>
+        </ul>
+        <a class="btn ghost" href="#form">Enquire</a>
+      </div>
+      <div class="plan featured">
+        <span class="flag">Most Popular</span>
+        <div class="nm">Growth Tracker</div>
+        <div class="amt">RM1,500<small> / month</small></div>
+        <div class="for">For businesses actively growing</div>
+        <ul>
+          <li>Monthly analyst report, in plain language</li>
+          <li>Interactive dashboard, kept live</li>
+          <li>Campaign and promo tracking</li>
+          <li>Quarterly deep-dive session</li>
+        </ul>
+        <a class="btn" href="#form">Enquire</a>
+      </div>
+      <div class="plan">
+        <div class="nm">Full Analytics Partner</div>
+        <div class="amt">RM2,250<small> / month</small></div>
+        <div class="for">For owners who want it handled</div>
+        <ul>
+          <li>Everything in Growth Tracker</li>
+          <li>AI assistant on your data</li>
+          <li>Priority questions, answered fast</li>
+        </ul>
+        <a class="btn ghost" href="#form">Enquire</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- OBJECTIONS -->
+  <hr class="band-rule">
+  <section>
+    <span class="tab sec-tab" style="display:inline-block;">Before You Ask</span>
+    <div class="faqs" style="margin-top:20px;">
+      <details>
+        <summary>My data is messy and lives in different places. Can you still work with it?</summary>
+        <div class="a">Yes. Most projects start with exports from a POS system, accounting software, an e-commerce platform, or plain Excel files. Cleaning and combining them is the first step of every project, and it is included in the price.</div>
+      </details>
+      <details>
+        <summary>Do I need to buy new software or hire a data team?</summary>
+        <div class="a">No. We work with what you already have. Deliverables open in a browser or in Excel, and nothing new is installed on your side.</div>
+      </details>
+      <details>
+        <summary>Is my business data safe?</summary>
+        <div class="a">Yes. Only the analyst on your project sees your data. The AI assistant runs only approved queries against a read-only copy, and nothing is published without full anonymization.</div>
+      </details>
+      <details>
+        <summary>What if my data cannot answer my question?</summary>
+        <div class="a">We check this at the free scope call, before you commit. If the data cannot support the question, we tell you plainly and suggest what to start collecting, at no charge.</div>
+      </details>
+    </div>
+  </section>
+
+  <!-- FORM -->
+  <hr class="band-rule">
+  <section id="form">
+    <span class="tab sec-tab" style="display:inline-block;">Ask Your Question</span>
+    <p class="sec-note" style="margin-top:16px;max-width:none;">Reply within 24 hours. Free scope call, no obligation.</p>
+    <div class="form-wrap">
+      <form action="https://formsubmit.co/admin@pauanalytics.com" method="post" class="panel">
+        <h3>Send a message</h3>
+
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" placeholder="Your full name" required>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="Your email address" required>
+
+        <label for="business">Your business</label>
+        <input type="text" id="business" name="business" placeholder="e.g. online store, cafe chain, clinic" required>
+
+        <label for="message">The question you are stuck on</label>
+        <textarea id="message" name="message" rows="5" placeholder="e.g. which promotion actually made money, why regulars stop coming back, how much stock to order" required></textarea>
+
+        <button type="submit" class="btn">Get your answer</button>
+        <p class="privacy-note" style="margin-top:14px;">Your details are used only to reply to your enquiry. Never shared, never added to a list.</p>
+      </form>
+
+      <div>
+        <div class="panel alt info">
+          <h3>Prefer WhatsApp?</h3>
+          <p>Send the same question over WhatsApp and get a reply from the analyst directly.</p>
+          <p style="margin-top:14px;"><a class="btn" href="https://wa.me/60149207099?text=I%27d%20like%20to%20discuss%20a%20data%20analytics%20project">Message on WhatsApp</a></p>
+          <p class="note">Most messages get a reply the same day.</p>
+        </div>
+        <div class="principle">
+          <p>We read the numbers you already collect and return the one finding that changes a decision.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <a class="wa-float" href="https://wa.me/60149207099?text=I%27d%20like%20to%20discuss%20a%20data%20analytics%20project" aria-label="Message us on WhatsApp">WhatsApp</a>
 
   <footer>&copy; 2026 Pau Analytics | Data-Driven Solutions</footer>
-
-<script>
-  const drawer=document.getElementById('drawer'), overlay=document.getElementById('overlay');
-  const openMenu=()=>{ drawer.classList.add('open'); overlay.classList.add('open'); };
-  const closeMenu=()=>{ drawer.classList.remove('open'); overlay.classList.remove('open'); };
-  document.getElementById('hamburger').addEventListener('click', openMenu);
-  document.getElementById('drawerClose').addEventListener('click', closeMenu);
-  overlay.addEventListener('click', closeMenu);
-  drawer.querySelectorAll('a').forEach(a=>a.addEventListener('click', closeMenu));
-  document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeMenu(); });
-</script>
-
 </body>
 </html>

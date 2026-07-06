@@ -1,38 +1,390 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contact | Pau Analytics</title><meta name="description" content="Tell us the question. We'll tell you what's possible.">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css"></head><body><header class="masthead"><div class="bar">
-<a class="brand" href="index.html">Pau <span>Analytics</span></a>
-<nav class="nav" aria-label="Primary">
-<a href="index.html" class="top-link">Home</a>
-<div class="drop"><a href="solutions.html" class="drop-trig" aria-haspopup="true">Solutions<svg viewBox="0 0 10 6" width="10" height="6"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
-<div class="drop-menu" role="menu"><a href="increase-sales.html">Increase Sales<span>What should I sell more of?</span></a><a href="improve-profit.html">Improve Profit<span>What actually drives profit?</span></a><a href="understand-customers.html">Understand Customers<span>Which customers matter most?</span></a></div></div>
-<div class="drop"><a href="products.html" class="drop-trig" aria-haspopup="true">Products<svg viewBox="0 0 10 6" width="10" height="6"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
-<div class="drop-menu" role="menu"><a href="analyst-report.html">Analyst Report<span>The finding, in plain language</span></a><a href="dashboard.html">Dashboard<span>Performance at a glance</span></a><a href="ai-assistant.html">AI Assistant<span>Ask in plain English</span></a></div></div>
-<a href="case-studies.html" class="top-link">Case Studies</a>
-<a href="pricing.html" class="top-link">Pricing</a>
-<a href="about.html" class="top-link">About</a>
-<a href="contact.html" class="top-link active">Contact</a>
-</nav>
-<a class="bar-cta" href="contact.html">Book a call</a>
-<button class="menu-btn" aria-label="Menu" aria-expanded="false" onclick="const o=document.body.classList.toggle('nav-open');this.setAttribute('aria-expanded',o)">Menu</button>
-</div>
-<nav class="mobile-nav" aria-label="Mobile"><a href="index.html">Home</a>
-<span class="m-head">Solutions</span><a class="m-sub" href="increase-sales.html">Increase Sales</a><a class="m-sub" href="improve-profit.html">Improve Profit</a><a class="m-sub" href="understand-customers.html">Understand Customers</a>
-<span class="m-head">Products</span><a class="m-sub" href="analyst-report.html">Analyst Report</a><a class="m-sub" href="dashboard.html">Dashboard</a><a class="m-sub" href="ai-assistant.html">AI Assistant</a>
-<a href="case-studies.html">Case Studies</a><a href="pricing.html">Pricing</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav></header><main><section class="page-hero"><div class="wrap"><p class="eyebrow">Contact</p><h1>Let's talk about your data</h1></div></section>
-<section class="section"><div class="wrap contact-grid">
-<div><h2 style="font-size:24px;margin-bottom:8px">Reach us</h2>
-<div class="cc"><div class="k">WhatsApp (recommended)</div><div class="v"><a href="https://wa.me/60149207099">+60 14-920 7099</a></div></div>
-<div class="cc"><div class="k">Email</div><div class="v"><a href="mailto:admin@pauanalytics.com">admin@pauanalytics.com</a></div></div>
-<a class="btn btn-gold" href="https://wa.me/60149207099" style="margin-top:6px">Message us on WhatsApp</a></div>
-<div><h2 style="font-size:24px;margin-bottom:8px">What to expect</h2>
-<p class="prose-p">Tell us the business question and what data you have, your till export, a spreadsheet, an order log. We will tell you what is possible and which service fits: a single instrument or the full package.</p>
-<p class="prose-p">You own your insights, and your data stays yours.</p></div>
-</div></section></main><footer class="foot"><div class="foot-grid">
-<div class="foot-brand"><div class="brand">Pau <span>Analytics</span></div><p class="motto">"Analytics that answers. AI that acts."</p><p class="fine">Turn your sales data into decisions about what to sell, how to price, and which customers to keep. For Malaysian SMEs.</p></div>
-<div class="foot-col"><h5>Solutions</h5><a href="increase-sales.html">Increase Sales</a><a href="improve-profit.html">Improve Profit</a><a href="understand-customers.html">Understand Customers</a></div>
-<div class="foot-col"><h5>Products</h5><a href="analyst-report.html">Analyst Report</a><a href="dashboard.html">Dashboard</a><a href="ai-assistant.html">AI Assistant</a></div>
-<div class="foot-col"><h5>Company</h5><a href="case-studies.html">Case Studies</a><a href="pricing.html">Pricing</a><a href="about.html">About</a><a href="contact.html">Contact</a></div>
-</div><div class="foot-base"><span>&copy; 2026 Pau Analytics</span></div></footer></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact | Pau Analytics</title>
+<meta name="description" content="Get in touch about a data analytics project: analyst case studies, dashboards, AI assistants. Direct line, fast reply.">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root{ --ink:#222; --paper:#fff; --hair:#dddddd; --gray:#555; --accent:#B8860B; --navy:#1E3A5F; --panel:#fbfbf8; }
+  html{ scroll-behavior:smooth; }
+  body{ background:var(--paper); color:var(--ink); font-family:Arial, Helvetica, sans-serif; line-height:1.6; overflow-x:hidden; }
+  a{ color:inherit; text-decoration:none; }
+
+  /* Masthead (DSL) */
+  .topbar{ position:sticky; top:0; z-index:120; background:#fff; box-shadow:0 1px 6px rgba(0,0,0,.06); }
+  body.embed .topbar{ box-shadow:none; }
+  .masthead{ display:flex; align-items:center; justify-content:space-between; padding:14px 28px; max-width:1240px; margin:0 auto; gap:18px; }
+  .mast-left{ display:flex; align-items:center; gap:20px; }
+  .logo{ background:#222; color:#fff; font-weight:700; letter-spacing:3px; font-size:.95rem; padding:8px 12px; white-space:nowrap; }
+  .mast-nav{ display:flex; gap:20px; font-size:.72rem; letter-spacing:1.4px; text-transform:uppercase; }
+  .mast-nav a:hover{ color:var(--accent); }
+  .mast-nav a.current{ color:var(--accent); }
+  .hamburger{ display:none; flex-direction:column; gap:4px; background:none; border:none; cursor:pointer; padding:6px; }
+  .hamburger span{ width:22px; height:2px; background:#222; display:block; }
+  .rule-top{ border:none; border-top:3px solid #222; max-width:1240px; margin:0 auto; }
+
+  /* Drawer (DSL) */
+  .drawer{ position:fixed; top:0; left:-300px; width:280px; height:100vh; background:#fff; z-index:200; box-shadow:2px 0 14px rgba(0,0,0,.15); transition:left .28s ease; padding:74px 26px 26px; }
+  .drawer.open{ left:0; }
+  .drawer a{ display:block; font-size:.82rem; letter-spacing:1.2px; text-transform:uppercase; padding:14px 0; border-bottom:1px solid var(--hair); }
+  .overlay{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:150; }
+  .overlay.open{ display:block; }
+  .drawer-close{ position:absolute; top:20px; right:20px; font-size:1.4rem; background:none; border:none; cursor:pointer; }
+
+  /* Shared type bits (DSL) */
+  .tab{ display:inline-block; background:#222; color:#fff; font-weight:700; font-size:.66rem; letter-spacing:2px; text-transform:uppercase; padding:6px 12px; }
+  .rubric{ font-size:.64rem; font-weight:700; letter-spacing:1.6px; text-transform:uppercase; display:block; color:var(--accent); }
+  .dek{ font-style:italic; font-size:1.02rem; color:#333; }
+  .links{ font-size:.58rem; letter-spacing:1px; text-transform:uppercase; margin-top:10px; color:var(--gray); }
+  .links a:hover{ color:var(--accent); }
+
+  /* Buttons (DSL contact page) */
+  .btn{ display:inline-block; font-weight:700; font-size:.7rem; letter-spacing:1.6px; text-transform:uppercase; padding:14px 26px; border:1px solid #222; background:#222; color:#fff; cursor:pointer; transition:.15s; }
+  .btn:hover{ background:var(--accent); border-color:var(--accent); color:#fff; }
+  .btn.ghost{ background:none; color:#222; }
+  .btn.ghost:hover{ background:#222; color:#fff; }
+
+  /* Page furniture */
+  .wrap{ max-width:1240px; margin:0 auto; padding:0 28px; }
+  .page-head{ max-width:1240px; margin:0 auto; padding:30px 28px 8px; }
+  .page-head .tab{ margin-bottom:16px; }
+  .page-head h1{ font-size:2.7rem; font-weight:900; line-height:1.05; letter-spacing:-.005em; max-width:22ch; }
+  .page-head h1 em{ color:var(--accent); font-style:normal; }
+  .page-head p.sub{ color:var(--gray); max-width:70ch; margin-top:12px; font-size:1.02rem; }
+
+  section{ max-width:1240px; margin:0 auto; padding:38px 28px 46px; }
+  .band-rule{ border:none; border-top:3px solid #222; max-width:1240px; margin:6px auto 0; }
+  .sec-tab{ margin-bottom:24px; }
+  .sec-note{ color:var(--gray); font-size:.95rem; max-width:74ch; margin:-14px 0 26px; }
+
+  /* Hero (home) */
+  .hero-grid{ display:grid; grid-template-columns:1.08fr .92fr; gap:46px; align-items:center; padding-top:34px; }
+  .hero-grid h1{ font-size:3rem; font-weight:900; line-height:1.04; letter-spacing:-.005em; }
+  .hero-grid h1 em{ color:var(--accent); font-style:normal; }
+  .hero-grid .dek{ font-size:1.08rem; margin:18px 0 26px; max-width:52ch; }
+  .cta-row{ display:flex; gap:12px; flex-wrap:wrap; }
+  .hero-note{ margin-top:20px; font-size:.8rem; color:var(--gray); max-width:56ch; }
+
+  /* Dashboard mock, hairline editorial style */
+  .dash{ border:1px solid #222; background:#fff; }
+  .dash .bar{ background:#222; color:#fff; display:flex; align-items:center; justify-content:space-between; padding:9px 14px; font-size:.62rem; letter-spacing:1.6px; text-transform:uppercase; font-weight:700; }
+  .dash .bar span:last-child{ color:#aaa; font-weight:400; letter-spacing:1px; }
+  .dash .body{ padding:16px 18px 18px; }
+  .dash .kpis{ display:grid; grid-template-columns:repeat(3,1fr); gap:0; border:1px solid var(--hair); margin-bottom:16px; }
+  .dash .kpi{ padding:12px 10px; text-align:center; border-right:1px solid var(--hair); background:var(--panel); }
+  .dash .kpi:last-child{ border-right:none; }
+  .dash .kpi b{ display:block; font-size:1.3rem; font-weight:900; color:var(--navy); line-height:1.15; }
+  .dash .kpi.up b{ color:#2E7D6F; }
+  .dash .kpi.down b{ color:#991b1b; }
+  .dash .kpi span{ font-size:.58rem; color:var(--gray); letter-spacing:.6px; text-transform:uppercase; }
+  .dash .chart-label{ font-size:.58rem; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; color:var(--gray); margin-bottom:8px; }
+  .dash svg{ display:block; width:100%; height:auto; }
+  .dash .legend{ display:flex; gap:16px; margin-top:8px; font-size:.6rem; color:var(--gray); letter-spacing:.5px; text-transform:uppercase; }
+  .dash .legend i{ display:inline-block; width:9px; height:9px; margin-right:5px; vertical-align:-1px; }
+
+  /* Credibility strip: ruled columns */
+  .cred{ display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid var(--hair); border-bottom:1px solid var(--hair); }
+  .cred .c{ padding:18px 16px; text-align:center; border-right:1px solid var(--hair); }
+  .cred .c:last-child{ border-right:none; }
+  .cred b{ display:block; font-size:1.8rem; font-weight:900; color:var(--navy); line-height:1.15; }
+  .cred span{ font-size:.72rem; color:var(--gray); letter-spacing:.4px; }
+
+  /* Owner quotes: DSL principle panels */
+  .quotes{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .principle{ background:var(--panel); border:1px solid var(--hair); border-left:4px solid var(--accent); padding:20px 24px; }
+  .principle p{ font-style:italic; font-weight:700; color:var(--navy); font-size:1.08rem; line-height:1.45; }
+
+  /* Paths: ruled tiles like DSL method grid */
+  .paths{ display:grid; grid-template-columns:repeat(3,1fr); border-top:1px solid var(--hair); }
+  .path{ padding:24px 24px 28px; border-right:1px solid var(--hair); display:flex; flex-direction:column; }
+  .path:last-child{ border-right:none; }
+  .path:hover h3{ color:var(--accent); }
+  .path .rubric{ margin-bottom:10px; }
+  .path h3{ font-size:1.5rem; font-weight:900; line-height:1.12; margin-bottom:10px; }
+  .path p{ font-size:.9rem; color:var(--gray); margin-bottom:16px; }
+  .path .go{ margin-top:auto; font-size:.62rem; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; }
+  .path:hover .go{ color:var(--accent); }
+
+  /* Proof: navy emphasis panel beside editorial column */
+  .proof-grid{ display:grid; grid-template-columns:1.05fr .95fr; gap:44px; align-items:center; }
+  .proof-grid h2{ font-size:2.1rem; font-weight:900; line-height:1.1; margin:12px 0 14px; }
+  .proof-grid p{ color:#333; font-size:.98rem; margin-bottom:12px; max-width:56ch; }
+  .triple-row{ font-size:.6rem; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; color:var(--gray); margin:14px 0 22px; }
+  .triple-row b{ color:var(--accent); }
+  .navy-panel{ background:var(--navy); color:#fff; padding:32px 30px; }
+  .navy-panel .big{ font-size:4rem; font-weight:900; color:#fff; line-height:1; }
+  .navy-panel .big em{ color:var(--accent); font-style:normal; }
+  .navy-panel .big-sub{ color:#c9d4e2; margin:8px 0 22px; font-size:.95rem; }
+  .navy-panel svg{ display:block; width:100%; height:auto; margin-bottom:18px; }
+  .navy-panel .kpis{ display:grid; grid-template-columns:1fr 1fr; gap:16px; border-top:1px solid rgba(255,255,255,.2); padding-top:18px; }
+  .navy-panel .kpi b{ display:block; font-size:1.4rem; font-weight:900; color:#fff; }
+  .navy-panel .kpi span{ font-size:.72rem; color:#9db1c7; }
+
+  /* Recent: DSL card anatomy */
+  .recent-grid{ display:grid; grid-template-columns:repeat(3,1fr); border-top:1px solid var(--hair); }
+  .recent{ padding:22px 24px 26px; border-right:1px solid var(--hair); }
+  .recent:last-child{ border-right:none; }
+  .recent .rubric{ color:var(--accent); margin-bottom:8px; }
+  .recent h3{ font-size:1.4rem; font-weight:900; line-height:1.12; margin-bottom:8px; }
+  .recent:hover h3{ color:var(--accent); }
+  .recent .dek{ font-size:.92rem; }
+
+  /* Pricing ladder + plans */
+  .plans{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; max-width:1000px; }
+  .plan{ border:1px solid var(--hair); background:#fff; padding:26px 22px; display:flex; flex-direction:column; position:relative; }
+  .plan.featured{ border-color:#222; border-top:4px solid var(--accent); }
+  .plan.featured .flag{ position:absolute; top:-12px; left:20px; background:#222; color:#fff; font-size:.58rem; font-weight:700; letter-spacing:1.6px; text-transform:uppercase; padding:5px 10px; }
+  .plan .nm{ font-weight:700; font-size:.68rem; letter-spacing:1.6px; text-transform:uppercase; color:var(--gray); }
+  .plan .amt{ font-size:2rem; font-weight:900; color:var(--navy); margin:10px 0 2px; line-height:1.1; }
+  .plan .amt small{ font-size:.78rem; color:var(--gray); font-weight:400; letter-spacing:0; }
+  .plan .for{ font-size:.85rem; font-style:italic; color:var(--accent); margin-bottom:14px; }
+  .plan ul{ list-style:none; font-size:.88rem; color:#333; margin-bottom:20px; }
+  .plan ul li{ padding:5px 0 5px 16px; position:relative; border-bottom:1px solid var(--hair); }
+  .plan ul li:last-child{ border-bottom:none; }
+  .plan ul li::before{ content:"\2192"; position:absolute; left:0; color:var(--accent); }
+  .plan .btn{ margin-top:auto; text-align:center; }
+  .fine{ margin-top:22px; font-size:.88rem; color:var(--gray); font-style:italic; }
+  .fine a{ color:var(--accent); font-weight:700; }
+  .fine a:hover{ text-decoration:underline; }
+
+  /* Comparison table (DSL table style) */
+  table.cmp{ width:100%; border-collapse:collapse; border:1px solid var(--hair); }
+  .cmp th,.cmp td{ text-align:center; padding:11px 14px; border-bottom:1px solid var(--hair); font-size:.86rem; }
+  .cmp thead th{ font-size:.6rem; letter-spacing:1.4px; text-transform:uppercase; color:#fff; background:#222; }
+  .cmp th:first-child,.cmp td:first-child{ text-align:left; }
+  .cmp td:first-child{ font-weight:700; color:var(--navy); }
+  .cmp tbody tr:nth-child(even) td{ background:var(--panel); }
+  .cmp .y{ color:var(--accent); font-weight:700; }
+  .cmp .n{ color:#bbb; }
+  .cmp-scroll{ overflow-x:auto; }
+
+  /* Steps: ruled tiles */
+  .steps3{ display:grid; grid-template-columns:repeat(3,1fr); border-top:1px solid var(--hair); }
+  .step{ padding:22px 24px 26px; border-right:1px solid var(--hair); }
+  .step:last-child{ border-right:none; }
+  .step .rubric{ color:var(--accent); margin-bottom:8px; }
+  .step h4{ font-size:1.2rem; font-weight:900; margin-bottom:8px; }
+  .step p{ font-size:.9rem; color:var(--gray); }
+
+  /* FAQ details (panel style) */
+  .faqs{ max-width:820px; }
+  .faqs details{ border:1px solid var(--hair); background:#fff; margin-bottom:12px; }
+  .faqs summary{ cursor:pointer; padding:16px 20px; font-weight:700; font-size:.95rem; color:var(--navy); list-style:none; display:flex; justify-content:space-between; gap:14px; }
+  .faqs summary::-webkit-details-marker{ display:none; }
+  .faqs summary::after{ content:"+"; color:var(--accent); font-weight:700; }
+  .faqs details[open] summary::after{ content:"\2212"; }
+  .faqs .a{ padding:0 20px 18px; color:var(--gray); font-size:.9rem; }
+
+  /* Engage */
+  .engage{ text-align:center; padding-top:46px; padding-bottom:56px; }
+  .engage h2{ font-size:2.3rem; font-weight:900; line-height:1.1; margin:14px 0 12px; }
+  .engage h2 em{ color:var(--accent); font-style:normal; }
+  .engage p{ color:var(--gray); max-width:56ch; margin:0 auto 26px; }
+  .engage .mail{ margin-top:16px; font-size:.85rem; color:var(--gray); }
+  .engage .mail a{ color:var(--accent); font-weight:700; }
+  .engage .mail a:hover{ text-decoration:underline; }
+
+  /* Services */
+  .svc{ display:grid; grid-template-columns:1.12fr .88fr; gap:44px; padding:34px 0 38px; border-bottom:1px solid var(--hair); }
+  .svc:last-of-type{ border-bottom:none; }
+  .svc h2{ font-size:1.9rem; font-weight:900; line-height:1.1; margin:8px 0 6px; }
+  .svc .q{ font-style:italic; color:var(--gray); font-size:1.02rem; margin-bottom:14px; }
+  .svc p{ color:#333; font-size:.95rem; margin-bottom:12px; max-width:60ch; }
+  .side h5{ font-size:.6rem; font-weight:700; letter-spacing:1.6px; text-transform:uppercase; color:var(--gray); margin-bottom:12px; }
+  .side ul{ list-style:none; font-size:.9rem; color:#333; margin-bottom:22px; }
+  .side li{ padding:6px 0 6px 16px; position:relative; border-bottom:1px solid var(--hair); }
+  .side li::before{ content:"\2192"; position:absolute; left:0; color:var(--accent); }
+  .chips{ display:flex; flex-wrap:wrap; gap:8px; }
+  .chips span{ font-size:.62rem; font-weight:700; letter-spacing:1px; text-transform:uppercase; border:1px solid var(--hair); background:var(--panel); padding:7px 12px; }
+
+  /* Case study cards (library) */
+  .cs-grid{ display:grid; grid-template-columns:repeat(3,1fr); border-top:1px solid var(--hair); }
+  .cs{ padding:22px 24px 26px; border-right:1px solid var(--hair); border-bottom:1px solid var(--hair); display:flex; flex-direction:column; }
+  .cs:nth-child(3n){ border-right:none; }
+  .cs:nth-last-child(-n+3){ border-bottom:none; }
+  .cs .viz{ border:1px solid var(--hair); background:var(--panel); padding:14px 14px 10px; margin-bottom:14px; }
+  .cs .viz svg{ display:block; width:100%; height:auto; }
+  .cs .rubric{ margin-bottom:6px; }
+  .cs h3{ font-size:1.35rem; font-weight:900; line-height:1.12; margin-bottom:8px; }
+  .cs:hover h3{ color:var(--accent); }
+  .cs .dek{ font-size:.92rem; margin-bottom:4px; }
+  .cs .links{ margin-top:auto; padding-top:12px; }
+
+  /* Article (flagship case study) */
+  .article{ max-width:78ch; }
+  .article h2{ font-size:1.6rem; font-weight:900; margin:34px 0 12px; }
+  .article h2:first-child{ margin-top:0; }
+  .article p{ color:#333; font-size:1rem; line-height:1.7; margin-bottom:14px; }
+  .article .lede{ font-style:italic; font-size:1.08rem; color:var(--navy); font-weight:700; }
+  .pullstat{ background:var(--panel); border:1px solid var(--hair); border-left:4px solid var(--accent); padding:18px 24px; margin:22px 0; }
+  .pullstat b{ display:block; font-size:1.8rem; font-weight:900; color:var(--navy); line-height:1.15; }
+  .pullstat span{ font-size:.9rem; color:var(--gray); }
+  .meta-row{ display:flex; gap:30px; flex-wrap:wrap; margin-top:18px; font-size:.62rem; letter-spacing:1.2px; text-transform:uppercase; color:var(--gray); }
+  .meta-row b{ display:block; color:var(--ink); font-size:.9rem; letter-spacing:0; text-transform:none; font-weight:700; }
+
+  /* System tiles */
+  .sys3{ display:grid; grid-template-columns:repeat(3,1fr); border-top:1px solid var(--hair); }
+  .sys{ padding:24px; border-right:1px solid var(--hair); display:flex; flex-direction:column; }
+  .sys:last-child{ border-right:none; }
+  .sys h4{ font-size:1.15rem; font-weight:900; margin-bottom:8px; }
+  .sys p{ font-size:.88rem; color:var(--gray); margin-bottom:18px; }
+  .sys .btn{ margin-top:auto; text-align:center; }
+
+  /* Four-step grid */
+  .steps4{ display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid var(--hair); }
+  .steps4 .step{ border-bottom:none; }
+  .steps4 .step:last-child{ border-right:none; }
+  .steps4 .step h4{ font-size:1.05rem; white-space:nowrap; }
+
+  /* About aside + panels (DSL contact/about components) */
+  .about-grid{ display:grid; grid-template-columns:300px 1fr; gap:48px; align-items:start; }
+  .aside{ position:sticky; top:24px; border:1px solid var(--hair); background:#fff; padding:28px 24px; text-align:center; }
+  .aside .name{ font-size:1.3rem; font-weight:900; color:var(--navy); margin-bottom:6px; }
+  .aside .role{ font-size:.62rem; letter-spacing:1.8px; text-transform:uppercase; color:var(--accent); font-weight:700; margin-bottom:14px; }
+  .aside .blurb{ font-size:.9rem; color:var(--gray); line-height:1.55; }
+  .aside .divider{ border:0; border-top:1px solid var(--hair); margin:18px 0; }
+  .aside .contact-line{ font-size:.85rem; color:#333; margin:5px 0; }
+  .aside .contact-line a{ color:var(--accent); font-weight:600; }
+  .aside .contact-line a:hover{ text-decoration:underline; }
+  .about-main p{ font-size:1rem; color:#333; line-height:1.7; margin-bottom:1.2rem; max-width:72ch; }
+  .principles4{ display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid var(--hair); }
+
+  /* Forms (DSL contact) */
+  .panel{ border:1px solid var(--hair); padding:26px 28px; margin-bottom:26px; max-width:760px; }
+  .panel.alt{ background:var(--panel); }
+  form.panel{ background:var(--panel); border-top:3px solid var(--accent); }
+  .panel h3{ font-size:1.05rem; font-weight:900; color:var(--navy); margin-bottom:18px; }
+  form label{ display:block; margin-bottom:7px; color:var(--navy); font-weight:700; font-size:.6rem; letter-spacing:1.2px; text-transform:uppercase; }
+  form input, form textarea, form select{ width:100%; padding:11px 12px; margin-bottom:18px; border:1px solid var(--hair); font-size:.95rem; font-family:Arial, Helvetica, sans-serif; color:var(--ink); background:#fff; }
+  form input::placeholder, form textarea::placeholder{ color:#9aa3ad; }
+  form input:focus, form textarea:focus, form select:focus{ outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(184,134,11,.15); background:#fff; }
+  form textarea{ resize:vertical; }
+  form .btn{ width:100%; text-align:center; margin-top:4px; }
+  .info p{ font-size:.95rem; color:#333; margin:6px 0; }
+  .info a{ color:var(--accent); font-weight:600; }
+  .info a:hover{ text-decoration:underline; }
+  .info .k{ font-size:.6rem; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:var(--gray); }
+  .info .note{ font-size:.86rem; color:var(--gray); font-style:italic; margin-top:12px; }
+
+  footer{ background:#222; max-width:1240px; margin:24px auto 0; padding:24px 28px; font-size:.8rem; letter-spacing:.5px; color:#fff; text-align:center; }
+
+  @media (max-width:900px){
+    .mast-nav{ display:none; }
+    .hamburger{ display:flex; }
+    .masthead{ padding:12px 16px; }
+    .logo{ font-size:.72rem; letter-spacing:1.5px; padding:6px 8px; }
+    .page-head h1{ font-size:2rem; }
+    .hero-grid{ grid-template-columns:1fr; gap:30px; }
+    .hero-grid h1{ font-size:2.1rem; }
+    .cred{ grid-template-columns:1fr 1fr; }
+    .cred .c:nth-child(2){ border-right:none; }
+    .cred .c:nth-child(-n+2){ border-bottom:1px solid var(--hair); }
+    .quotes{ grid-template-columns:1fr; }
+    .paths,.recent-grid,.steps3,.steps4,.sys3,.cs-grid,.principles4{ grid-template-columns:1fr; }
+    .path,.recent,.step,.sys,.cs{ border-right:none; border-bottom:1px solid var(--hair); }
+    .cs:nth-child(3n){ border-right:none; }
+    .proof-grid,.svc,.about-grid{ grid-template-columns:1fr; gap:28px; }
+    .aside{ position:static; max-width:340px; }
+    .plans{ grid-template-columns:1fr 1fr; }
+    .engage h2{ font-size:1.7rem; }
+  }
+  @media (max-width:560px){ .plans{ grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+
+  <div class="overlay" id="overlay"></div>
+  <nav class="drawer" id="drawer">
+    <button class="drawer-close" id="drawerClose" aria-label="Close menu">&times;</button>
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="case-studies.html">Case Studies</a>
+    <a href="how-we-work.html">How We Work</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+        <a href="faq.html">FAQ</a>
+  </nav>
+
+  <div class="topbar">
+  <div class="masthead">
+    <div class="mast-left">
+      <button class="hamburger" id="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+      <a class="logo" href="index.html">PAU ANALYTICS</a>
+      <nav class="mast-nav">
+        <a href="services.html">Services</a>
+        <a href="case-studies.html">Case Studies</a>
+        <a href="how-we-work.html">How We Work</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="about.html">About</a>
+        <a href="contact.html" class="current">Contact</a>
+        <a href="faq.html">FAQ</a>
+      </nav>
+    </div>
+  </div>
+  <hr class="rule-top">
+  </div>
+
+  <div class="page-head">
+    <span class="tab">Contact</span>
+    <h1>Start a <em>project</em></h1>
+    <p class="sub" style="max-width:none;">Direct questions, direct answers from a real analyst. Most messages get a reply the same day.</p>
+  </div>
+
+  <section>
+    <form action="https://formsubmit.co/admin@pauanalytics.com" method="post" class="panel">
+      <h3>Send a message</h3>
+
+      <input type="hidden" name="_next" value="https://pauanalytics.com/thank-you.html">
+      <input type="hidden" name="_subject" value="New enquiry from Pau Analytics website">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_captcha" value="false">
+
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" placeholder="Your full name" required>
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" placeholder="Your email address" required>
+
+      <label for="project-type">What you're looking for</label>
+      <select id="project-type" name="project-type" required>
+        <option value="">Select a project type</option>
+        <option value="business-diagnostic">Business Diagnostic (one question, one dataset)</option>
+        <option value="growth-tracker">Growth Tracker (monthly report + dashboard)</option>
+        <option value="full-analytics-partner">Full Analytics Partner (adds AI assistant)</option>
+        <option value="not-sure">Not sure yet: recommend the right scope</option>
+      </select>
+
+      <label for="message">Your data challenge</label>
+      <textarea id="message" name="message" rows="5" placeholder="Describe the question you want answered: e.g., which customers drive most profit, which promotions convert, where revenue is leaking" required></textarea>
+
+      <button type="submit" class="btn">Start the conversation</button>
+    </form>
+
+    <div class="panel alt info">
+      <h3>Other ways to reach out</h3>
+      <p><span class="k">Email</span> &nbsp; <a href="mailto:admin@pauanalytics.com">admin@pauanalytics.com</a></p>
+      <p><span class="k">Location</span> &nbsp; Kuala Lumpur, Malaysia</p>
+      <p><span class="k">Response time</span> &nbsp; Within 24 hours</p>
+      <p class="note">Most messages get a reply the same day.</p>
+    </div>
+  </section>
+
+
+  <footer>&copy; 2026 Pau Analytics | Data-Driven Solutions</footer>
+
+<script>
+  const drawer=document.getElementById('drawer'), overlay=document.getElementById('overlay');
+  const openMenu=()=>{ drawer.classList.add('open'); overlay.classList.add('open'); };
+  const closeMenu=()=>{ drawer.classList.remove('open'); overlay.classList.remove('open'); };
+  document.getElementById('hamburger').addEventListener('click', openMenu);
+  document.getElementById('drawerClose').addEventListener('click', closeMenu);
+  overlay.addEventListener('click', closeMenu);
+  drawer.querySelectorAll('a').forEach(a=>a.addEventListener('click', closeMenu));
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeMenu(); });
+</script>
+
+</body>
+</html>
