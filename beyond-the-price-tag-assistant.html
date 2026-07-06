@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beyond the Price Tag, AI Assistant | Pau Analytics</title>
+<meta name="description" content="Ask the smartphone review study in plain language. Answers come only from a fixed set of approved, read-only tools.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  :root{ --ink:#1a2230; --gray:#555; --mute:#6b7280; --hair:#C9D6E5; --accent:#004B87; --navy:#002D55; --paper:#fff;
+         --panel:#F4F7FA; --green:#2E7D6F; --red:#B5503C; --amber:#92400e; --green-soft:#e6f1ee;
+         --gold:#004B87; --gold-soft:#EAF1F8; --steel:#6A9BD1; }
+  html{ scroll-behavior:smooth; }
+  body{ background:var(--paper); color:var(--ink); font-family:Arial, Helvetica, sans-serif; line-height:1.6; overflow-x:hidden; }
+  a{ color:inherit; text-decoration:none; }
+
+  /* House chrome (crown) */
+  .topbar{ position:sticky; top:0; z-index:120; background:#fff; box-shadow:0 1px 6px rgba(0,0,0,.06); }
+  body.embed .topbar{ display:none; }
+  .masthead{ display:flex; align-items:center; justify-content:space-between; padding:14px 28px; max-width:90%; margin:0 auto; gap:18px; }
+  .mast-left{ display:flex; align-items:center; gap:20px; }
+  .logo{ background:#222; color:#fff; font-weight:700; letter-spacing:3px; font-size:.95rem; padding:8px 12px; white-space:nowrap; }
+  .mast-nav{ display:flex; gap:20px; font-size:.72rem; letter-spacing:1.4px; text-transform:uppercase; }
+  .mast-nav a:hover{ color:var(--accent); }
+  .hamburger{ display:none; flex-direction:column; gap:4px; background:none; border:none; cursor:pointer; padding:6px; }
+  .hamburger span{ width:22px; height:2px; background:#222; display:block; }
+  .rule-top{ border:none; border-top:3px solid #222; max-width:90%; margin:0 auto; }
+  .crumb{ max-width:90%; margin:0 auto; padding:20px 28px 0; font-size:.6rem; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; color:var(--mute); }
+  .crumb a:hover{ color:var(--accent); } .crumb .sep{ color:var(--hair); margin:0 8px; }
+  footer.site{ background:#222; max-width:90%; margin:34px auto 0; padding:24px 28px; font-size:.8rem; letter-spacing:.5px; color:#fff; text-align:center; }
+  .drawer{ position:fixed; top:0; left:-300px; width:280px; height:100vh; background:#fff; z-index:200; box-shadow:2px 0 14px rgba(0,0,0,.15); transition:left .28s ease; padding:74px 26px 26px; }
+  .drawer.open{ left:0; }
+  .drawer a{ display:block; font-size:.82rem; letter-spacing:1.2px; text-transform:uppercase; padding:14px 0; border-bottom:1px solid var(--hair); }
+  .overlay{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:150; } .overlay.open{ display:block; }
+  .drawer-close{ position:absolute; top:20px; right:20px; font-size:1.4rem; background:none; border:none; cursor:pointer; }
+
+  /* Title block */
+  .wrap{ max-width:90%; margin:0 auto; padding:0 28px; }
+  .head{ padding-top:28px; }
+  .hero{ margin:0 0 4px; line-height:0; }
+  .hero img{ width:100%; height:auto; display:block; max-height:340px; object-fit:cover; }
+  .hero figcaption{ display:flex; justify-content:space-between; gap:14px; line-height:1.4; margin-top:9px; font-size:.74rem; color:#8a8f98; }
+  .hero figcaption .credit{ text-transform:uppercase; letter-spacing:.6px; font-size:.62rem; color:#b0b4ba; white-space:nowrap; }
+  .kicker{ font-size:.72rem; font-weight:700; letter-spacing:1.6px; text-transform:uppercase; color:var(--accent); margin-top:18px; display:block; }
+  h1.title{ font-weight:800; font-size:2.7rem; line-height:1.05; letter-spacing:-.018em; margin-top:8px; color:var(--ink); }
+  .standfirst{ font-family:"Source Serif 4", Georgia, serif; font-size:1.28rem; line-height:1.45; color:#3a3a3a; margin-top:12px; max-width:70ch; }
+  .dateline{ font-size:.64rem; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; color:var(--mute);
+    border-top:1px solid var(--hair); border-bottom:1px solid var(--hair); padding:10px 0; margin:20px 0 4px; display:flex; flex-wrap:wrap; gap:18px; }
+  .dateline .red{ color:var(--accent); }
+
+  /* Switcher */
+  .switch{ display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; border-bottom:1px solid var(--hair); margin-top:2px; }
+  .switch-tabs{ display:flex; }
+  .sw{ font-size:.68rem; font-weight:700; letter-spacing:1.3px; text-transform:uppercase; color:var(--mute); padding:13px 20px; border-bottom:3px solid transparent; }
+  .sw:first-child{ padding-left:0; }
+  a.sw:hover{ color:var(--ink); }
+  .sw.active{ color:var(--navy); border-bottom-color:var(--accent); }
+  .sw-home{ font-size:.64rem; font-weight:700; letter-spacing:1.3px; text-transform:uppercase; color:var(--mute); display:inline-flex; align-items:center; gap:7px; }
+  .sw-home:hover{ color:var(--accent); } .sw-home .ico{ font-size:1.05rem; line-height:1; }
+  body.embed .switch{ display:none; }
+
+  /* Assistant tool */
+  .assistant{ display:flex; border:1px solid var(--hair); height:min(640px,74vh); min-height:480px; margin:22px 0 4px; }
+  .side{ width:280px; flex-shrink:0; border-right:1px solid var(--hair); background:var(--panel); padding:20px 18px; overflow-y:auto; }
+  .side .tab{ display:block; width:34px; height:9px; background:var(--accent); margin-bottom:12px; }
+  .bn{ font-weight:800; color:var(--navy); font-size:1.05rem; }
+  .bs{ font-size:.58rem; letter-spacing:1px; text-transform:uppercase; color:var(--mute); margin-top:2px; }
+  .status{ border:1px solid var(--hair); background:#fff; padding:12px; margin:16px 0; }
+  .st-t{ font-size:.55rem; letter-spacing:1px; text-transform:uppercase; color:var(--mute); margin-bottom:8px; }
+  .pill{ display:flex; align-items:center; gap:8px; color:#333; font-size:.78rem; padding:3px 0; }
+  .dot{ width:7px; height:7px; border-radius:50%; background:var(--green); } .dot.lock{ background:var(--accent); } .dot.loading{ background:var(--steel); }
+  .th{ font-size:.55rem; letter-spacing:1px; text-transform:uppercase; color:var(--mute); margin:14px 0 8px; display:flex; justify-content:space-between; }
+  .tools{ list-style:none; font-family:"Courier New", monospace; font-size:.72rem; color:var(--navy); }
+  .tools li{ padding:3px 0; } .tools li::before{ content:"\25aa"; color:var(--accent); margin-right:7px; }
+  .gov{ font-size:.7rem; color:var(--mute); border-top:1px solid var(--hair); margin-top:16px; padding-top:12px; line-height:1.5; }
+
+  .main{ flex:1; display:flex; flex-direction:column; min-width:0; }
+  .thread{ flex:1; overflow-y:auto; padding:22px 26px; display:flex; flex-direction:column; gap:16px; }
+  .row{ display:flex; gap:10px; max-width:720px; } .row.user{ margin-left:auto; flex-direction:row-reverse; }
+  .av{ width:30px; height:30px; flex-shrink:0; display:grid; place-items:center; font-size:.68rem; font-weight:700; }
+  .av.bot{ background:var(--navy); color:#fff; } .av.bot svg{ width:17px; height:17px; } .av.me{ background:#e7ecf2; color:var(--navy); }
+  .bubble{ font-size:.9rem; line-height:1.55; } .row.user .bubble{ background:var(--navy); color:#eef2f6; padding:10px 13px; }
+  .lead{ margin-bottom:10px; } .lead b{ color:var(--navy); font-weight:600; }
+  .badge{ display:inline-flex; align-items:center; gap:6px; font-family:"Courier New", monospace; font-size:.66rem; color:var(--navy); background:var(--gold-soft); border:1px solid #cdddf0; padding:3px 9px; margin-bottom:9px; }
+  .badge svg{ width:12px; height:12px; } .badge .lbl{ color:var(--mute); }
+  .card{ border:1px solid var(--hair); padding:13px; margin-top:4px; background:#fff; max-width:600px; }
+  .card h4{ font-size:.92rem; color:var(--navy); font-weight:700; margin-bottom:3px; }
+  .card .cap{ font-size:.75rem; color:var(--mute); margin-bottom:12px; }
+  .kpis{ display:flex; gap:10px; flex-wrap:wrap; }
+  .kpi{ flex:1; min-width:104px; background:var(--panel); border:1px solid var(--hair); padding:13px; text-align:center; }
+  .kpi .v{ font-size:1.6rem; font-weight:800; color:var(--navy); } .kpi.good .v{ color:var(--green); } .kpi.bad .v{ color:var(--red); }
+  .kpi .l{ font-size:.66rem; color:var(--mute); margin-top:3px; }
+  table{ width:100%; border-collapse:collapse; font-size:.78rem; }
+  th{ text-align:left; color:var(--mute); font-weight:600; font-size:.6rem; text-transform:uppercase; letter-spacing:.3px; padding:6px 8px; border-bottom:1px solid var(--hair); }
+  td{ padding:7px 8px; border-bottom:1px solid #eef1f4; } td.nm{ font-weight:600; color:var(--ink); } td.r{ text-align:right; }
+  .scroll{ max-height:340px; overflow-y:auto; }
+  .vb{ display:inline-block; font-size:.62rem; font-weight:700; padding:2px 8px; border-radius:20px; }
+  .vb.POS{ background:var(--green-soft); color:var(--green); } .vb.NEU{ background:#eef3f8; color:var(--amber); } .vb.NEG{ background:#fbe9e7; color:var(--red); }
+  .seg{ display:flex; align-items:center; gap:11px; margin:9px 0; }
+  .seg-lbl{ width:120px; font-size:.78rem; flex-shrink:0; }
+  .seg-track{ flex:1; height:22px; background:#e9eff6; border-radius:6px; overflow:hidden; }
+  .seg-fill{ height:100%; border-radius:6px; background:linear-gradient(90deg,var(--accent),var(--steel)); display:flex; align-items:center; justify-content:flex-end; padding-right:8px; color:#fff; font-size:.68rem; font-weight:700; min-width:24px; }
+  .rev{ border:1px solid var(--hair); padding:11px 13px; margin-bottom:9px; background:var(--panel); }
+  .rev .rh{ display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; font-size:.72rem; color:var(--mute); }
+  .rev .rt{ font-size:.8rem; color:var(--ink); line-height:1.5; }
+  .stars{ color:var(--accent); font-size:.72rem; letter-spacing:1px; }
+  .note{ font-size:.68rem; color:var(--mute); margin-top:12px; display:flex; align-items:center; gap:6px; } .note svg{ width:12px; height:12px; flex-shrink:0; }
+  .refuse{ background:var(--gold-soft); border:1px solid #cdddf0; padding:16px 18px; max-width:600px; }
+  .refuse .rh{ display:flex; align-items:center; gap:9px; margin-bottom:7px; } .refuse .rh svg{ width:17px; height:17px; }
+  .refuse .rh span{ font-weight:600; color:var(--accent); font-size:.86rem; }
+  .refuse p{ font-size:.84rem; line-height:1.55; color:#3a4a5a; }
+  .refuse .why{ font-size:.66rem; color:var(--mute); margin-top:10px; font-family:"Courier New", monospace; }
+  .think{ display:flex; align-items:center; gap:8px; color:var(--mute); font-size:.82rem; }
+  .think .tdot{ width:6px; height:6px; border-radius:50%; background:var(--accent); animation:pulse 1.2s infinite; }
+  .think .tdot:nth-child(2){ animation-delay:.2s; } .think .tdot:nth-child(3){ animation-delay:.4s; }
+  @keyframes pulse{ 0%,100%{ opacity:.25; transform:scale(.8); } 50%{ opacity:1; transform:scale(1); } }
+  .composer{ border-top:1px solid var(--hair); padding:12px 26px; background:var(--panel); }
+  .chips{ display:flex; gap:7px; flex-wrap:wrap; margin-bottom:10px; }
+  .chip{ font-size:.74rem; border:1px solid var(--hair); background:#fff; padding:6px 11px; color:var(--navy); cursor:pointer; }
+  .chip:hover{ border-color:var(--accent); background:var(--gold-soft); }
+  .chip.warn{ border-color:#ebd8ae; color:#b07d27; background:#fcf6e9; }
+  .inputbar{ display:flex; align-items:center; gap:9px; background:#fff; border:1px solid var(--hair); padding:5px 5px 5px 14px; }
+  .inputbar input{ flex:1; border:none; outline:none; font-size:.85rem; padding:7px 0; font-family:inherit; }
+  .send{ width:34px; height:34px; border:none; background:var(--navy); color:#fff; cursor:pointer; display:grid; place-items:center; } .send svg{ width:17px; height:17px; }
+  .disclaimer{ text-align:center; font-size:.66rem; color:var(--mute); margin-top:10px; }
+
+  body.embed .masthead, body.embed .rule-top, body.embed .crumb, body.embed footer.site, body.embed .drawer, body.embed .overlay{ display:none; }
+  @media(max-width:820px){ .mast-nav{ display:none; } .hamburger{ display:flex; } .masthead{ padding:12px 16px; } .logo{ font-size:.72rem; letter-spacing:1.5px; padding:6px 8px; } h1.title{ font-size:2rem; } }
+  @media(max-width:680px){ .side{ display:none; } .assistant{ height:min(560px,76vh); } }
+  /* Maximize control */
+  .assistant{ position:relative; }
+  .maxbtn{ position:absolute; top:10px; right:10px; z-index:6; width:30px; height:30px; border:1px solid var(--hair); background:#fff; color:var(--navy); cursor:pointer; display:grid; place-items:center; padding:0; }
+  .maxbtn:hover{ border-color:var(--accent); background:var(--gold-soft); }
+  .maxbtn svg{ width:15px; height:15px; }
+  .assistant.maxed{ position:fixed; inset:0; width:auto; height:auto; max-height:none; min-height:0; margin:0; z-index:9999; border:none; background:#fff; }
+  body.maxed-lock{ overflow:hidden; }
+</style>
+<link rel="icon" type="image/x-icon" href="https://lyven81.github.io/data-analyst-portfolio/favicon.ico">
+<link rel="icon" type="image/svg+xml" href="https://lyven81.github.io/data-analyst-portfolio/favicon.svg">
+</head>
+<body>
+
+  <div class="overlay" id="overlay"></div>
+  <nav class="drawer" id="drawer">
+    <button class="drawer-close" id="drawerClose" aria-label="Close menu">&times;</button>
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="case-studies.html">Case Studies</a>
+    <a href="how-we-work.html">How We Work</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="faq.html">FAQ</a>
+  </nav>
+
+  <div class="topbar">
+  <div class="masthead">
+    <div class="mast-left">
+      <button class="hamburger" id="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+      <a class="logo" href="index.html">PAU ANALYTICS</a>
+      <nav class="mast-nav">
+    <a href="services.html">Services</a>
+    <a href="case-studies.html">Case Studies</a>
+    <a href="how-we-work.html">How We Work</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="faq.html">FAQ</a>
+      </nav>
+    </div>
+  </div>
+  <hr class="rule-top">
+  </div>
+  <div class="crumb">
+    <a href="case-studies.html">Case Studies</a>
+    <span class="sep">/</span><span>Beyond the Price Tag</span>
+  </div>
+
+  <div class="wrap">
+    <div class="head">
+      <figure class="hero">
+        <img src="https://raw.githubusercontent.com/lyven81/data-analyst-portfolio/main/images/beyond-the-price-tag/cover%20image.png" alt="Beyond the Price Tag">
+        <figcaption><span>What actually earns a smartphone a good review.</span><span class="credit">Illustration &middot; Pau Analytics</span></figcaption>
+      </figure>
+      <span class="kicker">Product &amp; reviews</span>
+      <h1 class="title">Beyond the Price Tag</h1>
+      <p class="standfirst">Find what really earns a good review</p>
+      <div class="dateline"><span class="red">Pau Analytics</span><span>AI assistant</span><span>Smartphone reviews &middot; 7 brands</span></div>
+      <nav class="switch" aria-label="Case study instruments">
+        <div class="switch-tabs">
+          <a class="sw" href="beyond-the-price-tag.html">Analyst Report</a>
+          <a class="sw" href="beyond-the-price-tag-dashboard.html">Dashboard</a>
+          <span class="sw active" aria-current="page">AI Assistant</span>
+        </div>
+        <a class="sw-home" href="index.html"><span class="ico">&#8962;</span> Home</a>
+      </nav>
+    </div>
+
+        <div class="assistant">
+      <button class="maxbtn" id="maxbtn" type="button" aria-label="Expand to full screen" title="Full screen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M8 21H5a2 2 0 0 1-2-2v-3M16 21h3a2 2 0 0 0 2-2v-3"/></svg></button>
+      <aside class="side">
+        <span class="tab"></span>
+        <div class="bn">Review Insights Assistant</div>
+        <div class="bs">Beyond the Price Tag</div>
+        <div class="status">
+          <div class="st-t">Asset status</div>
+          <div class="pill"><span class="dot"></span> Read-only access</div>
+          <div class="pill"><span class="dot lock"></span> Approved tools only</div>
+          <div class="pill"><span class="dot loading" id="dbdot"></span> <span id="dbstat">Loading database...</span></div>
+        </div>
+        <div class="th"><span>Approved tools</span><span>10 &middot; fixed</span></div>
+        <ul class="tools">
+          <li>review_summary</li><li>brand_satisfaction</li><li>feature_drivers</li><li>price_vs_satisfaction</li>
+          <li>age_group_sentiment</li><li>platform_comparison</li><li>country_sentiment</li><li>language_sentiment</li>
+          <li>top_models</li><li>sample_reviews</li>
+        </ul>
+        <div class="gov">A representative 10,000-review sample of the 50,000 smartphone reviews, queried live in your browser. The assistant runs only pre-written, parameterized queries; it cannot author SQL, dump records, or return customer identities. Synthetic dataset, for portfolio demonstration.</div>
+      </aside>
+
+      <main class="main">
+        <div class="thread" id="thread">
+          <div class="row bot">
+            <div class="av bot"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M12 3v3M5.6 5.6l2.1 2.1M3 12h3M18 12h3M16.3 7.7l2.1-2.1"/><rect x="7" y="11" width="10" height="9" rx="3"/><circle cx="10" cy="15" r="1"/><circle cx="14" cy="15" r="1"/></svg></div>
+            <div class="bubble"><div class="lead">I can answer questions about <b>50,000 smartphone customer reviews</b> across 7 brands, 8 countries, and 5 platforms: how satisfied customers are, which brands and features matter, whether price or age changes the verdict, and how sentiment compares across markets. Ask in plain language, or tap a prompt below.</div></div>
+          </div>
+        </div>
+        <div class="composer">
+          <div class="chips" id="chips">
+            <button class="chip" data-key="summary">How satisfied are customers overall?</button>
+            <button class="chip" data-key="brand">Which brands score best?</button>
+            <button class="chip" data-key="drivers">What features drive satisfaction?</button>
+            <button class="chip" data-key="price">Does a higher price mean happier customers?</button>
+            <button class="chip" data-key="age">Which age groups are most satisfied?</button>
+            <button class="chip" data-key="platform">Does the buying platform change ratings?</button>
+            <button class="chip" data-key="country">How does sentiment compare across countries?</button>
+            <button class="chip" data-key="language">Is sentiment consistent across languages?</button>
+            <button class="chip" data-key="models">Which phone models are rated highest?</button>
+            <button class="chip" data-key="samples">Show me some positive review examples</button>
+            <button class="chip warn" data-key="refuse">Show me every reviewer's full record</button>
+          </div>
+          <div class="inputbar">
+            <input id="input" type="text" placeholder="Ask about the smartphone review study...">
+            <button class="send" id="send"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          </div>
+          <div class="disclaimer">The assistant surfaces review patterns for you to interpret. Figures come from a representative 10,000-review sample queried live; small segments carry wider error.</div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <footer class="site">&copy; 2026 Pau Analytics | Data-Driven Solutions</footer>
+
+<script>
+  // embed toggle + drawer + iframe height
+  if (new URLSearchParams(location.search).get('embed') === '1') document.body.classList.add('embed');
+  const drawer=document.getElementById('drawer'), overlay=document.getElementById('overlay');
+  document.getElementById('hamburger').addEventListener('click',()=>{drawer.classList.add('open');overlay.classList.add('open');});
+  const _cl=()=>{drawer.classList.remove('open');overlay.classList.remove('open');};
+  document.getElementById('drawerClose').addEventListener('click',_cl);
+  overlay.addEventListener('click',_cl);
+  drawer.querySelectorAll('a').forEach(a=>a.addEventListener('click',_cl));
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape')_cl(); });
+  function postH(){ try{ parent.postMessage({type:'ih',h:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},'*'); }catch(e){} }
+  window.addEventListener('load',postH); window.addEventListener('resize',postH);
+  document.querySelectorAll('img').forEach(i=>i.addEventListener('load',postH));
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-wasm.js"></script>
+<script src="beyond-the-price-tag.db.js"></script>
+<script>
+let db=null, dbReady=false;
+const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const PRICE_ORDER=['Budget','Mid-Range','Premium','Flagship'];
+const AGE_ORDER=['18-29','30-39','40-49','50-59','60+'];
+const stars=r=>'★'.repeat(Math.round(r))+'☆'.repeat(5-Math.round(r));
+const sentClass=s=>({Positive:'POS',Neutral:'NEU',Negative:'NEG'}[s]||'NEU');
+const sentShort=s=>({Positive:'Pos',Neutral:'Neu',Negative:'Neg'}[s]||s);
+
+const SQL={
+  review_summary:`SELECT COUNT(*) total, ROUND(AVG(rating),2) avg_rating,
+    ROUND(100.0*SUM(sentiment='Positive')/COUNT(*),1) pct_pos,
+    ROUND(100.0*SUM(sentiment='Negative')/COUNT(*),1) pct_neg,
+    ROUND(100.0*SUM(verified_purchase)/COUNT(*),1) pct_verified,
+    COUNT(DISTINCT brand) brands, COUNT(DISTINCT country) countries, COUNT(DISTINCT model) models FROM reviews`,
+  brand_satisfaction:`SELECT brand, COUNT(*) n, ROUND(AVG(rating),2) avg_rating,
+    ROUND(100.0*SUM(sentiment='Positive')/COUNT(*),1) pct_pos FROM reviews GROUP BY brand ORDER BY avg_rating DESC`,
+  feature_drivers:`SELECT sentiment, ROUND(AVG(battery_life_rating),2) battery, ROUND(AVG(camera_rating),2) camera,
+    ROUND(AVG(performance_rating),2) performance, ROUND(AVG(design_rating),2) design, ROUND(AVG(display_rating),2) display
+    FROM reviews GROUP BY sentiment`,
+  price_vs_satisfaction:`SELECT price_category, COUNT(*) n, ROUND(AVG(rating),2) avg_rating,
+    ROUND(100.0*SUM(sentiment='Positive')/COUNT(*),1) pct_pos FROM reviews GROUP BY price_category`,
+  age_group_sentiment:`SELECT age_group, COUNT(*) n, ROUND(AVG(rating),2) avg_rating,
+    ROUND(100.0*SUM(sentiment='Positive')/COUNT(*),1) pct_pos FROM reviews GROUP BY age_group`,
+  platform_comparison:`SELECT source, COUNT(*) n, ROUND(AVG(rating),2) avg_rating,
+    ROUND(100.0*SUM(sentiment='Positive')/COUNT(*),1) pct_pos FROM reviews GROUP BY source ORDER BY avg_rating DESC`,
+  country_sentiment:`SELECT country, COUNT(*) n, ROUND(AVG(rating),2) avg_rating,
+    ROUND(100.0*SUM(sentiment='Positive')/COUNT(*),1) pct_pos FROM reviews GROUP BY country ORDER BY pct_pos DESC`,
+  language_sentiment:`SELECT language, COUNT(*) n, ROUND(AVG(rating),2) avg_rating,
+    ROUND(100.0*SUM(sentiment='Positive')/COUNT(*),1) pct_pos FROM reviews GROUP BY language ORDER BY pct_pos DESC`,
+  top_models:`SELECT model, brand, COUNT(*) n, ROUND(AVG(rating),2) avg_rating FROM reviews
+    GROUP BY model HAVING COUNT(*) >= :minn ORDER BY avg_rating DESC LIMIT :n`,
+  sample_reviews:`SELECT brand, model, rating, sentiment, review_text FROM reviews
+    WHERE sentiment = :sentiment ORDER BY helpful_votes DESC LIMIT :n`
+};
+function run(sql,params){const st=db.prepare(sql);if(params)st.bind(params);const o=[];while(st.step())o.push(st.getAsObject());st.free();return o;}
+
+const gear=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>`;
+const info=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>`;
+const botAv=`<div class="av bot"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M12 3v3M5.6 5.6l2.1 2.1M3 12h3M18 12h3M16.3 7.7l2.1-2.1"/><rect x="7" y="11" width="10" height="9" rx="3"/><circle cx="10" cy="15" r="1"/><circle cx="14" cy="15" r="1"/></svg></div>`;
+const badge=t=>`<div class="badge">${gear}<span>${t}</span><span class="lbl">&middot; approved tool</span></div>`;
+const sb=s=>`<span class="vb ${sentClass(s)}">${sentShort(s)}</span>`;
+const noteEl=t=>`<div class="note">${info} ${t}</div>`;
+const thread=document.getElementById('thread');
+const scroll=()=>thread.scrollTop=thread.scrollHeight;
+function tbl(head,body){return `<div class="scroll"><table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;}
+
+const responses={
+  summary(){
+    const r=run(SQL.review_summary)[0];
+    return badge('review_summary')+
+      `<div class="lead">Across <b>${r.total.toLocaleString()}</b> reviews in the sample, the average rating is <b>${r.avg_rating}</b> out of 5 and <b>${r.pct_pos}%</b> are positive. Ratings cluster around the middle: the experience, not the badge, decides the score.</div>
+      <div class="card"><div class="kpis">
+        <div class="kpi"><div class="v">${r.avg_rating}</div><div class="l">avg rating / 5</div></div>
+        <div class="kpi good"><div class="v">${r.pct_pos}%</div><div class="l">positive</div></div>
+        <div class="kpi bad"><div class="v">${r.pct_neg}%</div><div class="l">negative</div></div>
+        <div class="kpi"><div class="v">${r.pct_verified}%</div><div class="l">verified buyers</div></div>
+      </div>
+      <div class="cap" style="margin-top:13px">${r.brands} brands &middot; ${r.models} models &middot; ${r.countries} countries</div>
+      ${noteEl('Counts come straight from the review database, not a guess.')}</div>`;
+  },
+  brand(){
+    const d=run(SQL.brand_satisfaction);
+    const body=d.map(x=>`<tr><td class="nm">${esc(x.brand)}</td><td>${x.n.toLocaleString()}</td><td><b>${x.avg_rating.toFixed(2)}</b></td><td>${x.pct_pos}%</td></tr>`).join('');
+    return badge('brand_satisfaction')+
+      `<div class="lead">Brands sit within a narrow band: the top and bottom are barely <b>0.10 stars</b> apart. No brand wins on rating alone, which is the headline of this study.</div>
+      <div class="card"><h4>Satisfaction by brand</h4><div class="cap">Average rating and positive share, ranked</div>
+      ${tbl('<th>Brand</th><th>Reviews</th><th>Avg rating</th><th>Positive</th>',body)}</div>`;
+  },
+  drivers(){
+    const d=run(SQL.feature_drivers);
+    const pos=d.find(x=>x.sentiment==='Positive'), neg=d.find(x=>x.sentiment==='Negative');
+    const feats=[['Battery','battery'],['Camera','camera'],['Performance','performance'],['Design','design'],['Display','display']];
+    const gaps=feats.map(([lbl,k])=>({lbl,gap:+(pos[k]-neg[k]).toFixed(2),pos:pos[k],neg:neg[k]})).sort((a,b)=>b.gap-a.gap);
+    const max=Math.max(...gaps.map(g=>g.gap));
+    const bars=gaps.map(g=>`<div class="seg"><span class="seg-lbl">${g.lbl}</span><div class="seg-track"><div class="seg-fill" style="width:${Math.round(g.gap/max*100)}%">${g.gap.toFixed(2)}</div></div></div>`).join('');
+    return badge('feature_drivers')+
+      `<div class="lead">Each bar is the gap in a feature's rating between happy and unhappy customers (positive minus negative). The wider the gap, the more that feature separates a good review from a bad one. They are <b>almost equal</b>: customers reward phones that simply work well across the board.</div>
+      <div class="card"><h4>What separates happy from unhappy customers</h4><div class="cap">Average feature rating: positive reviews vs negative reviews</div>${bars}
+      ${noteEl('Positive reviews average around '+pos.battery.toFixed(1)+'/5 on features; negative reviews around '+neg.battery.toFixed(1)+'/5.')}</div>`;
+  },
+  price(){
+    const d=run(SQL.price_vs_satisfaction);
+    d.sort((a,b)=>PRICE_ORDER.indexOf(a.price_category)-PRICE_ORDER.indexOf(b.price_category));
+    const body=d.map(x=>`<tr><td class="nm">${esc(x.price_category)}</td><td>${x.n.toLocaleString()}</td><td><b>${x.avg_rating.toFixed(2)}</b></td><td>${x.pct_pos}%</td></tr>`).join('');
+    return badge('price_vs_satisfaction')+
+      `<div class="lead">Spending more does not buy happiness: average rating barely moves from budget to flagship. Satisfaction is value-based, not price-based.</div>
+      <div class="card"><h4>Satisfaction by price tier</h4><div class="cap">Budget, mid-range, premium, flagship</div>
+      ${tbl('<th>Price tier</th><th>Reviews</th><th>Avg rating</th><th>Positive</th>',body)}</div>`;
+  },
+  age(){
+    const d=run(SQL.age_group_sentiment);
+    d.sort((a,b)=>AGE_ORDER.indexOf(a.age_group)-AGE_ORDER.indexOf(b.age_group));
+    const small=d.some(x=>x.n<50);
+    const body=d.map(x=>`<tr><td class="nm">${esc(x.age_group)}</td><td>${x.n.toLocaleString()}${x.n<50?' <span style="color:var(--amber)">small</span>':''}</td><td><b>${x.avg_rating.toFixed(2)}</b></td><td>${x.pct_pos}%</td></tr>`).join('');
+    return badge('age_group_sentiment')+
+      `<div class="lead">Satisfaction is fairly steady across ages. The reviewer base skews young, so the oldest groups have few reviews and should be read with caution.</div>
+      <div class="card"><h4>Satisfaction by age group</h4><div class="cap">Average rating and positive share</div>
+      ${tbl('<th>Age group</th><th>Reviews</th><th>Avg rating</th><th>Positive</th>',body)}
+      ${small?noteEl('Groups flagged "small" have under 50 reviews; their averages are noisy.'):''}</div>`;
+  },
+  platform(){
+    const d=run(SQL.platform_comparison);
+    const body=d.map(x=>`<tr><td class="nm">${esc(x.source)}</td><td>${x.n.toLocaleString()}</td><td><b>${x.avg_rating.toFixed(2)}</b></td><td>${x.pct_pos}%</td></tr>`).join('');
+    return badge('platform_comparison')+
+      `<div class="lead">Where the phone is bought barely changes the verdict: every marketplace lands around 3.1 stars. The platform shapes tone, not satisfaction.</div>
+      <div class="card"><h4>Satisfaction by platform</h4><div class="cap">Across the five marketplaces, ranked</div>
+      ${tbl('<th>Platform</th><th>Reviews</th><th>Avg rating</th><th>Positive</th>',body)}</div>`;
+  },
+  country(){
+    const d=run(SQL.country_sentiment);
+    const body=d.map(x=>`<tr><td class="nm">${esc(x.country)}</td><td>${x.n.toLocaleString()}</td><td><b>${x.avg_rating.toFixed(2)}</b></td><td>${x.pct_pos}%</td></tr>`).join('');
+    return badge('country_sentiment')+
+      `<div class="lead">Eight markets, one consistent story. Positive share is highest in the lead markets and lowest in others, but the spread is modest, so a unified global message works.</div>
+      <div class="card"><h4>Sentiment by country</h4><div class="cap">Ranked by positive share</div>
+      ${tbl('<th>Country</th><th>Reviews</th><th>Avg rating</th><th>Positive</th>',body)}</div>`;
+  },
+  language(){
+    const d=run(SQL.language_sentiment);
+    const body=d.map(x=>`<tr><td class="nm">${esc(x.language)}</td><td>${x.n.toLocaleString()}</td><td><b>${x.avg_rating.toFixed(2)}</b></td><td>${x.pct_pos}%</td></tr>`).join('');
+    return badge('language_sentiment')+
+      `<div class="lead">Review language barely shifts the verdict. English, German, Hindi, and Portuguese reviews score within a narrow band, so sentiment translates across cultures.</div>
+      <div class="card"><h4>Sentiment by language</h4><div class="cap">Ranked by positive share</div>
+      ${tbl('<th>Language</th><th>Reviews</th><th>Avg rating</th><th>Positive</th>',body)}</div>`;
+  },
+  models(){
+    const d=run(SQL.top_models,{':minn':50,':n':10});
+    const body=d.map((x,i)=>`<tr><td>${i+1}</td><td class="nm">${esc(x.model)}</td><td>${esc(x.brand)}</td><td>${x.n.toLocaleString()}</td><td><b>${x.avg_rating.toFixed(2)}</b></td></tr>`).join('');
+    return badge('top_models')+
+      `<div class="lead">The highest-rated models with a solid review base (50 or more reviews). Even the leaders sit close together, in line with the brand-level near-tie.</div>
+      <div class="card"><h4>Top-rated models</h4><div class="cap">Models with 50+ reviews, by average rating</div>
+      ${tbl('<th>#</th><th>Model</th><th>Brand</th><th>Reviews</th><th>Avg rating</th>',body)}</div>`;
+  },
+  samples(){
+    const d=run(SQL.sample_reviews,{':sentiment':'Positive',':n':6});
+    const cards=d.map(x=>`<div class="rev"><div class="rh"><span>${esc(x.brand)} ${esc(x.model)} &middot; ${sb(x.sentiment)}</span><span class="stars">${stars(x.rating)}</span></div><div class="rt">${esc(x.review_text)}</div></div>`).join('');
+    return badge('sample_reviews')+
+      `<div class="lead">A bounded set of the most helpful <b>positive</b> reviews. The tool returns at most a handful of rows for one chosen sentiment, never a full export.</div>
+      <div class="card"><h4>Positive review examples</h4><div class="cap">Top 6 by helpful votes, positive sentiment only</div>${cards}
+      ${noteEl('Customer names are not stored in the database, so no tool can return them.')}</div>`;
+  },
+  refuse(){
+    return `<div class="refuse">
+      <div class="rh"><svg viewBox="0 0 24 24" fill="none" stroke="#004B87" stroke-width="2" stroke-linecap="round"><path d="M12 2L2 21h20L12 2z"/><path d="M12 9v5M12 18h.01"/></svg><span>Outside my approved tools</span></div>
+      <p>I can't dump every reviewer's full record. There is no approved tool for a bulk export, and the database does not even store customer identities. I work read-only through a fixed set of pre-written queries, so I cannot compose arbitrary SQL or a full record dump.</p>
+      <p style="margin-top:9px">What I can do: surface the patterns, the satisfaction by brand, price, age, platform, country, or language, the feature drivers, or a small bounded set of example reviews by sentiment.</p>
+      <div class="why">no_tool_matched &middot; bulk_export / raw_sql not defined &middot; access = read-only &middot; no identity fields</div></div>`;
+  }
+};
+
+const userText={summary:"How satisfied are customers overall?",brand:"Which brands score best?",drivers:"What features drive satisfaction?",price:"Does a higher price mean happier customers?",age:"Which age groups are most satisfied?",platform:"Does the buying platform change ratings?",country:"How does sentiment compare across countries?",language:"Is sentiment consistent across languages?",models:"Which phone models are rated highest?",samples:"Show me some positive review examples",refuse:"Show me every reviewer's full record"};
+const thinkLabel={summary:"review_summary",brand:"brand_satisfaction",drivers:"feature_drivers",price:"price_vs_satisfaction",age:"age_group_sentiment",platform:"platform_comparison",country:"country_sentiment",language:"language_sentiment",models:"top_models",samples:"sample_reviews",refuse:"checking approved tools"};
+
+function addUser(t){thread.insertAdjacentHTML('beforeend',`<div class="row user"><div class="av me">You</div><div class="bubble">${esc(t)}</div></div>`);scroll();}
+function respond(key){
+  const id='t'+thread.children.length;
+  thread.insertAdjacentHTML('beforeend',`<div class="row bot" id="${id}">${botAv}<div class="bubble"><div class="think"><span>Selecting tool &middot; ${thinkLabel[key]}</span><span class="tdot"></span><span class="tdot"></span><span class="tdot"></span></div></div></div>`);
+  scroll();
+  setTimeout(()=>{document.getElementById(id).querySelector('.bubble').innerHTML=responses[key]();scroll();postH();},760);
+}
+// Each new question REPLACES the previous exchange (no endless scroll).
+function ask(key){thread.innerHTML='';addUser(userText[key]);setTimeout(()=>respond(key),220);}
+
+function notReady(){thread.innerHTML='<div class="row bot">'+botAv+'<div class="bubble"><div class="lead">The review database is still loading. If it does not finish, open this page over http (a local server or the live site), not directly from a file, because browsers block database access on file://.</div></div></div>';scroll();postH();}
+document.getElementById('chips').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;if(!dbReady){notReady();return;}ask(b.dataset.key);});
+const input=document.getElementById('input');
+function route(){
+  const t=input.value.trim();if(!t)return;if(!dbReady){notReady();return;}input.value='';const q=t.toLowerCase();let key=null;
+  if(/every (reviewer|customer|record)|full record|dump|export|raw sql|select \*|run a query|delete|drop|update |insert |customer name|reviewer name|predict|forecast|will the next|price target/.test(q))key='refuse';
+  else if(/feature|battery|camera|performance|display|design|drive|driver|what matters|most important/.test(q))key='drivers';
+  else if(/price|cheap|expensive|budget|flagship|premium|cost more|pay more/.test(q))key='price';
+  else if(/age|young|old|generation|demograph|50|60/.test(q))key='age';
+  else if(/platform|source|marketplace|amazon|aliexpress|bestbuy|flipkart|ebay|where.*bought|where.*buy/.test(q))key='platform';
+  else if(/countr|region|geograph|market|india|brazil|germany|uae|usa|uk|canada|australia/.test(q))key='country';
+  else if(/languag|english|german|hindi|portuguese|translat/.test(q))key='language';
+  else if(/model|which phone|best phone|top phone|specific phone/.test(q))key='models';
+  else if(/example|sample|show.*review|read.*review|what.*say|comment|quote/.test(q))key='samples';
+  else if(/brand|samsung|apple|google|xiaomi|realme|oneplus|motorola|manufacturer|maker/.test(q))key='brand';
+  else if(/how many|overall|summary|in general|satisf|positive|sentiment|average rating|how good/.test(q))key='summary';
+  thread.innerHTML=''; addUser(t);
+  if(key)setTimeout(()=>respond(key),220);
+  else setTimeout(()=>{thread.insertAdjacentHTML('beforeend',`<div class="row bot">${botAv}<div class="bubble"><div class="lead">I'd route that to one of my approved tools. Try a suggested prompt to see it answer live from the review data.</div></div></div>`);scroll();postH();},220);
+}
+document.getElementById('send').addEventListener('click',route);
+input.addEventListener('keydown',e=>{if(e.key==='Enter')route();});
+
+function b64bytes(s){const bin=atob(s);const u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return u;}
+initSqlJs({locateFile:f=>`https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/${f}`})
+  .then(S=>{
+    db=new S.Database(b64bytes(window.__DB_B64__));dbReady=true;
+    document.getElementById('dbdot').className='dot';
+    document.getElementById('dbstat').textContent='Database ready';
+  })
+  .catch(e=>{document.getElementById('dbstat').textContent='Engine failed to load';console.error(e);});
+</script>
+<script>
+/* Maximize / restore the chat interface. Esc also restores. */
+(function(){
+  var panel=document.querySelector('.assistant'); if(!panel)return;
+  var btn=document.getElementById('maxbtn'); if(!btn)return;
+  var EXP='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M8 21H5a2 2 0 0 1-2-2v-3M16 21h3a2 2 0 0 0 2-2v-3"/></svg>', RES='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h3a2 2 0 0 0 2-2V3M21 8h-3a2 2 0 0 1-2-2V3M3 16h3a2 2 0 0 1 2 2v3M21 16h-3a2 2 0 0 0-2 2v3"/></svg>';
+  btn.innerHTML=EXP;
+  function toggle(){
+    var on=panel.classList.toggle('maxed');
+    document.body.classList.toggle('maxed-lock',on);
+    btn.innerHTML=on?RES:EXP;
+    btn.title=on?'Restore':'Full screen';
+    btn.setAttribute('aria-label',on?'Restore size':'Expand to full screen');
+    if(typeof postH==='function')postH();
+  }
+  btn.addEventListener('click',toggle);
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&panel.classList.contains('maxed'))toggle(); });
+})();
+</script>
+</body>
+</html>
