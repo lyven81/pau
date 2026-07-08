@@ -1,0 +1,210 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Discount Trap | Pau Analytics</title>
+<meta name="description" content="How cutting price quietly drains delivery profit">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{--ink:#002D55;--gray:#555;--mute:#6b7280;--hair:#C9D6E5;--accent:#004B87;--navy:#002D55;--paper:#fff;}
+  body{background:var(--paper);color:var(--ink);font-family:"Source Serif 4",Georgia,"Times New Roman",serif;line-height:1.65;}
+  .wrap{max-width:760px;margin:0 auto;padding:30px 28px 56px;}
+  .topbar{ position:sticky; top:0; z-index:120; background:#fff; box-shadow:0 1px 6px rgba(0,0,0,.06); }
+  body.embed .topbar{ display:none; }
+  .masthead{font-family:Arial,Helvetica,sans-serif;display:flex;align-items:center;justify-content:space-between;padding:14px 28px;max-width:90%;margin:0 auto;gap:18px;}
+  .mast-left{display:flex;align-items:center;gap:20px;}
+  .logo{background:#222;color:#fff;font-weight:700;letter-spacing:3px;font-size:.95rem;padding:8px 12px;white-space:nowrap;text-decoration:none;}
+  .mast-nav{display:flex;gap:20px;font-size:.72rem;letter-spacing:1.4px;text-transform:uppercase;}
+  .mast-nav a{color:inherit;text-decoration:none;} .mast-nav a:hover{color:var(--accent);}
+  .hamburger{display:none;flex-direction:column;gap:4px;background:none;border:none;cursor:pointer;padding:6px;}
+  .hamburger span{width:22px;height:2px;background:#222;display:block;}
+  .rule-top{border:none;border-top:3px solid #222;max-width:90%;margin:0 auto;}
+  .crumb{font-family:Arial,Helvetica,sans-serif;max-width:90%;margin:0 auto;padding:20px 28px 0;font-size:.6rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--mute);}
+  .crumb a{color:inherit;text-decoration:none;} .crumb a:hover{color:var(--accent);}
+  .crumb .sep{color:var(--hair);margin:0 8px;}
+  .hero{margin:0 0 4px;line-height:0;}
+  .hero img{width:100%;aspect-ratio:2/1;object-fit:cover;height:auto;display:block;}
+  .hero figcaption{font-family:Arial,Helvetica,sans-serif;display:flex;justify-content:space-between;gap:14px;line-height:1.4;margin-top:9px;font-size:.74rem;color:#8a8f98;}
+  .hero figcaption .credit{text-transform:uppercase;letter-spacing:.6px;font-size:.62rem;color:#b0b4ba;white-space:nowrap;}
+  footer.site{font-family:Arial,Helvetica,sans-serif;background:#222;max-width:90%;margin:34px auto 0;padding:24px 28px;font-size:.8rem;letter-spacing:.5px;color:#fff;text-align:center;}
+  .drawer{font-family:Arial,Helvetica,sans-serif;position:fixed;top:0;left:-300px;width:280px;height:100vh;background:#fff;z-index:200;box-shadow:2px 0 14px rgba(0,0,0,.15);transition:left .28s ease;padding:74px 26px 26px;}
+  .drawer.open{left:0;}
+  .drawer a{display:block;color:inherit;text-decoration:none;font-size:.82rem;letter-spacing:1.2px;text-transform:uppercase;padding:14px 0;border-bottom:1px solid var(--hair);}
+  .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:150;} .overlay.open{display:block;}
+  .drawer-close{position:absolute;top:20px;right:20px;font-size:1.4rem;background:none;border:none;cursor:pointer;}
+  @media(max-width:820px){ .mast-nav{display:none;} .hamburger{display:flex;} .masthead{padding:12px 16px;} .logo{font-size:.72rem;letter-spacing:1.5px;padding:6px 8px;} }
+  body.embed .masthead, body.embed .rule-top, body.embed .crumb, body.embed footer.site, body.embed .drawer, body.embed .overlay{display:none;}
+  .kicker{font-family:Arial,Helvetica,sans-serif;font-size:.72rem;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:var(--accent);}
+  h1.title{font-family:Arial,Helvetica,sans-serif;font-weight:800;font-size:2.9rem;line-height:1.05;letter-spacing:-.018em;margin:10px 0 0;color:var(--ink);}
+  .standfirst{font-size:1.32rem;line-height:1.45;color:#3a3a3a;margin-top:14px;font-weight:400;}
+  .dateline{font-family:Arial,Helvetica,sans-serif;font-size:.64rem;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--mute);border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);padding:10px 0;margin:22px 0 6px;display:flex;gap:18px;flex-wrap:wrap;}
+  .dateline .red{color:var(--accent);}
+  .switch{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;border-bottom:1px solid var(--hair);margin-top:2px;}
+  .switch-tabs{display:flex;}
+  .sw{font-family:Arial,Helvetica,sans-serif;font-size:.68rem;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;color:var(--mute);padding:13px 20px;border-bottom:3px solid transparent;text-decoration:none;}
+  .sw:first-child{padding-left:0;} a.sw:hover{color:var(--ink);}
+  .sw.active{color:var(--navy);border-bottom-color:var(--accent);}
+  .sw-home{font-family:Arial,Helvetica,sans-serif;font-size:.64rem;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;color:var(--mute);display:inline-flex;align-items:center;gap:7px;text-decoration:none;}
+  .sw-home:hover{color:var(--accent);} .sw-home .ico{font-size:1.05rem;line-height:1;}
+  body.embed .switch{display:none;}
+  @media(max-width:560px){ .sw{padding:11px 12px;} .sw:first-child{padding-left:0;} }
+  .lead{margin-top:20px;}
+  .lead p,.body p{font-size:1.08rem;margin-top:1rem;}
+  .lead p:first-of-type::first-letter{float:left;font-family:Arial,Helvetica,sans-serif;font-weight:800;color:var(--navy);font-size:3.6rem;line-height:.82;padding:6px 10px 0 0;}
+  .skicker{font-family:Arial,Helvetica,sans-serif;font-size:1.32rem;font-weight:800;letter-spacing:.2px;text-transform:none;color:var(--accent);margin:38px 0 6px;padding-top:14px;border-top:2px solid var(--ink);display:inline-block;}
+  .figs{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);margin:18px 0 4px;}
+  .fig{display:flex;flex-direction:column;gap:4px;padding:14px 12px;border-right:1px solid var(--hair);} .fig:last-child{border-right:none;}
+  .fig .n{font-family:Arial,Helvetica,sans-serif;font-weight:800;font-size:1.15rem;color:var(--navy);letter-spacing:-.01em;white-space:nowrap;}
+  .fig .l{font-family:Arial,Helvetica,sans-serif;font-size:.58rem;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--mute);line-height:1.25;}
+  .pull{border-top:2px solid var(--accent);border-bottom:1px solid var(--hair);margin:30px 0;padding:18px 0 20px;}
+  .pull p{font-family:Arial,Helvetica,sans-serif;font-weight:800;font-size:1.5rem;line-height:1.25;color:var(--navy);letter-spacing:-.01em;}
+  .finding{margin-top:34px;padding-top:22px;border-top:1px solid var(--hair);}
+  h3.fq{font-family:Arial,Helvetica,sans-serif;font-weight:800;font-size:1.32rem;line-height:1.16;letter-spacing:-.01em;color:var(--accent);margin:4px 0 0;}
+  .ftext p{font-size:1.06rem;margin-top:.85rem;}
+  figure.chart{margin:16px 0 6px;line-height:0;}
+  figure.chart img{width:100%;height:auto;display:block;border:1px solid var(--hair);}
+  .figcap{font-family:Arial,Helvetica,sans-serif;font-size:.8rem;color:var(--mute);font-style:italic;margin-top:8px;}
+  table.rec{width:100%;border-collapse:collapse;font-family:Arial,Helvetica,sans-serif;font-size:.86rem;margin-top:14px;}
+  table.rec th{text-align:left;color:var(--navy);border-bottom:2px solid var(--accent);padding:8px;font-size:.6rem;text-transform:uppercase;letter-spacing:.4px;}
+  table.rec td{padding:8px;border-bottom:1px solid #eee;vertical-align:top;}
+  .body ul{margin:.7rem 0 .2rem 1.2rem;} .body li{font-size:1.04rem;margin-top:.45rem;}
+  @media(max-width:680px){ h1.title{font-size:2.1rem;} .standfirst{font-size:1.15rem;} .figs{grid-template-columns:1fr 1fr;} .fig:nth-child(2){border-right:none;} .wrap{padding:24px 18px 40px;} }
+</style><link rel="icon" type="image/x-icon" href="https://lyven81.github.io/data-analyst-portfolio/favicon.ico">
+</head>
+<body>
+  <div class="overlay" id="overlay"></div>
+  <nav class="drawer" id="drawer">
+    <button class="drawer-close" id="drawerClose" aria-label="Close menu">&times;</button>
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="case-studies.html">Case Studies</a>
+    <a href="how-we-work.html">How We Work</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="faq.html">FAQ</a>
+  </nav>
+  <div class="topbar">
+  <div class="masthead">
+    <div class="mast-left">
+      <button class="hamburger" id="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+      <a class="logo" href="index.html">PAU ANALYTICS</a>
+      <nav class="mast-nav">
+    <a href="services.html">Services</a>
+    <a href="case-studies.html">Case Studies</a>
+    <a href="how-we-work.html">How We Work</a>
+    <a href="pricing.html">Pricing</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="faq.html">FAQ</a>
+      </nav>
+    </div>
+  </div>
+  <hr class="rule-top">
+  </div>
+  <div class="crumb">
+    <a href="case-studies.html">Case Studies</a>
+    <span class="sep">/</span><a href="https://lyven81.github.io/data-analyst-portfolio/regression-analysis.html">Regression Analysis</a>
+    <span class="sep">/</span><span>The Discount Trap</span>
+  </div>
+
+<div class="wrap">
+
+  <figure class="hero">
+    <img src="https://raw.githubusercontent.com/lyven81/data-analyst-portfolio/main/images/the-discount-trap/cover%20image.jpeg" alt="A busy burger and pizza delivery kitchen at the dinner rush">
+    <figcaption><span>Where a burger and pizza kitchen's profit really comes from, once the app is paid.</span><span class="credit">Illustration &middot; Pau Analytics</span></figcaption>
+  </figure>
+
+  <div class="kicker">Delivery-app seller &middot; Profit and discounts</div>
+  <h1 class="title">The Discount Trap</h1>
+  <p class="standfirst">How cutting price quietly drains delivery profit</p>
+  <div class="dateline"><span class="red">Pau Analytics</span><span>Analyst report</span><span>Burger &amp; Pizza shop &middot; food-ordering apps</span></div>
+
+  <nav class="switch" aria-label="Case study instruments"><div class="switch-tabs"><span class="sw active" aria-current="page">Analyst Report</span><a class="sw" href="the-discount-trap-dashboard.html">Dashboard</a></div><a class="sw-home" href="index.html"><span class="ico">&#8962;</span> Home</a></nav>
+
+  <div class="lead body">
+    <p>This burger and pizza shop looked healthy on the order screen. It runs close to 1,000 burger orders and about 470 pizza orders a day through the food-ordering apps. The profit underneath told a different story.</p>
+    <p>On these platforms the app takes about 30% of every sale, and discounts pile on top. Once the money is counted all the way down to what the shop actually keeps, the busy product turns out to be the weaker earner, and the discounts meant to grow the business are quietly draining it.</p>
+    <p>The shop can lift profit without adding a single hour in the kitchen: fight to be seen instead of buying orders with discounts, cut the discount that is bleeding profit, and build the menu around the dishes that actually earn once the app is paid.</p>
+  </div>
+
+  <div class="skicker">The numbers</div>
+  <div class="figs">
+    <div class="fig"><div class="n">RM 6.60 vs RM 14.60</div><div class="l">profit per order: burger vs pizza</div></div>
+    <div class="fig"><div class="n">30%</div><div class="l">the app's cut of every sale</div></div>
+    <div class="fig"><div class="n">~RM 826k/yr</div><div class="l">from cutting burger's discount</div></div>
+    <div class="fig"><div class="n">8&times;</div><div class="l">being seen beats discounting</div></div>
+  </div>
+
+  <div class="pull"><p>&ldquo;On a platform that takes a third of every sale, being busy is not the same as being paid.&rdquo;</p></div>
+
+  <div class="skicker">What the numbers say</div>
+
+  <article class="finding"><h3 class="fq">1. Being seen beats being cheap</h3><div class="ftext">
+    <p>The biggest driver of orders is being seen on the app, far ahead of anything the shop does with price. Holding traffic, ads and season steady, visibility pulls on orders about eight times harder than discounting. Weekends add a steady lift, ads and discounts help but only a little, staying in stock matters, and a slow kitchen is the one thing that pushes orders down.</p>
+    <figure class="chart"><img src="https://raw.githubusercontent.com/lyven81/data-analyst-portfolio/main/images/the-discount-trap/s1_drivers.png" alt="How hard each lever pulls on daily orders"><div class="figcap">Being seen on the app drives orders far more than cutting price.</div></figure>
+    <p>The lesson is to put budget and effort into ranking and presentation before touching price, and to keep the kitchen fast and in stock. The cheapest way to more orders is to be more visible, not more discounted.</p>
+  </div></article>
+
+  <article class="finding"><h3 class="fq">2. Pizza is the bigger-order product</h3><div class="ftext">
+    <p>A pizza order is worth about RM 18 more than a burger order, and weekends add a little to every order on top of bringing more of them. The menu, not the marketing, sets the ceiling on how big an order can be.</p>
+    <figure class="chart"><img src="https://raw.githubusercontent.com/lyven81/data-analyst-portfolio/main/images/the-discount-trap/s2_ordersize.png" alt="Order size by product and weekend"><div class="figcap">Pizza orders run well above burger orders, and every order is a little bigger on weekends.</div></figure>
+    <p>Pizza and premium bundles belong in weekend promotions, when customers already spend more. A burger-led push will not lift the average order; that ceiling is fixed by the menu.</p>
+  </div></article>
+
+  <article class="finding"><h3 class="fq">3. The app's cut flips who is winning</h3><div class="ftext">
+    <p>The order screen and the profit sheet tell different stories. Before the app takes its cut, burger makes the most money, about RM 14,040 a day against pizza's RM 13,253. After the 30% commission, the ranking flips: pizza clears about RM 6,899 a day and burger only RM 6,477. The commission lands hardest on the busy, lower-priced, discounted burger.</p>
+    <figure class="chart"><img src="https://raw.githubusercontent.com/lyven81/data-analyst-portfolio/main/images/the-discount-trap/s3_appcut.png" alt="Profit before and after the app's cut"><div class="figcap">Before the platform's cut, burger leads; after the 30% commission, pizza is the stronger earner.</div></figure>
+    <p>Burger runs about 983 orders a day and pizza about 473, yet pizza earns more than twice as much per order (RM 14.60 against RM 6.60). Being busy is not the same as making money: the burger line works twice as hard for the same reward. When the kitchen is near its limit, shifting the mix toward pizza means more profit for less load.</p>
+    <figure class="chart"><img src="https://raw.githubusercontent.com/lyven81/data-analyst-portfolio/main/images/the-discount-trap/s3_busy.png" alt="Orders per day versus profit per order"><div class="figcap">Burger carries the order count; pizza carries the profit per order.</div></figure>
+  </div></article>
+
+  <article class="finding"><h3 class="fq">4. The shop is discounting past the point where it pays</h3><div class="ftext">
+    <p>Profit rises as the discount comes down. For both products, the most profitable discount sits at the very bottom of the range the shop has ever tried. Cutting burger's discount from its current RM 8.30 toward the floor is worth about RM 2,260 a day, roughly RM 826,000 a year. Pizza gains too, but far less. Burger is the worst offender: it gives the deepest discount and gets the least back, because each ringgit off buys orders that never cover the money given away.</p>
+    <figure class="chart"><img src="https://raw.githubusercontent.com/lyven81/data-analyst-portfolio/main/images/the-discount-trap/s4_discount_curve.png" alt="Profit against discount level"><div class="figcap">Reading right to left, profit climbs as the discount comes down. The dots mark where the shop sits today.</div></figure>
+    <p>The direction is clear even if the exact floor needs testing: cut burger's discount hard, trim pizza's more gently, and move that money into visibility. Two dishes are also too costly to discount, the Double Cheeseburger and the Seafood pizza, whose ingredients eat the most of their price; a deep promotion on either pushes it toward a loss.</p>
+  </div></article>
+
+  <article class="finding"><h3 class="fq">5. Which items to push, keep, or drop</h3><div class="ftext">
+    <p>On the burger menu, the crowd-pleaser and the money-maker are different dishes. The Classic Chicken sells the most but earns the least per plate; the Mushroom Swiss sells the least yet earns the most. Because it sells in such numbers, the Classic Chicken still brings the most total burger profit, so it stays the anchor, while the richer plates sit under-sold.</p>
+    <figure class="chart"><img src="https://raw.githubusercontent.com/lyven81/data-analyst-portfolio/main/images/the-discount-trap/s5_burger_map.png" alt="Burger menu: units sold versus profit per plate"><div class="figcap">Bottom-right sells a lot for little; top-left earns a lot but sells little.</div></figure>
+    <p>Pizza is a happier story. The Pepperoni is both the best seller and one of the best earners, so pushing it costs the shop nothing, and the Meat Lovers is the high-margin dish worth lifting off the sells-little corner.</p>
+    <figure class="chart"><img src="https://raw.githubusercontent.com/lyven81/data-analyst-portfolio/main/images/the-discount-trap/s5_pizza_map.png" alt="Pizza menu: units sold versus profit per plate"><div class="figcap">The Pepperoni sits high and to the right: it sells the most and still earns well.</div></figure>
+  </div></article>
+
+  <article class="finding"><h3 class="fq">6. What to do first</h3><div class="ftext">
+    <p>The through-line is simple: on a platform that skims a third off the top, order count is the wrong scoreboard, and discounts are draining more than they bring in. The priorities below are ranked by impact for the effort.</p>
+    <table class="rec">
+      <tr><th>Priority</th><th>Do this</th><th>Why (from the data)</th><th>Expected impact</th></tr>
+      <tr><td>High</td><td>Fight for visibility before price</td><td>Being seen drives orders about 8x more than discounting</td><td>More orders, no profit given away</td></tr>
+      <tr><td>High</td><td>Cut discounts, burger hardest</td><td>Profit-maximizing discount sits at the bottom of the range</td><td>~RM 2,260/day on burger (about RM 826k a year)</td></tr>
+      <tr><td>Medium</td><td>Run the business on profit after the app's cut</td><td>Pizza earns 2x per order and wins once commission is paid</td><td>More profit per order, less kitchen load</td></tr>
+      <tr><td>Medium</td><td>Push the right dishes</td><td>Anchor Classic Chicken and Pepperoni; upsell Mushroom Swiss and Meat Lovers</td><td>Higher profit per order on the same traffic</td></tr>
+      <tr><td>Low</td><td>Protect the two high-cost dishes</td><td>Double Cheeseburger and Seafood pizza cost the most to make</td><td>Stops promotions tipping items into a loss</td></tr>
+    </table>
+  </div></article>
+
+  <div class="skicker" style="margin-top:42px">Method &amp; data</div>
+  <div class="body"><p>This report draws on a full year of daily records for the two product lines, 730 product-days covering every day of the year and every lever the shop controls: how many people saw the menu, the discount given, ad spend, how often the kitchen was in stock and how fast it cooked, and the day of the week. Two models were built and checked, one explaining how many orders come in each day and one explaining how much each customer spends; the first accounts for 99% of the day-to-day swing in orders and the second for 97% of the swing in order size. Profit is measured all the way down: each dish's ingredient cost from the shop's own menu, then discounts, ad spend and the platform's 30% commission are subtracted, so profit here means the money left after the app is paid.</p></div>
+
+  <div class="skicker" style="margin-top:42px">Conclusion</div>
+  <div class="body"><p>A burger and pizza shop on the food-ordering apps can look healthy on the order screen and still be leaking profit underneath. The busiest product is not the best earner, deep discounts are draining more than they bring in, and the platform's cut lands hardest on exactly the volume-and-discount habit the shop leans on.</p><p>The way forward is to fight for visibility instead of buying orders with discounts, cut the discount that is quietly bleeding profit, and build the business around the dishes that actually earn once the app is paid. The same kitchen, the same traffic and the same menu then produce materially more profit. That is the difference between a shop that is busy and a shop that is paid.</p></div>
+
+</div>
+
+  <footer class="site">&copy; 2026 Pau Analytics | Data-Driven Solutions</footer>
+
+<script>
+  if (new URLSearchParams(location.search).get('embed') === '1') document.body.classList.add('embed');
+  const drawer=document.getElementById('drawer'), overlay=document.getElementById('overlay');
+  const openMenu=()=>{ drawer.classList.add('open'); overlay.classList.add('open'); };
+  const closeMenu=()=>{ drawer.classList.remove('open'); overlay.classList.remove('open'); };
+  document.getElementById('hamburger').addEventListener('click', openMenu);
+  document.getElementById('drawerClose').addEventListener('click', closeMenu);
+  overlay.addEventListener('click', closeMenu);
+  drawer.querySelectorAll('a').forEach(a=>a.addEventListener('click', closeMenu));
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeMenu(); });
+  function postH(){try{parent.postMessage({type:'ih',h:Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)},'*');}catch(e){}}
+  window.addEventListener('load',postH);window.addEventListener('resize',postH);
+</script>
+</body></html>
