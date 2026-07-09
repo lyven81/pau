@@ -118,7 +118,7 @@
 <div class="wrap">
 
   <figure class="hero">
-    <img src="https://raw.githubusercontent.com/lyven81/data-analyst-portfolio/main/images/when-blooms-arrive-late/cover.jpeg" alt="A florist delivery rider racing through Kuala Lumpur streets with a fresh bouquet">
+    <img src="https://lyven81.github.io/data-analyst-portfolio/images/when-blooms-arrive-late/cover.jpeg" alt="A florist delivery rider racing through Kuala Lumpur streets with a fresh bouquet">
     <figcaption><span>A florist rider races the clock through the city with a fresh bouquet.</span><span class="credit">Illustration &middot; Pau Analytics</span></figcaption>
   </figure>
 
@@ -144,11 +144,11 @@
 
   <h2 class="subsection">Part 1. How often, where, and who</h2>
 
-  <article class="finding"><h3 class="fq">1. How often do we deliver on time?</h3><div class="ftext"><figure class="chart"><img src="https://raw.githubusercontent.com/lyven81/data-analyst-portfolio/main/images/when-blooms-arrive-late/chart-1.png" alt="On-time rate by delivery service"></figure>
+  <article class="finding"><h3 class="fq">1. How often do we deliver on time?</h3><div class="ftext"><figure class="chart"><img src="https://lyven81.github.io/data-analyst-portfolio/images/when-blooms-arrive-late/chart-1.png" alt="On-time rate by delivery service"></figure>
   <p>Bloom House meets its delivery standard on 88% of orders. The weak spot is same-day: only 80% of same-day orders arrive within an hour of the requested time, against 96.5% for scheduled orders that customers book ahead. Same-day is the tightest promise and the one that slips most.</p>
   <p>The headline number is comfortable, but the same-day tier carries hidden risk. Watch same-day reliability as a distinct metric, not buried inside the overall rate.</p></div></article>
 
-  <article class="finding"><h3 class="fq">2. Which area is late most often?</h3><div class="ftext"><figure class="chart"><img src="https://raw.githubusercontent.com/lyven81/data-analyst-portfolio/main/images/when-blooms-arrive-late/chart-2.png" alt="On-time rate by delivery zone"></figure>
+  <article class="finding"><h3 class="fq">2. Which area is late most often?</h3><div class="ftext"><figure class="chart"><img src="https://lyven81.github.io/data-analyst-portfolio/images/when-blooms-arrive-late/chart-2.png" alt="On-time rate by delivery zone"></figure>
   <p>Klang Valley is the strongest at 89.4% on time. The outstation states are worse: other states sit at 80.1% and Penang at 84.2%. Distance and courier handoffs, not the shop, drive the gap.</p>
   <p>The two-day outstation standard is the right promise to make; the shop simply cannot hold outstation to the same reliability as its in-city riders. Set customer expectations by zone rather than promising one blanket speed.</p></div></article>
 
@@ -166,11 +166,11 @@
 
   <h2 class="subsection">Part 2. Why it breaks</h2>
 
-  <article class="finding"><h3 class="fq">6. How busy before deliveries fall behind?</h3><div class="ftext"><figure class="chart"><img src="https://raw.githubusercontent.com/lyven81/data-analyst-portfolio/main/images/when-blooms-arrive-late/chart-3.png" alt="On-time rate by daily order volume"></figure>
+  <article class="finding"><h3 class="fq">6. How busy before deliveries fall behind?</h3><div class="ftext"><figure class="chart"><img src="https://lyven81.github.io/data-analyst-portfolio/images/when-blooms-arrive-late/chart-3.png" alt="On-time rate by daily order volume"></figure>
   <p>There is a clear tipping point. On-time delivery holds at 92% up to about 35 orders a day, then falls off a cliff: 67.5% at 36 to 50 orders, and 47.4% once volume passes 50. Failure is not gradual, it is a breakpoint the shop crosses on peak days like Valentine's and Mother's Day.</p>
   <p>This is the single most controllable driver of delay. Forecast daily volume and roster extra picking and delivery capacity before the count crosses 35, not after the orders pile up.</p></div></article>
 
-  <article class="finding"><h3 class="fq">7. Is the delay ours or the courier's?</h3><div class="ftext"><figure class="chart"><img src="https://raw.githubusercontent.com/lyven81/data-analyst-portfolio/main/images/when-blooms-arrive-late/chart-4.png" alt="Share of late-order delay, our handling versus courier"></figure>
+  <article class="finding"><h3 class="fq">7. Is the delay ours or the courier's?</h3><div class="ftext"><figure class="chart"><img src="https://lyven81.github.io/data-analyst-portfolio/images/when-blooms-arrive-late/chart-4.png" alt="Share of late-order delay, our handling versus courier"></figure>
   <p>It depends on the zone, and the answer is counterintuitive. For Klang Valley late orders, 76% of the delay is internal: the shop dispatched too late for the slot, not the courier running slow. For outstation, 82% of the delay is the courier's transit. The instinct to blame couriers is only right outside the city.</p>
   <p>Split the fix by zone. In Klang Valley, tighten your own dispatch cut-offs; this costs nothing and recovers most of the delay. Outstation is where courier renegotiation or a buffer day earns its keep.</p></div></article>
 
@@ -180,7 +180,7 @@
   <p>By the tag on the refund, damaged flowers leads with 57 cases and late delivery follows with 48. But the tags mislead. When refunds are re-checked against actual delivery times, 70% of refund money sits on orders that were genuinely late, while only 20% of refunds are labelled late. Late orders get tagged with the visible symptom, damaged or wilted, so the log understates delay.</p>
   <p>Stop trusting the reason field alone. Delay is the largest driver of refund cost by a wide margin, and the shop has been treating it as a minor one.</p></div></article>
 
-  <article class="finding"><h3 class="fq">9. How late before customers demand refunds?</h3><div class="ftext"><figure class="chart"><img src="https://raw.githubusercontent.com/lyven81/data-analyst-portfolio/main/images/when-blooms-arrive-late/chart-5.png" alt="Refund rate by how late the order was"></figure>
+  <article class="finding"><h3 class="fq">9. How late before customers demand refunds?</h3><div class="ftext"><figure class="chart"><img src="https://lyven81.github.io/data-analyst-portfolio/images/when-blooms-arrive-late/chart-5.png" alt="Refund rate by how late the order was"></figure>
   <p>Refunds do not rise smoothly with lateness, they jump. An on-time order refunds 4.8% of the time. Push past the requested slot and it climbs to 13.5% at one to six hours late, then 37.4% at six to twenty-four hours, then 80% once the order misses its day entirely. The danger zone is the six-hour mark.</p>
   <p>Set an internal escalation trigger before that cliff. Any order tracking more than a few hours late should get a proactive call, re-delivery, or apology gift before it turns into a refund demand.</p></div></article>
 
@@ -190,11 +190,11 @@
   <p>Delay refunds track order volume, not a single culprit product. The bestsellers carry the most cases, the Baby Breath and Classic Red Rose bouquets at 23 each, at rates of 7% to 10% of their orders. The sympathy bouquet has the highest rate relative to its small volume, because condolence orders are the least forgiving of delay.</p>
   <p>There is no bad product to cut. Protect the high-volume bouquets from delay, and give condolence orders special handling regardless of the flower.</p></div></article>
 
-  <article class="finding"><h3 class="fq">11. Which courier causes the most refund cases?</h3><div class="ftext"><figure class="chart"><img src="https://raw.githubusercontent.com/lyven81/data-analyst-portfolio/main/images/when-blooms-arrive-late/chart-6.png" alt="Delay-refund rate by courier"></figure>
+  <article class="finding"><h3 class="fq">11. Which courier causes the most refund cases?</h3><div class="ftext"><figure class="chart"><img src="https://lyven81.github.io/data-analyst-portfolio/images/when-blooms-arrive-late/chart-6.png" alt="Delay-refund rate by courier"></figure>
   <p>The outstation couriers are the refund engine. Pos Laju turns 16.4% of its orders into delay refunds, Ninja Van 15.5%, and J&amp;T 13.5%. The Klang Valley couriers sit far below, between 2.8% and 4.9%. A late outstation delivery is three to five times more likely to end in a refund.</p>
   <p>This is the clearest single lever in the report. Reducing outstation courier failures, by switching provider, penalising misses, or padding the promised date, directly removes the largest block of refund cost.</p></div></article>
 
-  <article class="finding"><h3 class="fq">12. Which occasions can't tolerate a late delivery?</h3><div class="ftext"><figure class="chart"><img src="https://raw.githubusercontent.com/lyven81/data-analyst-portfolio/main/images/when-blooms-arrive-late/chart-7.png" alt="Refund rate when late, by occasion"></figure>
+  <article class="finding"><h3 class="fq">12. Which occasions can't tolerate a late delivery?</h3><div class="ftext"><figure class="chart"><img src="https://lyven81.github.io/data-analyst-portfolio/images/when-blooms-arrive-late/chart-7.png" alt="Refund rate when late, by occasion"></figure>
   <p>Occasion decides how badly delay hurts. A late condolence order is refunded 72.7% of the time and a late anniversary 52.2%, against 24% for a late congratulations. Hard-date occasions, where the flowers are worthless the day after, refund at 51% when late versus 35% for flexible ones. The moment matters more than the money.</p>
   <p>Flag hard-date orders in the queue and pick them first. A one-day slip on a birthday is recoverable; on a funeral it is a lost customer and a reputation hit.</p></div></article>
 
@@ -204,7 +204,7 @@
   <p>86 customers complained but were never refunded, and 63% of them had genuinely late orders. These are unresolved warnings: unhappy customers the shop logged and then let go without recovery. Complaints are a leading signal that arrives before the refund and before the customer quietly stops ordering.</p>
   <p>Treat every complaint on a late order as a save opportunity. A small gesture at the complaint stage is far cheaper than the refund, and cheaper still than the lost repeat customer.</p></div></article>
 
-  <article class="finding"><h3 class="fq">14. Where does most refund money leak?</h3><div class="ftext"><figure class="chart"><img src="https://raw.githubusercontent.com/lyven81/data-analyst-portfolio/main/images/when-blooms-arrive-late/chart-8.png" alt="Share of orders versus share of refund money"></figure>
+  <article class="finding"><h3 class="fq">14. Where does most refund money leak?</h3><div class="ftext"><figure class="chart"><img src="https://lyven81.github.io/data-analyst-portfolio/images/when-blooms-arrive-late/chart-8.png" alt="Share of orders versus share of refund money"></figure>
   <p>The refund money is highly concentrated. Fresh-flower orders are 81% of volume but 90% of refund cost. Outstation is 26% of orders but 44% of the money. The busiest days, above 35 orders, are 13% of orders but 29% of the refund cost. A small set of conditions drives the loss.</p>
   <p>Aim the fixes at the concentration, not the average. Protecting fresh flowers on outstation lanes and peak days targets the exact orders where the money actually leaks.</p></div></article>
 
